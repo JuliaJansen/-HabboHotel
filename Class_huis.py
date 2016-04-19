@@ -20,8 +20,8 @@ class Position(object):
         self.y_max = y_min + height
 
 
-    def getX_leftdown(self):
-        return self.x_ld
+    def getX_min(self):
+        return self.x_min
 
-    def getY_leftdown(self):
-        return self.y_ld
+    def getY_min(self):
+        return self.y_min
