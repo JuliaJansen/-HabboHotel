@@ -1,54 +1,74 @@
+##############################################################
 ## Plaats huizen van dezelfde afmetingen random op een veld ##
 ##############################################################
+
 import random
 
-## list voor huizen
+# list for houses
 list huizen = []
 
-## create een variabele for aantal huizen 
-float huizen_max = 20
+# different type of houses
+var mais = "maison"
+var bung = "bungalow"
+var egw = "eengezinswoning"
 
-## maximale waarden veld
+# create a variable to hold number of houses of each type
+int houses_total = 20
+int mais_total = houses_total * 0.15
+int bung_total = houses_total * 0.25
+int egw_total = houses_total * 0.60
+
+# maximal values of field
 float bound_x = 160
 float bound_y = 150
 
-## genereer een random start positie voor huis (links onder hoek)
+# generate a random position of first house (type maison) (x_min en y_min is the left down corner)
 float x_min = randrange(freespace, bound_x - width - 1, 0.5)
 float y_min = randrange(freespace, bound_y - height - 1, 0.5)
+float type_house = mais
 
-# stuur hoek naar class om andere hoeken te bereken, en voeg toe aan list huizen
-huis = Position(x_min, y_min, width, height, freespace)
-huizen.append(huis)
+# add house to list houses
+house = Position(x_min, y_min, type_house)
+houses.append(house)
 
-# there exits one house
-i = 1
+# one house has been already made
+int i = 1
 
-# loop over maximaal aantal huizen
-while (i < huizen_max)
+# type_total holds number of houses needed to be made of certain type. Instantiate with type maison.
+int type_total = mais_total
 
-	## generate een nieuwe random plek
-	float x_min = randrange(freespace, bound_x - width - 1, 0.5)
-	float y_min = randrange(freespace, bound_y - height - 1, 0.5)
+# loop over maximal number of houses of this type
+while (i < type_total):
+        
+    ## generate a new random position
+    float x_min = randrange(freespace, bound_x - width - 1, 0.5)
+    float y_min = randrange(freespace, bound_y - height - 1, 0.5)
+            
+    # loop over all houses made so far
+    for (j = 0; j < len(houses); j++):
+               
+        # get specifics of house we check against 
+        house = Position(x_min, y_min, type_house)
+                
+        # if newly generated house does overlap, break loop and generate a new house
+        if ((houses[j].x_min - width - freespace < x_min < houses[j].x_min + width + freespace) && (houses[j].y_min - height - freespace < y_min < houses[j].y_min + height +freespace):
+                    
+            break
+                    
+        # if house didn't overlap in any case, add house to list
+        if (j == len(houses)):
+            house = Position(x_min, y_min, type_house)
+            houses.append(house)
+            i++
 
+    # set type_total to number of bungalows when all maisons have been made
+    if (k == type_mais - 1):
+        type_house = bung
+        type_total = type_bung
+        i = 0
 
-	## loop over alle huizen tot nu toe gemaakt
-	for (j = 0; j < len(huizen); j++)
-
-		## get coordinates of house we are checking against
-		## huis = Position(x_min, y_min, width, height)
-
-		## if newly generated house does overlap, break loop and generate a new house
-		if ((huizen[j].x_min - width - freespace < x_min < huizen[j].x_min + width + freespace) && (huizen[j].y_min - height - freespace < y_min < huizen[j].y_min + height +freespace)
-
-			break
-		
-		## if house didnt overlap in a case, add it to list
-		if (j == len(huizen))	
-			## plaats huis (voeg toe aan list)
-			huis = Position(x_min, y_min, width, height)
-			huizen.append(huis)
-			i++
-
-
-
-
+    # set type_total to number of egw's when all bunagalows have been made
+    if (k == type_bung - 1):
+        type_house = egw
+        type_total = type_egw
+        i = 0
