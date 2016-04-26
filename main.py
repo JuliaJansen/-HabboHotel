@@ -6,9 +6,9 @@ import pylab
 import random
 import math
 
-class Position(object):
+class House(object):
     """
-    A Position represents a location on a two-dimensional field.
+    A House represents a location on a two-dimensional field.
     """
 
     def __init__(self, x_min, y_min, type_house):
@@ -19,8 +19,7 @@ class Position(object):
         self.x_min = x_min
         self.y_min = y_min
         self.type_house = type_house
-        self.distance = 160
-        self.neighbour = None
+        self.distance = None
 
         if self.type_house == mais:
             self.width = 11
@@ -47,9 +46,37 @@ class Position(object):
     def getY_min(self):
         return self.y_min
 
+    def updateDistance(self, distance):
+        self.distance = distance
+
+    def getDistance(self):
+        return self.distance
+
     def get_type_house(self):
         return self.type_house
+
+# class Field(object)
+#     """
+#     Define freespace based on type house
+#     """
+#     def __init__(self):
+#         """
+#         Initializes a rectangular room with the specified width and height.
+#         Initially, no houses are placed on the field
+
+#         width: an integer > 0
+#         height: an integer > 0
+#         """
+#         self.width = 150
+#         self.height = 160
         
+#         # initialize a empty array tiles
+#         self.houses = []
+
+#     def updateNeighbour(self, distance):
+#         return House(self.x_min, self.y_min, self.type_house, distance)
+        
+
 def getFreespace(type_house):
     """
     Define freespace based on type house
@@ -153,13 +180,11 @@ def afstand(house, houses):
         return minafst - freespace
 
     # update distance to closest neighbour of house
-    house.distance = minafst
-    house.neighbour = neighbour
+    house.updateDistance(minafst)
 
     # if neighbours closest neighbour is further away, update closest neighbour
     if neighbour.distance > minafst:
-        neighbour.distance = minafst
-        neighbour.neighbour = house
+        neighbour.updateDistance(minafst)
 
     # return distance to closest neighbour's wall of house
     return minafst
@@ -196,7 +221,7 @@ x_min = random.randrange(getFreespace(type_house), 2 * (bound_x - width_maison -
 y_min = random.randrange(getFreespace(type_house), 2 * (bound_y - height_maison - 1)) * 0.5
 
 # add house to list houses
-house = Position(x_min, y_min, type_house)
+house = House(x_min, y_min, type_house)
 houses.append(house)
 
 # one house has been already made
@@ -214,30 +239,31 @@ while i < type_total:
     y_min = random.randrange(getFreespace(type_house), 2 * (bound_y - height_maison - 1)) * 0.5
             
     # get specifics of house we check against 
-    new = Position(x_min, y_min, type_house)
+    new = House(x_min, y_min, type_house)
 
     # print "x_min eerste huis = ", houses[0].x_min
     # print "x_min nieuwe huis = ", new.x_min      
 
     # if house didn't overlap in any case, add house to list
-    if afstand(new, houses) > 0:
-        print "len houses = ", len(houses)
-        house = Position(x_min, y_min, type_house)
-        houses.append(house)
+    min_dist = afstand(new, houses)
+    if min_dist > 0:
+        house = new.updateDistance(min_dist)
+        houses.append(new)
         i += 1
 
     # set type_total to number of next type of houses
-    if i == type_total - 1:
+    if i == type_total:
         if type_house == mais:
             type_house = bung
-            type_total = bung_total
             i = 0
-        if type_house == bung:
+            type_total = bung_total
+        elif type_house == bung:
             type_house = egw
             type_total = egw_total
             i = 0
 
-# for i in range(len(houses)):
-#     print "x is = ", houses[i].x_min
-#     print "kortste afstand = ", houses[i].distance
-# print "end"
+for i in range(len(houses)):
+    print "x is = ", houses[i].x_min
+    print "kortste afstand = ", houses[i].getDistance()
+print "aantal huizen = ", len(houses)
+print "end"
