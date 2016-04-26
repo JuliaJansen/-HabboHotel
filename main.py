@@ -169,10 +169,21 @@ while i < type_total:
         # get specifics of house we check against 
         new = Position(x_min, y_min, type_house)
                 
-        # if newly generated house does overlap, break loop and generate a new house
-        if (houses[j].x_min - houses[j].width - houses[j].freespace < x_min < houses[j].x_min + new.width + new.freespace) \
-        and (houses[j].y_min - new.height - new.freespace < y_min < houses[j].y_min + houses[j].height + houses[j].freespace):        
-            break
+        # check horizontal overlapping
+        if houses[j].x_min < x_min : # check house < new house
+            if houses[j].x_min + houses[j].width + houses[j].freespace > x_min :
+                break
+        else if x_min <= houses[j].x_min: # new house <= check house
+            if x_min > houses[j].x_min - new.width - new.freespace:
+                break
+
+        # check vertical overlapping
+        if houses[j].y_min < y_min : # check house < new house
+            if houses[j].y_min + houses[j].height + houses[j].freespace > y_min:
+                break
+        else if y_min <= houses[j].x_min: # new house <= check house
+            if y_min > houses[j].y_min - new.height - new.freespace:
+                break
                     
         # if house didn't overlap in any case, add house to list
         if j == len(houses):
