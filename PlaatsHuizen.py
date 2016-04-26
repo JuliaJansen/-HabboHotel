@@ -45,21 +45,20 @@ while (i < type_total):
     float y_min = randrange(freespace, bound_y - height - 1, 0.5)
             
     # loop over all houses made so far
-    for (j = 0; j < len(houses); j++):
+    for j in range(len(houses)):
                
         # get specifics of house we check against 
         house = Position(x_min, y_min, type_house)
                 
         # if newly generated house does overlap, break loop and generate a new house
-        if ((houses[j].x_min - width - freespace < x_min < houses[j].x_min + width + freespace) && (houses[j].y_min - height - freespace < y_min < houses[j].y_min + height +freespace):
-                    
+        if ((houses[j].x_min - width - freespace < x_min < houses[j].x_min + width + freespace) and (houses[j].y_min - height - freespace < y_min < houses[j].y_min + height +freespace):        
             break
                     
         # if house didn't overlap in any case, add house to list
         if (j == len(houses)):
             house = Position(x_min, y_min, type_house)
             houses.append(house)
-            i++
+            i = i + 1
 
     # set type_total to number of bungalows when all maisons have been made
     if (k == type_mais - 1):
