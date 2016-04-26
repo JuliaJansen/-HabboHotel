@@ -12,7 +12,8 @@ class Position(object):
 
     def __init__(self, x_min, y_min, type_house):
         """
-        Initializes a position with coordinates (x_min, y_min).
+        Initializes a position with coordinates of left down corner 
+        (x_min, y_min).
         """
         self.x_min = x_min
         self.y_min = y_min
@@ -22,23 +23,21 @@ class Position(object):
             self.width = 11
             self.height = 10.5
             self.freespace = 6
-            self.x_max = x_min + self.width
-            self.y_max = y_min + self.height
 
         if self.type_house = bung:
             self.width = 10
             self.height = 7.5
             self.freespace = 3
-            self.x_max = x_min + self.width
-            self.y_max = y_min + self.height
 
         if self.type_house = egw:
             self.width = 8
             self.height = 8
             self.freespace = 2
-            self.x_max = x_min + self.width
-            self.y_max = y_min + self.height
-        
+
+        # x_max, y_max is the right tip corner of a house
+        self.x_max = x_min + self.width
+        self.y_max = y_min + self.height
+       
     def getX_min(self):
         return self.x_min
 
