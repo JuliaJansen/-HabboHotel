@@ -19,17 +19,17 @@ class Position(object):
         self.y_min = y_min
         self.type_house = type_house
 
-        if self.type_house = mais:
+        if self.type_house == mais:
             self.width = 11
             self.height = 10.5
             self.freespace = 6
 
-        if self.type_house = bung:
+        if self.type_house == bung:
             self.width = 10
             self.height = 7.5
             self.freespace = 3
 
-        if self.type_house = egw:
+        if self.type_house == egw:
             self.width = 8
             self.height = 8
             self.freespace = 2
