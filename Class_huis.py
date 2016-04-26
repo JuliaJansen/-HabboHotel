@@ -34,7 +34,7 @@ class Position(object):
             self.height = 8
             self.freespace = 2
 
-        # x_max, y_max is the right tip corner of a house
+        # x_max, y_max is the top right corner of a house
         self.x_max = x_min + self.width
         self.y_max = y_min + self.height
        
