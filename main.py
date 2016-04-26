@@ -262,8 +262,4 @@ while i < type_total:
             type_total = egw_total
             i = 0
 
-for i in range(len(houses)):
-    print "x is = ", houses[i].x_min
-    print "kortste afstand = ", houses[i].getDistance()
-print "aantal huizen = ", len(houses)
-print "end"
+# Calculate distance
