@@ -64,16 +64,17 @@ def getFreespace(type_house):
     if type_house == egw:
         return 2
 
-"""
-Calculate distance to closest house
-"""
+
 def afstand(house, houses): 
-    
-    del afstandschuin[:] 
-    del afstandenx[:]
-    del afstandeny[:]
-    
-    for j in range(len(houses):
+    """
+    Calculate distance to closest house
+    """   
+
+    afstandschuin = []
+    afstandenx = []
+    afstandeny = []
+
+    for j in range(len(houses)):
         # check eerst of huis je boven of onder dit huis ligt
         if houses[j].y_max > house.y_min and houses[j].y_min < house.y_max:
             
@@ -137,7 +138,7 @@ def afstand(house, houses):
         closest = afstandenx.index(minafstx)
     elif minafst == minafsty:
         closest = afstandeny.index(minafsty)
-    elif minafst == minafstschuin
+    elif minafst == minafstschuin:
         closest = afstandschuin.index(minafstschuin)
     neighbour = houses[closest]
 
@@ -206,7 +207,8 @@ type_total = mais_total
 
 # loop over maximal number of houses of this type
 while i < type_total:
-        
+    print "type_total = ", type_total
+
     ## generate a new random position
     x_min = random.randrange(getFreespace(type_house), 2 * (bound_x - width_maison - 1)) * 0.5
     y_min = random.randrange(getFreespace(type_house), 2 * (bound_y - height_maison - 1)) * 0.5
@@ -235,6 +237,7 @@ while i < type_total:
             type_total = egw_total
             i = 0
 
-print houses
-print len(houses)
-print "end"
+# for i in range(len(houses)):
+#     print "x is = ", houses[i].x_min
+#     print "kortste afstand = ", houses[i].distance
+# print "end"
