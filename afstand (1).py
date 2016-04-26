@@ -4,7 +4,7 @@ def afstand(house, houses):
     del afstandenx[:]
     del afstandeny[:]
     
-    for (j = 0; j < len(houses); j++):
+    for j = 0; j < len(houses); j++:
         # check eerst of huis je boven of onder dit huis ligt
         if houses[j].y_max > house.y_min and houses[j].y_min < house.y_max:
             
@@ -56,39 +56,37 @@ def afstand(house, houses):
         else:
             afstandschuin.append(10000)
         
+    # minimum distance is the only one relevant to value
+    minafstx = min(afstandenx)
+    minafsty = min(afstandeny)
+    minafstschuin = min(afstandschuin)
 
+    minafst = min(minafstx,minafsty,minafstschuin)
 
-# minimum distance is the only one relevant to value
-minafstx = min(afstandenx)
-minafsty = min(afstandeny)
-minafstschuin = min(afstandschuin)
+    # save closest neighbour of house
+    if minafst == minafstx:
+        closest = afstandenx.index(minafstx)
+    elif minafst == minafsty:
+        closest = afstandeny.index(minafsty)
+    elif minafst == minafstschuin
+        closest = afstandschuin.index(minafstschuin)
 
-minafst = min(minafstx,minafsty,minafstschuin)
-
-# save closest neighbour of house
-if minafst == minafstx:
-   closest = afstandenx.index(minafstx)
-elif minafst == minafsty:
-    closest = afstandeny.index(minafsty)
-elif minafst == minafstschuin
-    closest = afstandschuin.index(minafstschuin)
-
-neighbour = houses[closest]
-if house.freespace > neighbour.freespace:
+    neighbour = houses[closest]
+    if house.freespace > neighbour.freespace:
     freespace = house.freespace
-else:
+    else:
     freespace = neighbour.freespace
-    
-if minafst < freespace:
-    return minafst - freespace
-    
-# update closest neighbour of house
-house.distance = minafst
-house.neighbour = neighbour
 
-if neighbour.distance > minafst:
+    if minafst < freespace:
+    return minafst - freespace
+
+    # update closest neighbour of house
+    house.distance = minafst
+    house.neighbour = neighbour
+
+    if neighbour.distance > minafst:
     neighbour.distance = minafst
     neighbour.neighbour = house
 
-return minafst
+    return minafst
     
