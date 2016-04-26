@@ -19,7 +19,7 @@ class House(object):
         self.x_min = x_min
         self.y_min = y_min
         self.type_house = type_house
-        self.distance = None
+        self.distance = 160
 
         if self.type_house == mais:
             self.width = 11
@@ -51,6 +51,9 @@ class House(object):
 
     def getDistance(self):
         return self.distance
+
+    def getFreespace(self):
+        return self.freespace
 
     def get_type_house(self):
         return self.type_house
@@ -126,7 +129,7 @@ def afstand(house, houses):
             else:
                 afstand = house.y_min - houses[j].y_min - houses[j].height  
             afstandeny.append(afstand)
-            
+        
         else:
             afstandeny.append(10000)
         
@@ -201,7 +204,7 @@ bung = "bungalow"
 egw = "eengezinswoning"
 
 # create a variable to hold number of houses of each type
-houses_total = 20
+houses_total = 40
 mais_total = houses_total * 0.15
 bung_total = houses_total * 0.25
 egw_total = houses_total * 0.60
@@ -232,8 +235,6 @@ type_total = mais_total
 
 # loop over maximal number of houses of this type
 while i < type_total:
-    print "type_total = ", type_total
-
     ## generate a new random position
     x_min = random.randrange(getFreespace(type_house), 2 * (bound_x - width_maison - 1)) * 0.5
     y_min = random.randrange(getFreespace(type_house), 2 * (bound_y - height_maison - 1)) * 0.5
@@ -263,13 +264,15 @@ while i < type_total:
             i = 0
 
 # Calculate distance
+total_value = 0
 for k in range(len(houses)):
-    extraspace = house.distance - house.freespace
-    if houses[k].type_huis == egw:
+    extraspace = math.floor(houses[k].getDistance() - houses[k].getFreespace())
+    print "extraspace = ", extraspace
+    if houses[k].type_house == egw:
         waarde = 285000 * (1+(0.03*extraspace))
-    elif houses[k].type_huis == bung:
+    elif houses[k].type_house == bung:
         waarde = 399000 * (1+(0.04*extraspace))
-    elif houses[k].type_huis == mais:
+    elif houses[k].type_house == mais:
         waarde = 610000 * (1+(0.06*extraspace))
-    totalvalue += waarde
-    print "totale waarde is", totalvalue
+    total_value += waarde
+    print "totale waarde is", total_value
