@@ -73,81 +73,94 @@ def getFreespace(type_house):
         return 2
 
 
-def afstand(house, houses): 
+def distance(house, houses): 
     """
     Calculate distance to closest house
     """   
 
-    afstandschuin = []
-    afstandenx = []
-    afstandeny = []
+    space_diagonal = []
+    space_x = []
+    space_y = []
 
     for j in range(len(houses)):
-        # check eerst of huis je boven of onder dit huis ligt
+        
+        # check if house is above or underneath house
         if houses[j].y_max > house.y_min and houses[j].y_min < house.y_max:
             
-            # twee berekeningen, een voor links een voor rechts
+            # calculations for distance to next house left and right 
             if houses[j].x_min > house.x_min:
-                afstand = houses[j].x_min - house.x_min - house.width 
+                distance = houses[j].x_min - house.x_min - house.width 
             else:
-                afstand = house.x_min - houses[j].x_min - houses[j].width 
+                distance = house.x_min - houses[j].x_min - houses[j].width 
 
-            afstandenx.append(afstand)
+            space_x.append(distance)
                 
-        # fake value to fill up list
+        # fill space_x with fictional high value to ensure space_y or 
+        # space_diagonal contain smaller values
         else:
-            afstandenx.append(10000)
+            space_x.append(10000)
         
-        # check eerst of huis j naast dit huis ligt        
+        # check whether house[j] is in horizontal band next to house        
         if houses[j].x_max > house.x_min and houses[j].x_min < house.x_max:
         
-            # twee berekeningen, een voor onder een voor boven
+            #  calculations for distance to next house above and under
             if houses[j].y_min > house.y_min:
-                afstand = houses[j].y_min - house.y_min - house.height  
+                distance = houses[j].y_min - house.y_min - house.height  
             else:
-                afstand = house.y_min - houses[j].y_min - houses[j].height  
-            afstandeny.append(afstand)
+                distance = house.y_min - houses[j].y_min - houses[j].height  
+            space_y.append(distance)
         
+        # fill space_y with fictional high value 
         else:
-            afstandeny.append(10000)
+            space_y.append(10000)
         
+        # calculate diagonal distance to house[j] with pythagoras
+        # if house[j] is in left top corner of house
         if houses[j].x_min >= house.x_min and houses[j].y_min >= house.y_min:
             a = houses[j].x_min - house.x_max 
             b = houses[j].y_min - house.y_max 
             c = (a**2 + b**2)**0.5
-            afstandschuin.append(c)
+            space_diagonal.append(c)
+
+        # if house[j] is in right top corner of house
         elif houses[j].x_min >= house.x_min and houses[j].y_min <= house.y_min:
             a = houses[j].x_min - house.x_max 
             b = house.y_min - houses[j].y_max 
             c = (a**2 + b**2)**0.5
-            afstandschuin.append(c)
+            space_diagonal.append(c)
+
+        # if house[j] is in left bottom corner of house
         elif houses[j].x_min <= house.x_min and houses[j].y_min >= house.y_min:
             a = house.x_min - houses[j].x_max 
             b = houses[j].y_min - house.y_max 
             c = (a**2 + b**2)**0.5
-            afstandschuin.append(c)
+            space_diagonal.append(c)
+
+        # if house[j] is in right bottom corner of house
         elif houses[j].x_min <= house.x_min and houses[j].y_min <= house.y_min:
             a = house.x_min - houses[j].x_max 
             b = house.y_min - houses[j].y_max 
             c = (a**2 + b**2)**0.5
-            afstandschuin.append(c)
+            space_diagonal.append(c)
+
+        # fill space_diagonal with fictional high value 
         else:
-            afstandschuin.append(10000)
+            space_diagonal.append(10000)
         
     # minimum distance is the only one relevant to value
-    minafstx = min(afstandenx)
-    minafsty = min(afstandeny)
-    minafstschuin = min(afstandschuin)
+    min_dist_x = min(space_x)
+    min_dist_y = min(space_y)
+    min_diagonal = min(space_diagonal)
 
-    minafst = min(minafstx,minafsty,minafstschuin)
+    min_dist = min(min_dist_x,min_dist_y,min_diagonal)
 
     # save closest neighbour of house
-    if minafst == minafstx:
-        closest = afstandenx.index(minafstx)
-    elif minafst == minafsty:
-        closest = afstandeny.index(minafsty)
-    elif minafst == minafstschuin:
-        closest = afstandschuin.index(minafstschuin)
+    if min_dist == min_dist_x:
+        closest = space_x.index(min_dist_x)
+    elif min_dist == min_dist_y:
+        closest = space_y.index(min_dist_y)
+    elif min_dist == min_diagonal:
+        closest = space_diagonal.index(min_diagonal)
     neighbour = houses[closest]
 
     # get biggest freespace (of house or closest house)
@@ -157,18 +170,18 @@ def afstand(house, houses):
         freespace = neighbour.freespace
 
     # if freespace is bigger than distance, return negative distance
-    if minafst < freespace:
-        return minafst - freespace
+    if min_dist < freespace:
+        return min_dist - freespace
 
     # update distance to closest neighbour of house
-    house.updateDistance(minafst)
+    house.updateDistance(min_dist)
 
     # if neighbours closest neighbour is further away, update closest neighbour
-    if neighbour.distance > minafst:
-        neighbour.updateDistance(minafst)
+    if neighbour.distance > min_dist:
+        neighbour.updateDistance(min_dist)
 
     # return distance to closest neighbour's wall of house
-    return minafst
+    return min_dist
 
 """
 Plaats huizen van dezelfde afmetingen random op een veld
@@ -208,25 +221,26 @@ houses.append(house)
 # one house has been already made
 i = 1
 
-# type_total holds number of houses needed to be made of certain type. Instantiate with type maison.
+# type_total holds number of houses needed to be made of certain type
+# instantiate with type maison
 type_total = mais_total
 
 # loop over maximal number of houses of this type
 while i < type_total:
+
     ## generate a new random position
-    x_min = random.randrange(getFreespace(type_house), 2 * (bound_x - width_maison - 1)) * 0.5
-    y_min = random.randrange(getFreespace(type_house), 2 * (bound_y - height_maison - 1)) * 0.5
+    x_min = random.randrange(getFreespace(type_house), 2 * \
+        (bound_x - width_maison - 1)) * 0.5
+    y_min = random.randrange(getFreespace(type_house), 2 * \
+        (bound_y - height_maison - 1)) * 0.5
             
     # get specifics of house we check against 
     new = House(x_min, y_min, type_house)
 
-    # print "x_min eerste huis = ", houses[0].x_min
-    # print "x_min nieuwe huis = ", new.x_min      
-
     # if house didn't overlap in any case, add house to list
-    min_dist = afstand(new, houses)
-    if min_dist > 0:
-        house = new.updateDistance(min_dist)
+    smallest_dist = distance(new, houses)
+    if smallest_dist > 0:
+        house = new.updateDistance(smallest_dist)
         houses.append(new)
         i += 1
 
@@ -241,16 +255,24 @@ while i < type_total:
             type_total = egw_total
             i = 0
 
-# Calculate total value of Amstelhaege
+# calculate total value of Amstelhaege
 total_value = 0
 for k in range(len(houses)):
     extraspace = math.floor(houses[k].getDistance() - houses[k].getFreespace())
     print "extraspace = ", extraspace
+
+    # value of eengezinswoningen
     if houses[k].type_house == egw:
         waarde = 285000 * (1+(0.03*extraspace))
+
+    # value of bungalows
     elif houses[k].type_house == bung:
         waarde = 399000 * (1+(0.04*extraspace))
+
+    # value of maisons
     elif houses[k].type_house == mais:
         waarde = 610000 * (1+(0.06*extraspace))
+
+    # total value
     total_value += waarde
     print "totale waarde is", total_value
