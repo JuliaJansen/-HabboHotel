@@ -5,6 +5,9 @@
 import pylab
 import random
 import math
+import matplotlib.pyplot as plt
+from matplotlib.path import Path
+import matplotlib.patches as patches
 
 the_best = []
 best_value = []
@@ -189,11 +192,69 @@ def distance(house, houses):
     # return distance to closest neighbour's wall of house
     return min_dist
 
+def plotmap(len_houses, index, all_maps):
+    """
+    Plot best map
+    """
+    path = []
+    patch_list = []
+
+    # loop over array houses to draw paths
+    for l in range(len_houses):
+        
+        # prepare to plot best map
+        verts = [
+            (all_maps[index][l].x_min, all_maps[index][l].y_min), #left, bottom
+            (all_maps[index][l].x_min, all_maps[index][l].y_max), #left, top
+            (all_maps[index][l].x_max, all_maps[index][l].y_max), #right, top
+            (all_maps[index][l].x_max, all_maps[index][l].y_min), #right, bottom
+            (0., 0.), # ignored
+            ]
+
+        codes = [
+            Path.MOVETO,
+            Path.LINETO, 
+            Path.LINETO,
+            Path.LINETO,
+            Path.CLOSEPOLY,
+            ]
+
+        path.append(Path(verts, codes))
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111, aspect='equal')
+        
+    for m in range(len_houses):
+
+        # add paths maison in blue
+        if m < mais_total:
+            patch_list.append(patches.PathPatch(path[m], facecolor="#009999", lw=2))
+        
+        # add paths bungalows in orange
+        elif m < mais_total + bung_total:
+            patch_list.append(patches.PathPatch(path[m], facecolor="#cc6600", lw=2))
+        
+        # add paths egws in green
+        else:
+            patch_list.append(patches.PathPatch(path[m], facecolor="#88cc00", lw=2))
+
+    # add pathches to the figure
+    for p in patch_list:
+        ax.add_patch(p)
+
+    # set x and y limit
+    ax.set_xlim(0,160)
+    ax.set_ylim(0,150)
+
+    # show plot
+    plt.show()
+
+    fig.savefig('rect' + str(index) + '.png', dpi=90, bbox_inches='tight')
+
 """
-Place houses on field
+MAIN: Place houses on field
 """
-# list for houses
-houses = []
+all_maps = []
 
 # different type of houses
 mais = "maison"
@@ -201,13 +262,13 @@ bung = "bungalow"
 egw = "eengezinswoning"
 
 # create a variable to hold number of houses of each type
-houses_total = 20
+houses_total = 60
 mais_total = houses_total * 0.15
 bung_total = houses_total * 0.25
 egw_total = houses_total * 0.60
 
 # loop x times for testing
-for k in range(1000):
+for k in range(10000):
     
     # array of houses per test
     houses = []
@@ -274,7 +335,6 @@ for k in range(1000):
                 i = 0
     
     # Calculate total value of Amstelhaege
-    
     for k in range(len(houses)):
         extraspace = math.floor(houses[k].getDistance() - houses[k].getFreespace())
         
@@ -296,16 +356,27 @@ for k in range(1000):
     # initiate the best list and update in later sessions
     best_value.append(total_value)
 
+    #save houses-array in list 
+    all_maps.append(houses)
+
 # find map with highest value from tests
 highest = max(best_value)
-index = best_value.index(highest)
-print "index best = ", index
+index_high = best_value.index(highest)
+print "index best = ", index_high
 print "value best = ", highest
 
 # find map with lowest value from tests
 lowest = min(best_value)
+index_low = best_value.index(lowest)
 print "lowest = ", lowest
 
 # calculate mean map value of tests
 mean_value = sum(best_value)/len(best_value)
 print "mean = ", mean_value
+
+plotmap(len(houses), index_high, all_maps)
+plotmap(len(houses), index_low, all_maps)
+
+
+
+
