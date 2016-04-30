@@ -296,19 +296,6 @@ for k in range(1000):
     # initiate the best list and update in later sessions
     best_value.append(total_value)
 
-# value2 = []
-# update sum of total values variable
-
-
-#for k in range(len(best_value)):
-#    if k == 0:
- #       value1 = best_value[0]
- #   else:
- #       value1 = best_value[k] - best_value[k-1]
- #   value2.append(value1)
-# find value and index of highest value
-#print "listgoed", value2
-
 # find map with highest value from tests
 highest = max(best_value)
 index = best_value.index(highest)

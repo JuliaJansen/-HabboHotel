@@ -79,94 +79,81 @@ def getFreespace(type_house):
         return 2
 
 
-def distance(house, houses): 
+def afstand(house, houses): 
     """
     Calculate distance to closest house
     """   
 
-    space_diagonal = []
-    space_x = []
-    space_y = []
+    afstandschuin = []
+    afstandenx = []
+    afstandeny = []
 
     for j in range(len(houses)):
-        
-        # check if house is above or underneath house
+        # check eerst of huis je boven of onder dit huis ligt
         if houses[j].y_max > house.y_min and houses[j].y_min < house.y_max:
             
-            # calculations for distance to next house left and right 
+            # twee berekeningen, een voor links een voor rechts
             if houses[j].x_min > house.x_min:
-                distance = houses[j].x_min - house.x_min - house.width 
+                afstand = houses[j].x_min - house.x_min - house.width 
             else:
-                distance = house.x_min - houses[j].x_min - houses[j].width 
+                afstand = house.x_min - houses[j].x_min - houses[j].width 
 
-            space_x.append(distance)
+            afstandenx.append(afstand)
                 
-        # fill space_x with fictional high value to ensure space_y or 
-        # space_diagonal contain smaller values
+        # fake value to fill up list
         else:
-            space_x.append(10000)
+            afstandenx.append(10000)
         
-        # check whether house[j] is in horizontal band next to house        
+        # check eerst of huis j naast dit huis ligt        
         if houses[j].x_max > house.x_min and houses[j].x_min < house.x_max:
         
-            #  calculations for distance to next house above and under
+            # twee berekeningen, een voor onder een voor boven
             if houses[j].y_min > house.y_min:
-                distance = houses[j].y_min - house.y_min - house.height  
+                afstand = houses[j].y_min - house.y_min - house.height  
             else:
-                distance = house.y_min - houses[j].y_min - houses[j].height  
-            space_y.append(distance)
+                afstand = house.y_min - houses[j].y_min - houses[j].height  
+            afstandeny.append(afstand)
         
-        # fill space_y with fictional high value 
         else:
-            space_y.append(10000)
+            afstandeny.append(10000)
         
-        # calculate diagonal distance to house[j] with pythagoras
-        # if house[j] is in left top corner of house
         if houses[j].x_min >= house.x_min and houses[j].y_min >= house.y_min:
             a = houses[j].x_min - house.x_max 
             b = houses[j].y_min - house.y_max 
             c = (a**2 + b**2)**0.5
-            space_diagonal.append(c)
-
-        # if house[j] is in right top corner of house
+            afstandschuin.append(c)
         elif houses[j].x_min >= house.x_min and houses[j].y_min <= house.y_min:
             a = houses[j].x_min - house.x_max 
             b = house.y_min - houses[j].y_max 
             c = (a**2 + b**2)**0.5
-            space_diagonal.append(c)
-
-        # if house[j] is in left bottom corner of house
+            afstandschuin.append(c)
         elif houses[j].x_min <= house.x_min and houses[j].y_min >= house.y_min:
             a = house.x_min - houses[j].x_max 
             b = houses[j].y_min - house.y_max 
             c = (a**2 + b**2)**0.5
-            space_diagonal.append(c)
-
-        # if house[j] is in right bottom corner of house
+            afstandschuin.append(c)
         elif houses[j].x_min <= house.x_min and houses[j].y_min <= house.y_min:
             a = house.x_min - houses[j].x_max 
             b = house.y_min - houses[j].y_max 
             c = (a**2 + b**2)**0.5
-            space_diagonal.append(c)
-
-        # fill space_diagonal with fictional high value 
+            afstandschuin.append(c)
         else:
-            space_diagonal.append(10000)
+            afstandschuin.append(10000)
         
     # minimum distance is the only one relevant to value
-    min_dist_x = min(space_x)
-    min_dist_y = min(space_y)
-    min_diagonal = min(space_diagonal)
+    minafstx = min(afstandenx)
+    minafsty = min(afstandeny)
+    minafstschuin = min(afstandschuin)
 
-    min_dist = min(min_dist_x,min_dist_y,min_diagonal)
+    minafst = min(minafstx,minafsty,minafstschuin)
 
     # save closest neighbour of house
-    if min_dist == min_dist_x:
-        closest = space_x.index(min_dist_x)
-    elif min_dist == min_dist_y:
-        closest = space_y.index(min_dist_y)
-    elif min_dist == min_diagonal:
-        closest = space_diagonal.index(min_diagonal)
+    if minafst == minafstx:
+        closest = afstandenx.index(minafstx)
+    elif minafst == minafsty:
+        closest = afstandeny.index(minafsty)
+    elif minafst == minafstschuin:
+        closest = afstandschuin.index(minafstschuin)
     neighbour = houses[closest]
 
     # get biggest freespace (of house or closest house)
@@ -176,21 +163,21 @@ def distance(house, houses):
         freespace = neighbour.freespace
 
     # if freespace is bigger than distance, return negative distance
-    if min_dist < freespace:
-        return min_dist - freespace
+    if minafst < freespace:
+        return minafst - freespace
 
     # update distance to closest neighbour of house
-    house.updateDistance(min_dist)
+    house.updateDistance(minafst)
 
     # if neighbours closest neighbour is further away, update closest neighbour
-    if neighbour.distance > min_dist:
-        neighbour.updateDistance(min_dist)
+    if neighbour.distance > minafst:
+        neighbour.updateDistance(minafst)
 
     # return distance to closest neighbour's wall of house
-    return min_dist
+    return minafst
 
 """
-Place houses on field
+Plaats huizen van dezelfde afmetingen random op een veld
 """
 # list for houses
 houses = []
@@ -205,21 +192,15 @@ houses_total = 20
 mais_total = houses_total * 0.15
 bung_total = houses_total * 0.25
 egw_total = houses_total * 0.60
-
-# loop x times for testing
 for k in range(1000):
-    
-    # array of houses per test
     houses = []
-
-    # first house is a maison
+    # first house, hard coded
     freespace_maison = 6
     width_maison = 11
     height_maison = 10.5
-
-    # set total value to 0
     total_value = 0
     
+
     # maximal values of field
     bound_x = 160
     bound_y = 150
@@ -242,83 +223,82 @@ for k in range(1000):
     # loop over maximal number of houses of this type
     while i < type_total:
         ## generate a new random position
-        x_min = random.randrange(getFreespace(type_house), 2 * \
-            (bound_x - width_maison - 1)) * 0.5
-        y_min = random.randrange(getFreespace(type_house), 2 * \
-            (bound_y - height_maison - 1)) * 0.5
+        x_min = random.randrange(getFreespace(type_house), 2 * (bound_x - width_maison - 1)) * 0.5
+        y_min = random.randrange(getFreespace(type_house), 2 * (bound_y - height_maison - 1)) * 0.5
             
         # get specifics of house we check against 
         new = House(x_min, y_min, type_house)
 
+        # print "x_min eerste huis = ", houses[0].x_min
+        # print "x_min nieuwe huis = ", new.x_min      
+    #
         # if house didn't overlap in any case, add house to list
-        smallest_dist = distance(new, houses)
-        if smallest_dist > 0:
-            house = new.updateDistance(smallest_dist)
+        min_dist = afstand(new, houses)
+        if min_dist > 0:
+            house = new.updateDistance(min_dist)
             houses.append(new)
             i += 1
 
-        # set type_total to number of next type of houses 
+        # set type_total to number of next type of houses
         if i == type_total:
             if type_house == mais:
                 type_house = bung
-
-                # start loop of placing houses again
                 i = 0
                 type_total = bung_total
-
             elif type_house == bung:
                 type_house = egw
                 type_total = egw_total
-
-                # start loop of placing houses again
                 i = 0
     
     # Calculate total value of Amstelhaege
     
+    #print "waarde voor loop", total_value
     for k in range(len(houses)):
+        #print "1x"
+        
+        #print "total_value=", total_value
         extraspace = math.floor(houses[k].getDistance() - houses[k].getFreespace())
-        
-        # value of eengezinswoningen
+        #print "extraspace = ", extraspace
         if houses[k].type_house == egw:
-            value = 285000 * (1+(0.03*extraspace))
-
-        # value of bungalows
+            waarde = 285000 * (1+(0.03*extraspace))
         elif houses[k].type_house == bung:
-            value = 399000 * (1+(0.04*extraspace))
-
-        # value of maisons
+            waarde = 399000 * (1+(0.04*extraspace))
         elif houses[k].type_house == mais:
-            value = 610000 * (1+(0.06*extraspace))
+            waarde = 610000 * (1+(0.06*extraspace))
+        #if k%20 == 0:
+        #    total_value = 0
         
-        # total value is addition of values per loop
-        total_value += value
+        total_value += waarde
         
-    # initiate the best list and update in later sessions
+        #print "totale waarde is", total_value
+        # initiate the best list and update in later sessions
     best_value.append(total_value)
+    #print "totalvalue iteratie =", total_value
 
-# value2 = []
+# print list of values   
+#print "list", best_value
+waarde2 = []
 # update sum of total values variable
 
 
 #for k in range(len(best_value)):
 #    if k == 0:
- #       value1 = best_value[0]
+ #       waarde1 = best_value[0]
  #   else:
- #       value1 = best_value[k] - best_value[k-1]
- #   value2.append(value1)
+ #       waarde1 = best_value[k] - best_value[k-1]
+ #   waarde2.append(waarde1)
 # find value and index of highest value
-#print "listgoed", value2
+#print "listgoed", waarde2
+hoogst = max(best_value)
+ind = best_value.index(hoogst)
+print "plek beste=", ind
+print "waarde beste =", hoogst
 
-# find map with highest value from tests
-highest = max(best_value)
-index = best_value.index(highest)
-print "index best = ", index
-print "value best = ", highest
-
-# find map with lowest value from tests
-lowest = min(best_value)
-print "lowest = ", lowest
-
-# calculate mean map value of tests
+laagst = min(best_value)
+print "laagste=", laagst
+# calculate mean value of total
+sum_of_total_values = sum(best_value)
 mean_value = sum(best_value)/len(best_value)
-print "mean = ", mean_value
+#print "som =", sum_of_total_values
+#print "i=", len(best_value)
+print "gemiddelde", mean_value

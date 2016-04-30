@@ -184,7 +184,7 @@ def distance(house, houses):
     return min_dist
 
 """
-Plaats huizen van dezelfde afmetingen random op een veld
+Place houses on field
 """
 # list for houses
 houses = []
@@ -263,16 +263,16 @@ for k in range(len(houses)):
 
     # value of eengezinswoningen
     if houses[k].type_house == egw:
-        waarde = 285000 * (1+(0.03*extraspace))
+        value = 285000 * (1+(0.03*extraspace))
 
     # value of bungalows
     elif houses[k].type_house == bung:
-        waarde = 399000 * (1+(0.04*extraspace))
+        value = 399000 * (1+(0.04*extraspace))
 
     # value of maisons
     elif houses[k].type_house == mais:
-        waarde = 610000 * (1+(0.06*extraspace))
+        value = 610000 * (1+(0.06*extraspace))
 
     # total value
-    total_value += waarde
-    print "totale waarde is", total_value
+    total_value += value
+    print "totale value is", total_value
