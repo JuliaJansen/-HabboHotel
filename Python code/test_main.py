@@ -2,6 +2,7 @@
 # add classes and code below  #
 # # # # # # # # # # # # # # # #
 
+import datetime
 import pylab
 import random
 import math
@@ -192,7 +193,7 @@ def distance(house, houses):
     # return distance to closest neighbour's wall of house
     return min_dist
 
-def plotmap(len_houses, index, all_maps):
+def plotmap(len_houses, index, all_maps, name):
     """
     Plot best map
     """
@@ -249,7 +250,7 @@ def plotmap(len_houses, index, all_maps):
     # show plot
     plt.show()
 
-    fig.savefig('rect' + str(index) + '.png', dpi=90, bbox_inches='tight')
+    fig.savefig('../plots/' + name + '.png', dpi=90, bbox_inches='tight')
 
 """
 MAIN: Place houses on field
@@ -261,14 +262,17 @@ mais = "maison"
 bung = "bungalow"
 egw = "eengezinswoning"
 
+# change how you like: houses to place & amount of tests
+houses_total = 20
+nr_tests = 10000
+
 # create a variable to hold number of houses of each type
-houses_total = 60
 mais_total = houses_total * 0.15
 bung_total = houses_total * 0.25
 egw_total = houses_total * 0.60
 
 # loop x times for testing
-for k in range(10000):
+for k in range(nr_tests):
     
     # array of houses per test
     houses = []
@@ -374,8 +378,17 @@ print "lowest = ", lowest
 mean_value = sum(best_value)/len(best_value)
 print "mean = ", mean_value
 
-plotmap(len(houses), index_high, all_maps)
-plotmap(len(houses), index_low, all_maps)
+# save date/time to name plot
+time = datetime.datetime.now().strftime("%I%M_%B_%d_")
+
+# names of figures:
+# hourminute_month_day_amountofhouses_best/worst_nr.oftests_value.of.map
+name1 = time + str(houses_total) + "bestof" + str(nr_tests) + "_" + str(highest)
+name2 = time + str(houses_total) + "worstof" + str(nr_tests) + "_" + str(lowest)
+
+# plot best and worst map
+plotmap(len(houses), index_high, all_maps, name1)
+plotmap(len(houses), index_low, all_maps, name2)
 
 
 
