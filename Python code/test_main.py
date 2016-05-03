@@ -16,9 +16,60 @@ best_value = []
 # sum all total values
 sum_of_total_values = 0
 
+class Water(object):
+    """
+    A Water represents a location on a two dimensional field filled with water.
+    """
+
+    def __init__(self, x_min, y_min, pieces_of_water):
+        """
+        Initializes a position with coordinates of left down corner
+        """
+        self.x_min = x_min
+        self.y_min = y_min
+        self.pieces_of_water = pieces_of_water
+
+        self.surface_water = 0.2 * 160 * 150
+
+        water = []
+
+        # check if water is in bounds of map and ratio's are between 1 and 4, given the pieces of water
+        if pieces_of_water == 1:
+            self.height = 160
+            self.ratio = 8
+            while ((self.height + self.y_min > 150) or (self.ratio > 4 and self.ratio_inverted < 0.25) or (self.ratio < 1 and self.ratio_inverted > 4)):
+                self.width = random.randrange(0, 2 * (160 - x_min) * 0.5
+                self.height = self.surface_water / self.width
+                self.ratio = self.height / self.width
+                self.ratio_inverted = 1 / self.ratio
+            water.append(self.x_min, self.y_min, self.width, self.height)
+
+        if pieces_of_water == 2:
+            self.height = 160
+            while ((self.height + self.y_min > 150) or (self.ratio > 4 and self.ratio_inverted < 0.25) or (self.ratio < 1 and self.ratio_inverted > 4)):
+                self.width = random.randrange(0, 2 * (160 - x_min) * 0.5
+                self.height = random.randrange(0, 2 * (150 - y_min) * 0.5
+                self.ratio = self.height_1 / self.width
+                self.surface_taken = self.width * self.height
+            water.append(self.x_min, self.y_min, self.width, self.height)
+
+            while ((self.height + self.y_min > 150) or (self.ratio > 4 and self.ratio_inverted < 0.25) or (self.ratio < 1 and self.ratio_inverted > 4)):
+                self.width = random.randrange(0, 2 * (160 - x_min) * 0.5
+                self.height = (self.surface_water - self.surface_taken) / self.width
+                self.ratio = self.height_1 / self.width
+            water.append(self.x_min, self.y_min, self.width, self.height)
+
+
+        if pieces_of_water == 3:
+            for (i = 0; i < pieces_of_water - 1; i++)
+
+        if pieces_of_water == 4:
+
+
+
 class House(object):
     """
-    A House represents a location on a two-dimensional field.
+    A House represents a location on a two-dimensional field filled with a house.
     """
 
     def __init__(self, x_min, y_min, type_house):
@@ -45,6 +96,8 @@ class House(object):
             self.width = 8
             self.height = 8
             self.freespace = 2
+
+
 
         # x_max, y_max is the top right corner of a house
         self.x_max = x_min + self.width
