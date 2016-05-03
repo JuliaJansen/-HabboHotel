@@ -27,67 +27,85 @@ class Water(object):
         """
         self.x_min = x_min
         self.y_min = y_min
+        self.piece_of_water = piece_of_water
         self.pieces_of_water = pieces_of_water
 
-        self.surface_water = 0.2 * 160 * 150
-        surface_taken = 0
-
-        water = []
-
-        # check if water is in bounds of map and ratio's are between 1 and 4, given the pieces of water
-        self.width, self.height, x_max, y_max = placeWater(self.x_min, self.y_min, surface_taken, pieces_of_water, piece_of_water)
+        self.width, self.height, self.x_max, self.y_max, self.surface = self.placeWater(self.x_min, self.y_min, self.piece_of_water, self.pieces_of_water, surface_taken)
 
 
-        def getX_min(self):
-            return self.x_min
+    def getX_min(self):
+        return self.x_min
 
-        def getY_min(self):
-            return self.y_min
-  
-        def getWidth(self):
-            return self.width
+    def getY_min(self):
+        return self.y_min
 
-        def getHeight(self):
-            return self.height
+    def getX_max(self):
+        return self.x_max
 
+    def getY_max(self):
+        return self.y_max
 
-def placeWater(x_min, y_min, surface_taken, pieces_of_water, piece_of_water):
+    def getWidth(self):
+        return self.width
 
-    pieces_to_go = pieces_of_water - piece_of_water
+    def getHeight(self):
+        return self.height
 
-    # fictional values
-    height = 10000
+    def placeWater(self, x_min, y_min, piece_of_water, pieces_of_water, surface_taken):
 
-    while ((height + y_min > 150) or (ratio > 4 and ratio_inverted < 0.25) or (ratio < 1 and ratio_inverted > 4) or surface_taken >= surface_water + pieces_to_go * 4):    
-        width = random.randrange(0, 2 * (160 - x_min)) * 0.5
+        pieces_to_go = pieces_of_water - piece_of_water
 
-        if pieces_of_water != piece_of_water:
-            height = random.randrange(0, 2 * (150 - y_min)) * 0.5
-        else:
-            height = (surface_water - surface_taken) / width
+        # fictional value
+        height = 10000
 
-        ratio = height / width
-        ratio_inverted = 1 / ratio
-        surface_taken += width * height   
-        x_max = x_min + width
-        y_max = y_min + height 
-    
-    return (width, height, x_max, y_max, surface_taken)
+        while ((height + y_min > 150) or surface_taken > surface_total + pieces_to_go * 4):    
+          
+            print (height + y_min > 150)
+            print("surfave total: ", surface_total +pieces_to_go * 4)
 
-def distanceWater():
+            print("height + ymin:", height + y_min)
+            ratio = random.randrange(1, 4)
+
+            print("pieces_of_water:", pieces_of_water)
+            print("piece_of_water", piece_of_water)
+
+            if pieces_of_water != piece_of_water:
+                width = random.randrange(1, 2 * (160 - y_min)) * 0.5
+                height = width * ratio
+                print("eerste keer")
+            else:
+                width = ((surface_total - surface_taken) / (ratio))**0.5
+                height = width * ratio
+                print("tweede keer")
+
+            print("surface_total = ", surface_total)
+            print("surface taken = ", surface_taken)
+            print("width = ", width)
+
+            print("height: ", height)
+
+            print("ratio: ", ratio)
+
+            surface = width * height   
+            x_max = x_min + width
+            y_max = y_min + height 
+        
+        return (width, height, x_max, y_max, surface)
+
+def distanceWater(new_water, water):
 
     # loop over water already placed
     for w in range(len(water)):
 
         # check horizontal band
         # check if water is above or underneath new water
-        if water[w].y_max > y_min and water[w].y_min < y_max:
+        if water[w].y_max > new_water.y_min and water[w].y_min < new_water.y_max:
             
             # check of water is placed to the left or the right 
-            if water[w].x_min > x_min:
-                distance = water[w].x_min - x_min - width 
+            if water[w].x_min > new_water.x_min:
+                distance = water[w].x_min - new_water.x_min - new_water.width 
             else:
-                distance = x_min - water[w].x_min - water[w].width 
+                distance = new_water.x_min - water[w].x_min - water[w].width 
         else:
             distance = 1
         if distance < 0:
@@ -95,13 +113,13 @@ def distanceWater():
         
         # check vertical band  
         # check if water is place to the left or to the right of new water
-        if water[w].x_max > x_min and water[w].x_min < x_max:
+        if water[w].x_max > new_water.x_min and water[w].x_min < new_water.x_max:
         
             # check if water is above or underneath new water
-            if water[w].y_min > y_min:
-                distance = water[w].y_min - y_min - height  
+            if water[w].y_min > new_water.y_min:
+                distance = water[w].y_min - new_water.y_min - new_water.height  
             else:
-                distance = y_min - water[w].y_min - water[w].height  
+                distance = new_water.y_min - water[w].y_min - water[w].height  
         else:
             distance = 1
         if distance < 0:
@@ -390,24 +408,27 @@ for k in range(nr_tests):
     pieces_of_water = 2 ## hardcoded, test for 1, 2, 3 or 4 pieces of water
     piece_of_water = 1
     surface_taken = 0
+    surface_total = 0.2 * 160 * 150
     
     # initiate first piece of water
     x_min = random.randrange(0, 2 * (bound_x)) * 0.5
     y_min = random.randrange(0, 2 * (bound_y)) * 0.5
-    new_water = Water(x_min, y_min, piece_of_water, pieces_of_water, surface_taken)
+    new_water = Water(x_min, y_min, piece_of_water, pieces_of_water)
     water.append(new_water)
-    piece_of_water += 1
 
     while piece_of_water <= pieces_of_water:
         x_min = random.randrange(0, 2 * (bound_x)) * 0.5
         y_min = random.randrange(0, 2 * (bound_y)) * 0.5
 
-        if distanceWater == False
+        new_water = Water(x_min, y_min, piece_of_water, pieces_of_water)
 
+        #print("distanceWater = ", distanceWater)
 
-        new_water = Water(x_min, y_min, piece_of_water, pieces_of_water, surface_taken)
-        water.append(new_water)
-        piece_of_water += 1
+        if distanceWater(new_water, water) == True:
+            print("hoi")
+            surface_taken += new_water.surface
+            water.append(new_water)
+            piece_of_water += 1
 
 
 ############# transfer this to loop below ##########################################################################################################
