@@ -3,12 +3,12 @@
 # # # # # # # # # # # # # # # #
 
 import datetime
-import pylab
+#import pylab
 import random
 import math
-import matplotlib.pyplot as plt
-from matplotlib.path import Path
-import matplotlib.patches as patches
+#import matplotlib.pyplot as plt
+#from matplotlib.path import Path
+#import matplotlib.patches as patches
 
 the_best = []
 best_value = []
@@ -21,7 +21,7 @@ class Water(object):
     A Water represents a location on a two dimensional field filled with water.
     """
 
-    def __init__(self, x_min, y_min, pieces_of_water):
+    def __init__(self, x_min, y_min, pieces_of_water, piece_of_water):
         """
         Initializes a position with coordinates of left down corner
         """
@@ -30,41 +30,84 @@ class Water(object):
         self.pieces_of_water = pieces_of_water
 
         self.surface_water = 0.2 * 160 * 150
+        surface_taken = 0
 
         water = []
 
         # check if water is in bounds of map and ratio's are between 1 and 4, given the pieces of water
-        if pieces_of_water == 1:
-            self.height = 160
-            self.ratio = 8
-            while ((self.height + self.y_min > 150) or (self.ratio > 4 and self.ratio_inverted < 0.25) or (self.ratio < 1 and self.ratio_inverted > 4)):
-                self.width = random.randrange(0, 2 * (160 - x_min) * 0.5
-                self.height = self.surface_water / self.width
-                self.ratio = self.height / self.width
-                self.ratio_inverted = 1 / self.ratio
-            water.append(self.x_min, self.y_min, self.width, self.height)
-
-        if pieces_of_water == 2:
-            self.height = 160
-            while ((self.height + self.y_min > 150) or (self.ratio > 4 and self.ratio_inverted < 0.25) or (self.ratio < 1 and self.ratio_inverted > 4)):
-                self.width = random.randrange(0, 2 * (160 - x_min) * 0.5
-                self.height = random.randrange(0, 2 * (150 - y_min) * 0.5
-                self.ratio = self.height_1 / self.width
-                self.surface_taken = self.width * self.height
-            water.append(self.x_min, self.y_min, self.width, self.height)
-
-            while ((self.height + self.y_min > 150) or (self.ratio > 4 and self.ratio_inverted < 0.25) or (self.ratio < 1 and self.ratio_inverted > 4)):
-                self.width = random.randrange(0, 2 * (160 - x_min) * 0.5
-                self.height = (self.surface_water - self.surface_taken) / self.width
-                self.ratio = self.height_1 / self.width
-            water.append(self.x_min, self.y_min, self.width, self.height)
+        self.width, self.height, x_max, y_max = placeWater(self.x_min, self.y_min, surface_taken, pieces_of_water, piece_of_water)
 
 
-        if pieces_of_water == 3:
-            for (i = 0; i < pieces_of_water - 1; i++)
+        def getX_min(self):
+            return self.x_min
 
-        if pieces_of_water == 4:
+        def getY_min(self):
+            return self.y_min
+  
+        def getWidth(self):
+            return self.width
 
+        def getHeight(self):
+            return self.height
+
+
+def placeWater(x_min, y_min, surface_taken, pieces_of_water, piece_of_water):
+
+    pieces_to_go = pieces_of_water - piece_of_water
+
+    # fictional values
+    height = 10000
+
+    while ((height + y_min > 150) or (ratio > 4 and ratio_inverted < 0.25) or (ratio < 1 and ratio_inverted > 4) or surface_taken >= surface_water + pieces_to_go * 4):    
+        width = random.randrange(0, 2 * (160 - x_min)) * 0.5
+
+        if pieces_of_water != piece_of_water:
+            height = random.randrange(0, 2 * (150 - y_min)) * 0.5
+        else:
+            height = (surface_water - surface_taken) / width
+
+        ratio = height / width
+        ratio_inverted = 1 / ratio
+        surface_taken += width * height   
+        x_max = x_min + width
+        y_max = y_min + height 
+    
+    return (width, height, x_max, y_max, surface_taken)
+
+def distanceWater():
+
+    # loop over water already placed
+    for w in range(len(water)):
+
+        # check horizontal band
+        # check if water is above or underneath new water
+        if water[w].y_max > y_min and water[w].y_min < y_max:
+            
+            # check of water is placed to the left or the right 
+            if water[w].x_min > x_min:
+                distance = water[w].x_min - x_min - width 
+            else:
+                distance = x_min - water[w].x_min - water[w].width 
+        else:
+            distance = 1
+        if distance < 0:
+            return False
+        
+        # check vertical band  
+        # check if water is place to the left or to the right of new water
+        if water[w].x_max > x_min and water[w].x_min < x_max:
+        
+            # check if water is above or underneath new water
+            if water[w].y_min > y_min:
+                distance = water[w].y_min - y_min - height  
+            else:
+                distance = y_min - water[w].y_min - water[w].height  
+        else:
+            distance = 1
+        if distance < 0:
+            return False   
+
+    return True
 
 
 class House(object):
@@ -96,8 +139,6 @@ class House(object):
             self.width = 8
             self.height = 8
             self.freespace = 2
-
-
 
         # x_max, y_max is the top right corner of a house
         self.x_max = x_min + self.width
@@ -342,6 +383,34 @@ for k in range(nr_tests):
     bound_x = 160
     bound_y = 150
     
+    # list to contain all water
+    water = []
+
+    # place water in grid first
+    pieces_of_water = 2 ## hardcoded, test for 1, 2, 3 or 4 pieces of water
+    piece_of_water = 1
+    surface_taken = 0
+    
+    # initiate first piece of water
+    x_min = random.randrange(0, 2 * (bound_x)) * 0.5
+    y_min = random.randrange(0, 2 * (bound_y)) * 0.5
+    new_water = Water(x_min, y_min, piece_of_water, pieces_of_water, surface_taken)
+    water.append(new_water)
+    piece_of_water += 1
+
+    while piece_of_water <= pieces_of_water:
+        x_min = random.randrange(0, 2 * (bound_x)) * 0.5
+        y_min = random.randrange(0, 2 * (bound_y)) * 0.5
+
+        if distanceWater == False
+
+
+        new_water = Water(x_min, y_min, piece_of_water, pieces_of_water, surface_taken)
+        water.append(new_water)
+        piece_of_water += 1
+
+
+############# transfer this to loop below ##########################################################################################################
     # generate a random position of first house (type maison) (x_min en y_min is the left down corner)
     type_house = mais
     x_min = random.randrange(getFreespace(type_house), 2 * (bound_x - width_maison - 1)) * 0.5
@@ -440,8 +509,8 @@ name1 = time + str(houses_total) + "bestof" + str(nr_tests) + "_" + str(highest)
 name2 = time + str(houses_total) + "worstof" + str(nr_tests) + "_" + str(lowest)
 
 # plot best and worst map
-plotmap(len(houses), index_high, all_maps, name1)
-plotmap(len(houses), index_low, all_maps, name2)
+#plotmap(len(houses), index_high, all_maps, name1)
+#plotmap(len(houses), index_low, all_maps, name2)
 
 
 
