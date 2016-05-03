@@ -194,13 +194,13 @@ def distance(house, houses):
     # return distance to closest neighbour's wall of house
     return min_dist
 
-def plothisto(len_all_values, all_values, name, lowest, highest):
+def plothisto(all_values, name, lowest, highest, houses_total):
     """
     Plot histogram values maps
     """
 
     # size of plot
-    plt.figure(figsize=(12, 9)) 
+    fig = plt.figure(figsize=(12, 9)) 
 
     ax = plt.subplot(111)  
     ax.spines["top"].set_visible(False)  
@@ -211,11 +211,11 @@ def plothisto(len_all_values, all_values, name, lowest, highest):
     ax.get_yaxis().tick_left()  
 
     # size of ticks
-    plt.xticks(range(int(lowest - 1), int(highest + 1)), fontsize=14)  
-    plt.yticks(range(100, len_all_values, 1000), fontsize=14)  
+    plt.xticks(fontsize=14)  
+    plt.yticks(range(300, 50000, 300), fontsize=14)  
 
     # ax labels
-    plt.xlabel("Value Map", fontsize=16)  
+    plt.xlabel("Value Map, euro's", fontsize=16)  
     plt.ylabel("Count", fontsize=16)  
 
     # plot data from list
@@ -224,14 +224,14 @@ def plothisto(len_all_values, all_values, name, lowest, highest):
     # explanation under graph
     plt.text(1300, -5000, "Test results histogram", fontsize=10)
 
-    # save plot
-    # plt.savefig('../plots/' + name + '.png', bbox_inches="tight")
-
     # show plot
     plt.show()
 
+    # save plot
+    fig.savefig('../plots/' + str(houses_total) + '/' + name + '.png', pad_inches=0)
 
-def plotmap(len_houses, index, all_maps, name):
+
+def plotmap(len_houses, index, all_maps, name, houses_total):
     """
     Plot best map
     """
@@ -267,15 +267,15 @@ def plotmap(len_houses, index, all_maps, name):
 
         # add paths maison in blue
         if m < mais_total:
-            patch_list.append(patches.PathPatch(path[m], facecolor="#009999", lw=2))
+            patch_list.append(patches.PathPatch(path[m], facecolor="#e68a00", lw=2))
         
         # add paths bungalows in orange
         elif m < mais_total + bung_total:
-            patch_list.append(patches.PathPatch(path[m], facecolor="#cc6600", lw=2))
+            patch_list.append(patches.PathPatch(path[m], facecolor="#cc2900", lw=2))
         
         # add paths egws in green
         else:
-            patch_list.append(patches.PathPatch(path[m], facecolor="#88cc00", lw=2))
+            patch_list.append(patches.PathPatch(path[m], facecolor="#86b300", lw=2))
 
     # add pathches to the figure
     for p in patch_list:
@@ -288,7 +288,7 @@ def plotmap(len_houses, index, all_maps, name):
     # show plot
     plt.show()
 
-    fig.savefig('../plots/' + name + '.png', dpi=90, bbox_inches='tight')
+    fig.savefig('../plots/' + str(houses_total) + '/' + name + '.png', dpi=90, bbox_inches='tight')
 
 """
 MAIN: Place houses on field
@@ -302,7 +302,7 @@ bung = "bungalow"
 egw = "eengezinswoning"
 
 # change how you like: houses to place & amount of tests
-houses_total = 20
+houses_total = 60
 nr_tests = 10000
 
 # create a variable to hold number of houses of each type
@@ -420,15 +420,15 @@ print "mean = ", mean_value
 # save date/time to name plot
 time = datetime.datetime.now().strftime("%I%M_%B_%d_")
 
-# # names of figures:
-# # hourminute_month_day_amountofhouses_best/worst_nr.oftests_value.of.map
-# name1 = time + str(houses_total) + "bestof" + str(nr_tests) + "_" + str(highest)
-# name2 = time + str(houses_total) + "worstof" + str(nr_tests) + "_" + str(lowest)
+# names of figures:
+# hourminute_month_day_amountofhouses_best/worst_nr.oftests_value.of.map
+name1 = "bestof" + str(nr_tests) + "_" + time + "_" + str(highest)
+name2 = "worstof" + str(nr_tests) + "_" + time + "_" + str(lowest)
 
-# # plot best and worst map
-# plotmap(len(houses), index_high, all_maps, name1)
-# plotmap(len(houses), index_low, all_maps, name2)
+# plot best and worst map
+plotmap(len(houses), index_high, all_maps, name1, houses_total)
+plotmap(len(houses), index_low, all_maps, name2, houses_total)
 
 # make histogram, save and show plot
 name3 = time + "histo_" + str(nr_tests) + "tests"
-plothisto(len(all_values), all_values, name3, lowest, highest)
+plothisto(all_values, name3, lowest, highest, houses_total)
