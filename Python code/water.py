@@ -10,7 +10,7 @@ class Water(object):
     A Water represents a location on a two dimensional field filled with water.
     """
 
-    def __init__(self, x_min, y_min, pieces_of_water, piece_of_water):
+    def __init__(self, x_min, y_min, piece_of_water, pieces_of_water):
         """
         Initializes a position with coordinates of left down corner
         """
@@ -29,6 +29,12 @@ class Water(object):
 
     def getY_min(self):
         return self.y_min
+        
+    def getPiece_of_water(self):
+        return self.piece_of_water
+        
+    def getPieces_of_water(self):
+        return self.pieces_of_water
 
     def getX_max(self):
         return self.x_max
