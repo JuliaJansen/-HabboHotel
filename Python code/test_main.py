@@ -72,7 +72,7 @@ for k in range(nr_tests):
 	y_min = random.randrange(0, 2 * (bound_y)) * 0.5
 	new_water = Water(x_min, y_min, piece_of_water, pieces_of_water)
 	
-	# append eerste water
+	# append first water
 	water.append(new_water)
 
 	piece_of_water += 1
