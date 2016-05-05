@@ -31,9 +31,11 @@ mais = "maison"
 bung = "bungalow"
 egw = "eengezinswoning"
 
-# change how you like: houses to place & amount of tests
+# change how you like: houses to place, pieces of water
+# to place and amount of tests
 houses_total = 20
-nr_tests = 2
+pieces_of_water = 2
+nr_tests = 2 
 
 # create a variable to hold number of houses of each type
 mais_total = houses_total * 0.15
@@ -46,7 +48,7 @@ for k in range(nr_tests):
     # array of houses per test
     houses = []
 
-    # list to contain all water
+    # list to contain waters per test
     water = []
 
     # first house is a maison
@@ -62,32 +64,34 @@ for k in range(nr_tests):
     bound_y = 150
 
     # place water in grid first
-    pieces_of_water = 2 ## hardcoded, test for 1, 2, 3 or 4 pieces of water
-    piece_of_water = 1
+    piece_of_water = 0
     surface_taken = 0
     surface_total = 0.2 * 160 * 150
     
-    # initiate first piece of water
+    # initiate first piece of water with random left bottom corner
     x_min = random.randrange(0, 2 * (bound_x)) * 0.5
     y_min = random.randrange(0, 2 * (bound_y)) * 0.5
-    new_water = Water(x_min, y_min, piece_of_water, pieces_of_water)
+    new_water = Water(x_min, y_min, piece_of_water + 1, pieces_of_water, surface_taken)
     
-    # append eerste water
+    # append first water to list
     water.append(new_water)
-
+    surface_taken = new_water.surface
     piece_of_water += 1
-    while piece_of_water <= pieces_of_water:
+
+    while piece_of_water < pieces_of_water:
         x_min = random.randrange(0, 2 * (bound_x - 20)) * 0.5
         y_min = random.randrange(0, 2 * (bound_y - 20)) * 0.5
 
         # new piece of water
-        new_water = Water(x_min, y_min, piece_of_water, pieces_of_water)
+        new_water = Water(x_min, y_min, piece_of_water + 1, pieces_of_water, surface_taken)
 
         if distanceWater(new_water, water) == True:
             surface_taken += new_water.surface
             water.append(new_water)
             piece_of_water += 1
 
+    print "placed all waters"
+    print "surface taken should be 4800:", surface_taken
     # one house has been already made
     i = 0
 
@@ -111,14 +115,12 @@ for k in range(nr_tests):
 
             # if there are any houses to check against
             if len(houses) > 0:
-                print "voorbij check huis met water"
 
                 # if house didn't overlap in any case, add house to list
                 smallest_dist = distance(new, houses)
                 if smallest_dist > 0:
                     house = new.updateDistance(smallest_dist)
                     houses.append(new)
-                    print "house appended"
                     i += 1
 
                 # set type_total to number of next type of houses 
@@ -138,7 +140,6 @@ for k in range(nr_tests):
                         i = 0 
             else:
                 houses.append(new)
-                print "house appended"
                 i += 1
     
     # Calculate total value of Amstelhaege
