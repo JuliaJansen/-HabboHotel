@@ -22,7 +22,7 @@ def plotmap(len_fill, index, all_maps, name, houses_total):
 	bung_total = houses_total * 0.25
 	egw_total = houses_total * 0.60
 
-    # loop over array houses to draw paths
+	# loop over array houses to draw paths
 	for l in range(len_fill):
         
 		# prepare to plot best map
@@ -48,21 +48,21 @@ def plotmap(len_fill, index, all_maps, name, houses_total):
 	ax = fig.add_subplot(111, aspect='equal')
 
 	for m in range(len_fill):
-        # add paths maison in gold
-        if m < mais_total:
-            patch_list.append(patches.PathPatch(path[m], facecolor="#009999", lw=2))
+		# add paths maison in gold
+		if m < mais_total:
+			patch_list.append(patches.PathPatch(path[m], facecolor="#009999", lw=2))
 
-        # add paths bungalows in orange
-        elif m < mais_total + bung_total:
-            patch_list.append(patches.PathPatch(path[m], facecolor="#cc6600", lw=2))
-            
-        # add paths egws in green   
-        elif m < mais_total + bung_total + egw_total:
-            patch_list.append(patches.PathPatch(path[m], facecolor="#88cc00", lw=2))
+    # add paths bungalows in orange
+    elif m < mais_total + bung_total:
+        patch_list.append(patches.PathPatch(path[m], facecolor="#cc6600", lw=2))
+        
+    # add paths egws in green   
+    elif m < mais_total + bung_total + egw_total:
+        patch_list.append(patches.PathPatch(path[m], facecolor="#88cc00", lw=2))
 
-        # add paths water in blue
-        else:
-            patch_list.append(patches.PathPatch(path[m], facecolor="#00e6ac", lw=2))
+    # add paths water in blue
+    else:
+        patch_list.append(patches.PathPatch(path[m], facecolor="#00e6ac", lw=2))
 
     # add pathches to the figure
     for p in patch_list:
