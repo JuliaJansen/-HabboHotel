@@ -34,15 +34,15 @@ def plotmap(len_fill, index, all_maps, name, houses_total):
             (0., 0.), # ignored
             ]
 
-        codes = [
-            Path.MOVETO,
-            Path.LINETO, 
-            Path.LINETO,
-            Path.LINETO,
-            Path.CLOSEPOLY,
-            ]
+		codes = [
+			Path.MOVETO,
+			Path.LINETO, 
+			Path.LINETO,
+			Path.LINETO,
+			Path.CLOSEPOLY,
+			]
 
-        path.append(Path(verts, codes))
+		path.append(Path(verts, codes))
 
     fig = plt.figure()
     ax = fig.add_subplot(111, aspect='equal')
@@ -51,7 +51,6 @@ def plotmap(len_fill, index, all_maps, name, houses_total):
     # add paths maison in gold
         if m < mais_total:
             patch_list.append(patches.PathPatch(path[m], facecolor="#009999", lw=2))
-
         # add paths bungalows in orange
         elif m < mais_total + bung_total:
             patch_list.append(patches.PathPatch(path[m], facecolor="#cc6600", lw=2))
@@ -64,15 +63,16 @@ def plotmap(len_fill, index, all_maps, name, houses_total):
         else:
             patch_list.append(patches.PathPatch(path[m], facecolor="#00e6ac", lw=2))
 
-    # add pathches to the figure
-    for p in patch_list:
-        ax.add_patch(p)
+		# add pathches to the figure
+		for p in patch_list:
+			ax.add_patch(p)
 
-    # set x and y limit
-    ax.set_xlim(0,160)
-    ax.set_ylim(0,150)
+	# set x and y limit
+	ax.set_xlim(0,160)
+	ax.set_ylim(0,150)
 
-    # show plot
-    plt.show()
+	# show plot
+	plt.show()
 
-    # fig.savefig('../plots/' + name + '.png', dpi=90, bbox_inches='tight')
+    fig.savefig('../plots/' + name + '.png', dpi=90, bbox_inches='tight')
+

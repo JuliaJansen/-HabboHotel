@@ -92,6 +92,7 @@ for k in range(nr_tests):
 
     print "placed all waters"
     print "surface taken should be 4800:", surface_taken
+    
     # one house has been already made
     i = 0
 
