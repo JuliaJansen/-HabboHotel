@@ -103,10 +103,10 @@ for k in range(nr_tests):
 		y_min = random.randrange(getFreespace(type_house), 2 * \
 			(bound_y - height_maison - 1)) * 0.5
 			
-		# get specifics of house we check against 
+		# get specifics of house we check for 
 		new = House(x_min, y_min, type_house)
 
-		# if water doesn't overlap water
+		# if new doesn't overlap water
 		if distanceWater(new, water) == True:
 
 			# if there are any houses to check against
