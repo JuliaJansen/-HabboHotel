@@ -44,9 +44,10 @@ egw = "eengezinswoning"
 # new = House(x_min, y_min, type_house)
 # new_water = Water(x_min, y_min, piece_of_water, pieces_of_water)
 
-
+# some hardcoded lists for try outs
 houses = [House(30, 100, mais), House(50, 150, bung), House(80, 15, egw)]
 water = [Water(20, 90, 1, 2), Water(55, 99, 2, 2)]
+map_value = 9929938847
 
 houses_total = 3
 pieces_of_water = 2
@@ -74,6 +75,9 @@ for objects in fill[houses_total:]:
     PIECE = objects.getPiece_of_water()
     PIECES = objects.getPieces_of_water()
     MAIN.append([XXX, YYY, PIECE, PIECES])
+
+# append the value of this map to the end of the list
+MAIN.append([map_value])
 
 # write MAIN to csv file
 with open('output.csv', 'wb') as csvfile:
