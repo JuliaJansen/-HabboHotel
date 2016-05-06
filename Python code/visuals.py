@@ -48,7 +48,7 @@ def plothisto(len_all_values, all_values, name, lowest, highest):
     # save plot
     plt.savefig('../plots/' + name + '.png', bbox_inches="tight")
 
-def plotmap(len_fill, index, all_maps, name, houses_total):
+def plotmap(len_fill, a_map, name, houses_total):
     """
     Plot best map
     """
@@ -65,10 +65,10 @@ def plotmap(len_fill, index, all_maps, name, houses_total):
         
     # prepare to plot best map
         verts = [
-            (all_maps[index][l].x_min, all_maps[index][l].y_min), #left, bottom
-            (all_maps[index][l].x_min, all_maps[index][l].y_max), #left, top
-            (all_maps[index][l].x_max, all_maps[index][l].y_max), #right, top
-            (all_maps[index][l].x_max, all_maps[index][l].y_min), #right, bottom
+            (a_map[l].x_min, a_map[l].y_min), #left, bottom
+            (a_map[l].x_min, a_map[l].y_max), #left, top
+            (a_map[l].x_max, a_map[l].y_max), #right, top
+            (a_map[l].x_max, a_map[l].y_min), #right, bottom
             (0., 0.), # ignored
             ]
 

@@ -1,5 +1,8 @@
 ###################################
-## Hill Climber					 ##
+## Hill Climber				
+## Heuristieken
+## Amstelhaege
+## Julia, Maarten en Maarten
 ###################################
 
 import datetime
@@ -14,64 +17,117 @@ import matplotlib.patches as patches
 # import other files
 from water import * 
 from house import *
+from hillclimber_distance import *
 from visuals import *
 from csv_reader import *
 
-# read in the best list (from csv_reader.py and calculate its value?)
-the_best = fill
-best_value = map_value
+# different type of houses
+mais = "maison"
+bung = "bungalow"
+egw = "eengezinswoning"
 
-temporary_list = the_best
+# fill in as you like :)
+houses_total = 20
+pieces_of_water = 4
+
+# get best best from file
+beginmap, houses, water, start_value = csv_reader("output.csv", houses_total, pieces_of_water)
+
+print "value of first map", start_value
+
+first_map = beginmap
+best_houses = houses
+temporary_houses = best_houses
+temporary_map = beginmap
+best_value = start_value
 temporary_value = 0
 
-biggest_free_space = 6
-tracker = 0
+name1 = "before" + str(start_value)
+nr_of_tests = 1000
 
-# loop over each house, and move it once
-for some_house in the_best:
+for i in range(nr_of_tests):
 
-	# get specifics of that house
-	x_min = some_house.getX_min()
-	y_min = some_house.getY_min
-	type_house = some_house.get_type_house()
-	free_space = some_house.getFreeSpace(type_house)
-	smallest_distance = distance(some_house, the_best)
+	tracker = 0
 
-	# move position by random number (need to update these ranges, only lower limit rn)
-	x_new = random.randrange(0, 2 * (smallest_distance - biggest_free_space)) * 0.5
-	y_new = random.randrange(0, 2 * (smallest_distance - biggest_free_space)) * 0.5
+	if i % 100 == 0:
+		print "best value nu = ", best_value
+		print "temp value was =", temporary_value
 
-	# update temporary list with new house
-	some_house = House(x_new, y_new, type_house)
-	temporary_list[tracker] = some_house
+	# set temporary value to 0
+	temporary_value = 0
 
-	# check how much value this new position generates  
-	for k in range(len(houses)):
-		extraspace = math.floor(houses[k].getDistance() - houses[k].getFreespace())
+	# loop over each house, and move it once
+	for house in best_houses:
+
+		# get specifics of that house
+		x_min = house.x_min
+		y_min = house.y_min
+		type_house = house.type_house
+		freespace = house.freespace
+
+		# update x and y
+		x_new = house.x_min + random.randrange(-4, 4) * 0.5
+		y_new = house.y_min + random.randrange(-4, 4) * 0.5
+
+		# update temporary map with new house
+		temp_house = House(x_new, y_new, type_house)
+
+		# make sure houses don't move of the fiels
+		if temp_house.x_min < temp_house.freespace or temp_house.x_max > (160 - temp_house.freespace) or \
+			temp_house.y_min < 0 or temp_house.freespace > (150 - temp_house.freespace):
+			continue
+
+		# if house will be moved to water, continue to next house
+		if distanceWater(temp_house, water) == False:
+			continue
+
+		# make sure houses don't overlap
+		temp_distance = hill_distance(temp_house, best_houses, tracker)
+		if temp_distance > 0:
+			temporary_houses[tracker] = House(temp_house.x_min, temp_house.y_min, temp_house.type_house)
+			temporary_houses[tracker].updateDistance(temp_distance)
+
+		# update variable to track were in the map we are
+			tracker += 1
+
+	# check how much value this new map generates  
+	for k in range(len(temporary_houses)):
+		extraspace = math.floor(temporary_houses[k].distance - temporary_houses[k].freespace)
 		
 		# value of eengezinswoningen
-		if houses[k].type_house == egw:
+		if temporary_houses[k].type_house == egw:
 			value = 285000 * (1 + (0.03 * extraspace))
 
 		# value of bungalows
-		elif houses[k].type_house == bung:
+		elif temporary_houses[k].type_house == bung:
 			value = 399000 * (1 + (0.04 * extraspace))
 
 		# value of maisons
-		elif houses[k].type_house == mais:
+		elif temporary_houses[k].type_house == mais:
 			value = 610000 * (1 + (0.06 * extraspace))
 		
 		# total value is addition of values per loop
 		temporary_value += value
 
-	# update our list with the new house if total value of map is higher
-	if (temporary_value > best_value):
-		the_best = temporary_list
+	# update our map with the new house if total value of map is higher
+	if temporary_value > best_value:
+		best_houses = temporary_houses 
 		best_value = temporary_value
 
-	# update variable to track were in the list we are
-	tracker += 1
+	if i % 100 == 0:
+		mappp = best_houses + water
+		name = "tussenstop_" + str(i)
+		plotmap(len(first_map), mappp, name, houses_total)
 
+# FF CHECKEN
+print "best value = ", best_value
+
+name2 = "after" + str(best_value)
+
+temporary_map = best_houses + water
+
+plotmap(len(first_map), first_map, name1, houses_total)
+plotmap(len(first_map), temporary_map, name2, houses_total)
 
 
 

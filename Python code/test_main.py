@@ -14,8 +14,7 @@ import matplotlib.patches as patches
 from water import * 
 from house import *
 from visuals import *
-# from csv_writer import *
-# from csv_reader import *
+from csv_writer import *
 
 the_best = []
 all_values = []
@@ -73,8 +72,8 @@ for k in range(nr_tests):
     # initiate first piece of water with random left bottom corner
     x_min = random.randrange(0, 2 * (0.8 * bound_x)) * 0.5
     y_min = random.randrange(0, 2 * (0.8 * bound_y)) * 0.5
-    new_water = Water(x_min, y_min, piece_of_water + 1, surface_taken)
-    placeWater(new_water, new_water.x_min, new_water.y_min, new_water.piece_of_water, pieces_of_water, surface_taken)
+    new_water = Water(x_min, y_min, 0, 0)
+    placeWater(new_water, new_water.x_min, new_water.y_min, piece_of_water + 1, pieces_of_water, surface_taken)
 
     # append first water to list
     water.append(new_water)
@@ -88,8 +87,8 @@ for k in range(nr_tests):
         # new piece of water
         print "surface taken = ", surface_taken
         print "piece = ", piece_of_water
-        new_water = Water(x_min, y_min, piece_of_water + 1, surface_taken)
-        placeWater(new_water, new_water.x_min, new_water.y_min, new_water.piece_of_water, pieces_of_water, surface_taken)
+        new_water = Water(x_min, y_min, 0, 0)
+        placeWater(new_water, new_water.x_min, new_water.y_min, piece_of_water + 1, pieces_of_water, surface_taken)
 
         if distanceWater(new_water, water) == True:
             water.append(new_water)
@@ -200,7 +199,7 @@ mean_value = sum(all_values) / len(all_values)
 time = datetime.datetime.now().strftime("%I%M_%B_%d_")
 
 # write best map to csv file
-# csv_writer(all_maps[index_high], len(water), len(houses), highest)
+csv_writer(all_maps[index_high], len(water), len(houses), highest)
 
 # names of figures:
 # hourminute_month_day_amountofhouses_best/worst_nr.oftests_value.of.map
@@ -209,8 +208,8 @@ name2 = time + str(houses_total) + "worstof" + str(nr_tests) + "_" + str(lowest)
 name3 = time + "histo_" + str(nr_tests) + "tests"
 
 # plot best and worst map
-plotmap(len(fill), index_high, all_maps, name1, houses_total)
-plotmap(len(fill), index_low, all_maps, name2, houses_total)
+plotmap(len(fill), all_maps[index_high], name1, houses_total)
+plotmap(len(fill), all_maps[index_low], name2, houses_total)
 
 # make histogram, save and show plot
 # plothisto(len(all_values), all_values, name3, lowest, highest)

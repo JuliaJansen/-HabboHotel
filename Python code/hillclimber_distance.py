@@ -1,85 +1,7 @@
-# Class House
-# getFreespace()
-# distance()
+# Hillclimber distance functie
 # Heuristieken
-# Julia, Maarten en Maarten
 
-import random
-import math
-
-# different type of houses
-mais = "maison"
-bung = "bungalow"
-egw = "eengezinswoning"
-
-class House(object):
-    """
-    A House represents a location on a two-dimensional field filled with a house.
-    """
-
-    def __init__(self, x_min, y_min, type_house):
-        """
-        Initializes a position with coordinates of left down corner 
-        (x_min, y_min).
-        """
-        self.x_min = x_min
-        self.y_min = y_min
-        self.type_house = type_house
-        self.distance = 160
-
-        if self.type_house == mais:
-            self.width = 11
-            self.height = 10.5
-            self.freespace = 6
-
-        if self.type_house == bung:
-            self.width = 10
-            self.height = 7.5
-            self.freespace = 3
-
-        if self.type_house == egw:
-            self.width = 8
-            self.height = 8
-            self.freespace = 2
-
-        # x_max, y_max is the top right corner of a house
-        self.x_max = x_min + self.width
-        self.y_max = y_min + self.height
-       
-    def updateX_min(self, x_min):
-        self.x_min = x_min
-
-    def updateY_min(self, y_min):
-        self.y_min = y_min
-
-    def updateDistance(self, distance):
-        self.distance = distance
-
-    def getDistance(self):
-        return self.distance
-
-    def getFreespace(self):
-        return self.freespace
-
-    def get_type_house(self):
-        return self.type_house
-
-def getFreespace(type_house):
-    """
-    Define freespace based on type house
-    """
-
-    if type_house == mais:
-        return 6
-
-    if type_house == bung:
-        return 3
-
-    if type_house == egw:
-        return 2
-
-
-def distance(house, houses): 
+def hill_distance(house, houses, index): 
     """
     Returns distance to closest house.
     Distance is negative if closest house overlaps with house
@@ -90,6 +12,9 @@ def distance(house, houses):
     space_y = []
 
     for j in range(len(houses)):
+
+        if j == index:
+            continue
         
         # check if house is above or underneath house
         if houses[j].y_max > house.y_min and houses[j].y_min < house.y_max:
