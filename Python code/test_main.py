@@ -69,8 +69,8 @@ for k in range(nr_tests):
     surface_total = 0.2 * 160 * 150
     
     # initiate first piece of water with random left bottom corner
-    x_min = random.randrange(0, 2 * (bound_x)) * 0.5
-    y_min = random.randrange(0, 2 * (bound_y)) * 0.5
+    x_min = random.randrange(0, 2 * (0.8 * bound_x)) * 0.5
+    y_min = random.randrange(0, 2 * (0.8 * bound_y)) * 0.5
     new_water = Water(x_min, y_min, piece_of_water + 1, pieces_of_water, surface_taken)
     
     # append first water to list
@@ -79,20 +79,21 @@ for k in range(nr_tests):
     piece_of_water += 1
 
     while piece_of_water < pieces_of_water:
-        x_min = random.randrange(0, 2 * (bound_x - 20)) * 0.5
-        y_min = random.randrange(0, 2 * (bound_y - 20)) * 0.5
+        x_min = random.randrange(0, 2 * (0.8 * bound_x - 20)) * 0.5
+        y_min = random.randrange(0, 2 * (0.8 * bound_y - 20)) * 0.5
 
         # new piece of water
         new_water = Water(x_min, y_min, piece_of_water + 1, pieces_of_water, surface_taken)
 
         if distanceWater(new_water, water) == True:
-            surface_taken += new_water.surface
             water.append(new_water)
+            surface_taken += new_water.surface
             piece_of_water += 1
 
     print "placed all waters"
-    print "surface taken should be 4800:", surface_taken
-    
+    for w in water:
+        print "element water", water
+
     # one house has been already made
     i = 0
 
@@ -143,6 +144,11 @@ for k in range(nr_tests):
                 houses.append(new)
                 i += 1
     
+    print "all houses"
+
+    for h in houses:
+        print "house x = ", h.x_min
+
     # Calculate total value of Amstelhaege
     for k in range(len(houses)):
         extraspace = math.floor(houses[k].getDistance() - houses[k].getFreespace())
@@ -189,6 +195,7 @@ name1 = time + str(houses_total) + "bestof" + str(nr_tests) + "_" + str(highest)
 name2 = time + str(houses_total) + "worstof" + str(nr_tests) + "_" + str(lowest)
 
 # plot best and worst map
+print "len fill = ", len(fill)
 plotmap(len(fill), index_high, all_maps, name1, houses_total)
 plotmap(len(fill), index_low, all_maps, name2, houses_total)
 

@@ -57,20 +57,28 @@ class Water(object):
 
         # fictional value
         height = 10000
-        ratio = random.randrange(1, 4)
 
         # find right proportions
         while (height + y_min > 150) or surface_taken > surface_total + pieces_to_go * 4:    
+
+            # give ratio
+            ratio = random.randrange(1, 40) * 0.1
 
             if pieces_of_water != piece_of_water:
                 surface = random.randrange(400, 4400)
                 width = (surface / ratio) ** 0.5
                 height = width * ratio 
+                # print "x_min eerste water = ", x_min 
+                # print "y min eerste water = ", y_min  
+                # print "width eerste water = ", width
+                # print "height eerste water = ", height 
             else:
                 width = ((surface_total - surface_taken) / ratio)**0.5
                 height = width * ratio
-                surface = width * height   
-            print "surface = ", surface            
+                surface = width * height  
+                # print "laatste water x, y, width, heigth: ", x_min, y_min, width, height
+                # print "piece_of_water = ", piece_of_water 
+                # print "surface = ", surface            
         
         self.x_max = x_min + width
         self.y_max = y_min + height 
