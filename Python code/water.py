@@ -126,8 +126,8 @@ def distanceWater(obj, water):
 
         # if object is in both horizontal and vertical band of water object
         # they overlap... so return False
-        if distance_y == 1 and distance_x == 1:
+        #if distance_y == 1 and distance_x == 1:
             # print "overlap"
-            return False
+        #    return False
 
     return True

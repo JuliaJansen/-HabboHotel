@@ -35,7 +35,7 @@ egw = "eengezinswoning"
 # to place and amount of tests
 houses_total = 20
 pieces_of_water = 4
-nr_tests = 2
+nr_tests = 10
 
 # create a variable to hold number of houses of each type
 mais_total = houses_total * 0.15
@@ -93,8 +93,7 @@ for k in range(nr_tests):
             piece_of_water += 1
 
     print "placed all waters"
-    for w in water:
-        print "element water", w.x_min, w.y_min
+    
 
     # one house has been already made
     i = 0
@@ -116,7 +115,10 @@ for k in range(nr_tests):
         new = House(x_min, y_min, type_house)
 
         # if water doesn't overlap water
+        print "new coordinates are ", new.x_min, new.y_min
         print "true or not? ", distanceWater(new, water) == True
+        for w in range(len(water)):
+            print "watercoordinates", water[w].x_min,  water[w].y_min, water[w].x_max, water[w].y_max
         if distanceWater(new, water) == True:
 
             # if there are any houses to check against
