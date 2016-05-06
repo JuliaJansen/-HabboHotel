@@ -1,62 +1,11 @@
-###########################################
-# writes the list of houses and water to  #
-# a csv file named output.csv, with every #
-# object seperated by row				  #
-###########################################
+#
+#
+#
 
-import csv
-
-############################################################################################################
-##### delete all below later, just for checking my code as the test_main.py doesnt work atm... :/ ##########
-
-class House(object): 
-    def __init__(self, x_min, y_min, type_house):
-        self.x_min = x_min
-        self.y_min = y_min
-        self.type_house = type_house
-    def getX_min(self):
-        return self.x_min
-    def getY_min(self):
-        return self.y_min
-    def get_type_house(self):
-        return self.type_house
-   
-class Water(object):
-    def __init__(self, x_min, y_min, piece_of_water, pieces_of_water):
-        self.x_min = x_min
-        self.y_min = y_min
-        self.piece_of_water = piece_of_water
-        self.pieces_of_water = pieces_of_water    
-    def getX_min(self):
-        return self.x_min
-    def getY_min(self):
-        return self.y_min
-    def getPiece_of_water(self):
-        return self.piece_of_water
-    def getPieces_of_water(self):
-        return self.pieces_of_water
-
-# different type of houses
-mais = "maison"
-bung = "bungalow"
-egw = "eengezinswoning"
-
-# new = House(x_min, y_min, type_house)
-# new_water = Water(x_min, y_min, piece_of_water, pieces_of_water)
-
-# some hardcoded lists for try outs
-houses = [House(30, 100, mais), House(50, 150, bung), House(80, 15, egw)]
-water = [Water(20, 90, 1, 2), Water(55, 99, 2, 2)]
-map_value = 9929938847
-
-houses_total = 3
-pieces_of_water = 2
-
-fill = houses + water
-
-########################################### delete until here ##############################################
-############################################################################################################
-
+def csv_writer(map, nr_water, nr_houses):
+    """
+    Writes the values of a map to csv file named datetime_output.csv
+    """
 # main nested list 
 MAIN = []
 

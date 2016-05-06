@@ -14,9 +14,11 @@ import matplotlib.patches as patches
 from water import * 
 from house import *
 from visuals import *
+# from csv_writer import *
+# from csv_reader import *
 
 the_best = []
-best_value = []
+all_values = []
 
 # sum all total values
 sum_of_total_values = 0
@@ -35,7 +37,7 @@ egw = "eengezinswoning"
 # to place and amount of tests
 houses_total = 20
 pieces_of_water = 4
-nr_tests = 10
+nr_tests = 2
 
 # create a variable to hold number of houses of each type
 mais_total = houses_total * 0.15
@@ -71,8 +73,9 @@ for k in range(nr_tests):
     # initiate first piece of water with random left bottom corner
     x_min = random.randrange(0, 2 * (0.8 * bound_x)) * 0.5
     y_min = random.randrange(0, 2 * (0.8 * bound_y)) * 0.5
-    new_water = Water(x_min, y_min, piece_of_water + 1, pieces_of_water, surface_taken)
-    
+    new_water = Water(x_min, y_min, piece_of_water + 1, surface_taken)
+    placeWater(new_water, new_water.x_min, new_water.y_min, new_water.piece_of_water, pieces_of_water, surface_taken)
+
     # append first water to list
     water.append(new_water)
     surface_taken = new_water.surface
@@ -85,7 +88,8 @@ for k in range(nr_tests):
         # new piece of water
         print "surface taken = ", surface_taken
         print "piece = ", piece_of_water
-        new_water = Water(x_min, y_min, piece_of_water + 1, pieces_of_water, surface_taken)
+        new_water = Water(x_min, y_min, piece_of_water + 1, surface_taken)
+        placeWater(new_water, new_water.x_min, new_water.y_min, new_water.piece_of_water, pieces_of_water, surface_taken)
 
         if distanceWater(new_water, water) == True:
             water.append(new_water)
@@ -175,35 +179,43 @@ for k in range(nr_tests):
         total_value += value
         
     # initiate the best list and update in later sessions
-    best_value.append(total_value)
+    all_values.append(total_value)
 
     #save houses-array in list 
     fill = houses + water
     all_maps.append(fill)
 
 # find map with highest value from tests
-highest = max(best_value)
-index_high = best_value.index(highest)
+highest = max(all_values)
+index_high = all_values.index(highest)
 
 # find map with lowest value from tests
-lowest = min(best_value)
-index_low = best_value.index(lowest)
+lowest = min(all_values)
+index_low = all_values.index(lowest)
 
 # calculate mean map value of tests
-mean_value = sum(best_value) / len(best_value)
+mean_value = sum(all_values) / len(all_values)
 
 # save date/time to name plot
 time = datetime.datetime.now().strftime("%I%M_%B_%d_")
+
+# write best map to csv file
+# csv_writer(all_maps[index_high], len(water), len(houses), highest)
 
 # names of figures:
 # hourminute_month_day_amountofhouses_best/worst_nr.oftests_value.of.map
 name1 = time + str(houses_total) + "bestof" + str(nr_tests) + "_" + str(highest)
 name2 = time + str(houses_total) + "worstof" + str(nr_tests) + "_" + str(lowest)
+name3 = time + "histo_" + str(nr_tests) + "tests"
 
 # plot best and worst map
-print "len fill = ", len(fill)
 plotmap(len(fill), index_high, all_maps, name1, houses_total)
 plotmap(len(fill), index_low, all_maps, name2, houses_total)
+
+# make histogram, save and show plot
+# plothisto(len(all_values), all_values, name3, lowest, highest)
+
+
 
 
 

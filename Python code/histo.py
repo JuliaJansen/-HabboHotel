@@ -7,8 +7,6 @@ from matplotlib.path import Path
 from numpy.random import normal
 import matplotlib.patches as patches
 
-
-
 def plothisto(len_all_values, all_values, name, lowest, highest):
     """
     Plot histogram values maps
@@ -40,14 +38,12 @@ def plothisto(len_all_values, all_values, name, lowest, highest):
     plt.text(1300, -5000, "Test results histogram", fontsize=10)
 
     # save plot
-    # plt.savefig('../plots/' + name + '.png', bbox_inches="tight")
+    plt.savefig('../plots/' + name + '.png', bbox_inches="tight")
 
     # show plot
     plt.show()
 
 
 
-# make histogram, save and show plot
-name3 = time + "histo_" + str(nr_tests) + "tests"
-plothisto(len(all_values), all_values, name3, lowest, highest)
-Status API Training Shop Blog About
+
+
