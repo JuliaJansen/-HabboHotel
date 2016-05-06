@@ -42,6 +42,7 @@ def plotmap(len_fill, index, all_maps, name, houses_total):
             Path.CLOSEPOLY,
             ]
 
+        print "path appended"
         path.append(Path(verts, codes))
 
     fig = plt.figure()
@@ -71,8 +72,8 @@ def plotmap(len_fill, index, all_maps, name, houses_total):
         ax.set_xlim(0,160)
         ax.set_ylim(0,150)
 
-        # show plot
-        plt.show()
+    # show plot
+    plt.show()
 
     fig.savefig('../plots/' + name + '.png', dpi=90, bbox_inches='tight')
 

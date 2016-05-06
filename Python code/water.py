@@ -49,7 +49,7 @@ class Water(object):
         return self.height
 
     def updateXmax(self, xmax):
-        return
+        return self.x_max
 
     def placeWater(self, x_min, y_min, piece_of_water, pieces_of_water, surface_taken):
 
@@ -62,23 +62,18 @@ class Water(object):
         while (height + y_min > 150) or surface_taken > surface_total + pieces_to_go * 4:    
 
             # give ratio
-            ratio = random.randrange(1, 40) * 0.1
+            ratio = random.randrange(10, 40) * 0.1
+            print "ratio =", ratio
 
             if pieces_of_water != piece_of_water:
-                surface = random.randrange(400, 4400)
+                surface = random.randrange(400, 4400) / (pieces_of_water - piece_of_water)
                 width = (surface / ratio) ** 0.5
                 height = width * ratio 
-                # print "x_min eerste water = ", x_min 
-                # print "y min eerste water = ", y_min  
-                # print "width eerste water = ", width
-                # print "height eerste water = ", height 
             else:
+                print "surface taken, total = ", surface_taken, surface_total
                 width = ((surface_total - surface_taken) / ratio)**0.5
                 height = width * ratio
-                surface = width * height  
-                # print "laatste water x, y, width, heigth: ", x_min, y_min, width, height
-                # print "piece_of_water = ", piece_of_water 
-                # print "surface = ", surface            
+                surface = width * height       
         
         self.x_max = x_min + width
         self.y_max = y_min + height 
@@ -108,6 +103,7 @@ def distanceWater(obj, water):
             distance_x = 1
 
         if distance_x < 0:
+            print "in horizontal band"
             return False
         
         # check vertical band  
@@ -123,11 +119,13 @@ def distanceWater(obj, water):
             distance_y = 1
 
         if distance_y < 0:
+            print "in vert band"
             return False   
 
         # if object is in both horizontal and vertical band of water object
         # they overlap... so return False
         if distance_y == 1 and distance_x == 1:
+            print "overlap"
             return False
 
     return True
