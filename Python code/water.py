@@ -59,7 +59,7 @@ class Water(object):
         height = 10000
 
         # find right proportions
-        while (height + y_min > 150) or surface_taken > surface_total + pieces_to_go * 4:    
+        while (height + y_min > 150) or new_surface_taken > surface_total + pieces_to_go * 4:    
 
             # give ratio
             ratio = random.randrange(10, 40) * 0.1
@@ -69,11 +69,13 @@ class Water(object):
                 surface = random.randrange(400, 4400) / (pieces_of_water - piece_of_water)
                 width = (surface / ratio) ** 0.5
                 height = width * ratio 
+                new_surface_taken = surface_taken + surface
             else:
                 print "surface taken, total = ", surface_taken, surface_total
                 width = ((surface_total - surface_taken) / ratio)**0.5
                 height = width * ratio
-                surface = width * height       
+                surface = width * height  
+                new_surface_taken = surface_taken + surface     
         
         self.x_max = x_min + width
         self.y_max = y_min + height 
@@ -103,7 +105,7 @@ def distanceWater(obj, water):
             distance_x = 1
 
         if distance_x < 0:
-            print "in horizontal band"
+            # print "in horizontal band"
             return False
         
         # check vertical band  
@@ -119,13 +121,13 @@ def distanceWater(obj, water):
             distance_y = 1
 
         if distance_y < 0:
-            print "in vert band"
+            # print "in vert band"
             return False   
 
         # if object is in both horizontal and vertical band of water object
         # they overlap... so return False
         if distance_y == 1 and distance_x == 1:
-            print "overlap"
+            # print "overlap"
             return False
 
     return True
