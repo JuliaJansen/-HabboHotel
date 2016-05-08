@@ -6,6 +6,9 @@ import datetime
 import pylab
 import random
 import math
+import time
+
+
 import matplotlib.pyplot as plt
 from matplotlib.path import Path
 import matplotlib.patches as patches
@@ -14,10 +17,9 @@ import matplotlib.patches as patches
 from water import * 
 from house import *
 from visuals import *
-from csv_writer import *
-
+start_time = time.time()
 the_best = []
-all_values = []
+best_value = []
 
 # sum all total values
 sum_of_total_values = 0
@@ -35,8 +37,8 @@ egw = "eengezinswoning"
 # change how you like: houses to place, pieces of water
 # to place and amount of tests
 houses_total = 20
-pieces_of_water = 4
-nr_tests = 2
+pieces_of_water = 1
+nr_tests = 100000
 
 # create a variable to hold number of houses of each type
 mais_total = houses_total * 0.15
@@ -45,6 +47,8 @@ egw_total = houses_total * 0.60
 
 # loop x times for testing
 for k in range(nr_tests):
+    if k % 100 == 0:
+        print k
     
     # array of houses per test
     houses = []
@@ -70,32 +74,38 @@ for k in range(nr_tests):
     surface_total = 0.2 * 160 * 150
     
     # initiate first piece of water with random left bottom corner
-    x_min = random.randrange(0, 2 * (0.8 * bound_x)) * 0.5
-    y_min = random.randrange(0, 2 * (0.8 * bound_y)) * 0.5
-    new_water = Water(x_min, y_min, 0, 0)
-    placeWater(new_water, new_water.x_min, new_water.y_min, piece_of_water + 1, pieces_of_water, surface_taken)
-
+    if pieces_of_water == 1:
+        # if whole water surface goes in one piece, make sure to place it somehwere in the left bottom corner
+        x_min = random.randrange(0, 2 * (bound_x-100)) * 0.5
+        y_min = random.randrange(0, 2 * (bound_y-100)) * 0.5 
+    else:
+        x_min = random.randrange(60, 2 * (0.8 * bound_x - 20)) * 0.5
+        y_min = random.randrange(60, 2 * (0.8 * bound_y - 20)) * 0.5
+    new_water = Water(x_min, y_min, piece_of_water + 1, pieces_of_water, surface_taken, water)
+    
     # append first water to list
     water.append(new_water)
     surface_taken = new_water.surface
     piece_of_water += 1
 
     while piece_of_water < pieces_of_water:
-        x_min = random.randrange(0, 2 * (0.8 * bound_x - 20)) * 0.5
-        y_min = random.randrange(0, 2 * (0.8 * bound_y - 20)) * 0.5
+        if piece_of_water + 1 == pieces_of_water:
+            x_min = random.randrange(0, 2 * (bound_x-100)) * 0.5
+            y_min = random.randrange(0, 2 * (bound_y-100)) * 0.5 
+        else:
+            x_min = random.randrange(30, 2 * (0.8 * bound_x - 20)) * 0.5
 
         # new piece of water
-        print "surface taken = ", surface_taken
-        print "piece = ", piece_of_water
-        new_water = Water(x_min, y_min, 0, 0)
-        placeWater(new_water, new_water.x_min, new_water.y_min, piece_of_water + 1, pieces_of_water, surface_taken)
+        #print "surface taken = ", surface_taken
+        #print "piece = ", piece_of_water
+        new_water = Water(x_min, y_min, piece_of_water + 1, pieces_of_water, surface_taken, water)
 
         if distanceWater(new_water, water) == True:
             water.append(new_water)
             surface_taken += new_water.surface
             piece_of_water += 1
 
-    print "placed all waters"
+    #print "placed all waters"
     
 
     # one house has been already made
@@ -118,10 +128,10 @@ for k in range(nr_tests):
         new = House(x_min, y_min, type_house)
 
         # if water doesn't overlap water
-        print "new coordinates are ", new.x_min, new.y_min
-        print "true or not? ", distanceWater(new, water) == True
-        for w in range(len(water)):
-            print "watercoordinates", water[w].x_min,  water[w].y_min, water[w].x_max, water[w].y_max
+        #print "new coordinates are ", new.x_min, new.y_min
+        #print "true or not? ", distanceWater(new, water) == True
+        #for w in range(len(water)):
+        #    print "watercoordinates", water[w].x_min,  water[w].y_min, water[w].x_max, water[w].y_max
         if distanceWater(new, water) == True:
 
             # if there are any houses to check against
@@ -153,10 +163,10 @@ for k in range(nr_tests):
                 houses.append(new)
                 i += 1
     
-    print "all houses"
+    #print "all houses"
 
-    for h in houses:
-        print "house x = ", h.x_min
+    #for h in houses:
+    #    print "house x = ", h.x_min
 
     # Calculate total value of Amstelhaege
     for k in range(len(houses)):
@@ -178,43 +188,36 @@ for k in range(nr_tests):
         total_value += value
         
     # initiate the best list and update in later sessions
-    all_values.append(total_value)
+    best_value.append(total_value)
 
     #save houses-array in list 
     fill = houses + water
     all_maps.append(fill)
 
 # find map with highest value from tests
-highest = max(all_values)
-index_high = all_values.index(highest)
+highest = max(best_value)
+index_high = best_value.index(highest)
 
 # find map with lowest value from tests
-lowest = min(all_values)
-index_low = all_values.index(lowest)
+lowest = min(best_value)
+index_low = best_value.index(lowest)
 
 # calculate mean map value of tests
-mean_value = sum(all_values) / len(all_values)
+mean_value = sum(best_value) / len(best_value)
 
 # save date/time to name plot
 time = datetime.datetime.now().strftime("%I%M_%B_%d_")
-
-# write best map to csv file
-csv_writer(all_maps[index_high], len(water), len(houses), highest)
 
 # names of figures:
 # hourminute_month_day_amountofhouses_best/worst_nr.oftests_value.of.map
 name1 = time + str(houses_total) + "bestof" + str(nr_tests) + "_" + str(highest)
 name2 = time + str(houses_total) + "worstof" + str(nr_tests) + "_" + str(lowest)
-name3 = time + "histo_" + str(nr_tests) + "tests"
 
 # plot best and worst map
-plotmap(len(fill), all_maps[index_high], name1, houses_total)
-plotmap(len(fill), all_maps[index_low], name2, houses_total)
-
-# make histogram, save and show plot
-# plothisto(len(all_values), all_values, name3, lowest, highest)
-
-
+#print "len fill = ", len(fill)
+#plotmap(len(fill), index_high, all_maps, name1, houses_total)
+#plotmap(len(fill), index_low, all_maps, name2, houses_total)
+print("--- %s seconds ---" % (time.time() - start_time))
 
 
 
