@@ -32,13 +32,16 @@ egw = "eengezinswoning"
 houses_total = 20
 pieces_of_water = 4
 
+# initialize value variable
+total_value = 0
+
 # get best best from file
 plannedmap, houses, water, start_value = csv_reader("planned_map.csv", houses_total, pieces_of_water)
 
 # calculate min distances
-for house, i in houses:
-	house.updateDistance(distance_exclusive(house, houses, i))
-	print "closest house = ", house.distance
+for i in range(len(houses)):
+	houses[i].updateDistance(distance_exclusive(houses[i], houses, i))
+	print "closest house = ", houses[i].distance
 
 # calculate map value
 for k in range(len(houses)):

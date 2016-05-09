@@ -81,7 +81,8 @@ for k in range(nr_tests):
     else:
         x_min = random.randrange(60, 2 * (0.8 * bound_x - 20)) * 0.5
         y_min = random.randrange(60, 2 * (0.8 * bound_y - 20)) * 0.5
-    new_water = Water(x_min, y_min, piece_of_water + 1, pieces_of_water, surface_taken, water)
+    new_water = Water(x_min, y_min, 0, 0)
+    placeWater(new_water, new_water.x_min, new_water.y_min, piece_of_water + 1, pieces_of_water, surface_taken)
     
     # append first water to list
     water.append(new_water)
@@ -96,17 +97,13 @@ for k in range(nr_tests):
             x_min = random.randrange(30, 2 * (0.8 * bound_x - 20)) * 0.5
 
         # new piece of water
-        #print "surface taken = ", surface_taken
-        #print "piece = ", piece_of_water
-        new_water = Water(x_min, y_min, piece_of_water + 1, pieces_of_water, surface_taken, water)
-
+        new_water = Water(x_min, y_min, 0, 0)
+        placeWater(new_water, new_water.x_min, new_water.y_min, piece_of_water + 1, pieces_of_water, surface_taken)
+    
         if distanceWater(new_water, water) == True:
             water.append(new_water)
             surface_taken += new_water.surface
             piece_of_water += 1
-
-    #print "placed all waters"
-    
 
     # one house has been already made
     i = 0
@@ -128,10 +125,6 @@ for k in range(nr_tests):
         new = House(x_min, y_min, type_house)
 
         # if water doesn't overlap water
-        #print "new coordinates are ", new.x_min, new.y_min
-        #print "true or not? ", distanceWater(new, water) == True
-        #for w in range(len(water)):
-        #    print "watercoordinates", water[w].x_min,  water[w].y_min, water[w].x_max, water[w].y_max
         if distanceWater(new, water) == True:
 
             # if there are any houses to check against
@@ -162,11 +155,6 @@ for k in range(nr_tests):
             else:
                 houses.append(new)
                 i += 1
-    
-    #print "all houses"
-
-    #for h in houses:
-    #    print "house x = ", h.x_min
 
     # Calculate total value of Amstelhaege
     for k in range(len(houses)):

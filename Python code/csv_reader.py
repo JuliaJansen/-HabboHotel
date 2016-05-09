@@ -20,6 +20,7 @@ def csv_reader(filename, houses_total, pieces_of_water):
     # lists to contain houses and water
     houses = []
     water = []
+    map_value = 0
 
     total_items = houses_total + pieces_of_water 
 
