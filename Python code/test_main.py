@@ -206,12 +206,12 @@ index_low = best_value.index(lowest)
 mean_value = sum(best_value) / len(best_value)
 
 # save date/time to name plot
-time = datetime.datetime.now().strftime("%I%M_%B_%d_")
+stime = datetime.datetime.now().strftime("%I%M_%B_%d_")
 
 # names of figures:
 # hourminute_month_day_amountofhouses_best/worst_nr.oftests_value.of.map
-name1 = time + str(houses_total) + "bestof" + str(nr_tests) + "_" + str(highest)
-name2 = time + str(houses_total) + "worstof" + str(nr_tests) + "_" + str(lowest)
+name1 = stime + str(houses_total) + "bestof" + str(nr_tests) + "_" + str(highest)
+name2 = stime + str(houses_total) + "worstof" + str(nr_tests) + "_" + str(lowest)
 
 # plot best and worst map
 #print "len fill = ", len(fill)
