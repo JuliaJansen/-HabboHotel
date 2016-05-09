@@ -201,6 +201,10 @@ stime = datetime.datetime.now().strftime("%I%M_%B_%d_")
 name1 = stime + str(houses_total) + "bestof" + str(nr_tests) + "_" + str(highest)
 name2 = stime + str(houses_total) + "worstof" + str(nr_tests) + "_" + str(lowest)
 
+# write best map to csv file
+csv_writer(all_maps[index_high], len(water), len(houses), highest)
+
+
 # plot best and worst map
 #print "len fill = ", len(fill)
 #plotmap(len(fill), index_high, all_maps, name1, houses_total)

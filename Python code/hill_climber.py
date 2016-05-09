@@ -31,7 +31,7 @@ houses_total = 20
 pieces_of_water = 4
 
 # get best best from file
-beginmap, houses, water, start_value = csv_reader("output.csv", houses_total, pieces_of_water)
+beginmap, houses, water, start_value = csv_reader("planned_map.csv", houses_total, pieces_of_water)
 
 print "value of first map", start_value
 

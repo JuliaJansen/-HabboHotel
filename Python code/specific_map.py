@@ -22,6 +22,7 @@ from house import *
 from hillclimber_distance import *
 from visuals import *
 from csv_reader import *
+from csv_writer import *
 
 # different type of houses
 mais = "maison"
@@ -63,6 +64,9 @@ for k in range(len(houses)):
 	total_value += value
 
 print "map value = ", total_value
+
+# write map to file
+csv_writer(plannedmap, len(water), len(houses), total_value)
 
 # plot map
 name1 = "planned" + str(total_value)
