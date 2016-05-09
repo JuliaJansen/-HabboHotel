@@ -33,9 +33,7 @@ def csv_reader(filename, houses_total, pieces_of_water):
             type_house = row['three']
             distance = float(row['four'])
             new_house = House(x_min, y_min, type_house)
-            print "distance = ", distance
             new_house.updateDistance(distance)
-            print "distance hetzelfde? = ", new_house.distance
             houses.append(new_house)
         
         elif (count_row >= houses_total and count_row < total_items):
@@ -43,8 +41,6 @@ def csv_reader(filename, houses_total, pieces_of_water):
             y_min = float(row['two'])
             x_max = float(row['three'])
             y_max = float(row['four'])
-            print "xmax y max = ", x_max, y_max
-            print "x min y min =", x_min, y_min
             new_water = Water(x_min, y_min, x_max, y_max)
             water.append(new_water)
         
