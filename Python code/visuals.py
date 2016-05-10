@@ -29,7 +29,7 @@ def plothisto(len_all_values, all_values, name, lowest, highest):
     ax.get_yaxis().tick_left()  
 
     # size of ticks
-    # plt.xticks(range(math.floor(lowest), int(highest + 1)), fontsize=14)  
+    # plt.xticks(range(lowest, highest, 10), fontsize=14)  
     plt.yticks(range(100, len_all_values, 1000), fontsize=14)  
 
     # ax labels
@@ -42,13 +42,11 @@ def plothisto(len_all_values, all_values, name, lowest, highest):
     # explanation under graph
     plt.text(1300, -5000, "Test results histogram", fontsize=10)
 
-    print "before print histo"
-
     # show plot
     plt.show()
 
     # save plot
-    plt.savefig('../plots/histo/' + name + '.png', bbox_inches="tight")
+    plt.savefig('../plots/' + name + '.png', bbox_inches='tight')
 
 def plotmap(len_fill, a_map, name, houses_total):
     """

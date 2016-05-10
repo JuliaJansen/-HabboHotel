@@ -40,8 +40,8 @@ egw = "eengezinswoning"
 # change how you like: houses to place, pieces of water
 # to place and amount of tests
 houses_total = 20
-pieces_of_water = 1
-nr_tests = 10000
+pieces_of_water = 2
+nr_tests = 1000
 
 # create a variable to hold number of houses of each type
 mais_total = houses_total * 0.15
@@ -50,8 +50,8 @@ egw_total = houses_total * 0.60
 
 # loop x times for testing
 for k in range(nr_tests):
-    # if k % 100 == 0:
-    #     print k
+    if k % 100 == 0:
+        print k
     
     # array of houses per test
     houses = []
@@ -78,14 +78,11 @@ for k in range(nr_tests):
     
     # initiate first piece of water with random left bottom corner
     if pieces_of_water == 1:
+        
         # if whole water surface goes in one piece, make sure to place it somehwere in the left bottom corner
         x_min = random.randint(0, 2 * (bound_x-100)) * 0.5
         y_min = random.randint(0, 2 * (bound_y-100)) * 0.5 
     else:
-        # OPTION if not placing water copmletely randomly but in different corners
-        #x_min = random.randint(120, 2 * (0.8 * bound_x - 20)) * 0.5
-        #y_min = random.randint(120, 2 * (0.8 * bound_y - 20)) * 0.5
-        
         # else, place first piece randomly
         x_min = random.randint(60, 2 * (0.8 * bound_x-10)) * 0.5
         y_min = random.randint(60, 2 * (0.8 * bound_y-10)) * 0.5
@@ -100,17 +97,8 @@ for k in range(nr_tests):
     piece_of_water += 1
 
     while piece_of_water < pieces_of_water:
-        # OPTION each piece has their own random area, otherwise there is too much overlap between pieces
-        #if piece_of_water + 1 == pieces_of_water:
-        #    x_min = random.randint(0, 2 * (bound_x-100)) * 0.5
-        #    y_min = random.randint(0, 2 * (bound_y-100)) * 0.5 
-        #elif piece_of_water + 2 == pieces_of_water:
-        #    x_min = random.randint(0, 2 * (bound_x-100)) * 0.5
-        #    y_min = random.randint(120, 2 * (0.8*bound_y)) * 0.5 
-        #else:
-        #    x_min = random.randint(130, 2 * (0.8 * bound_x)) * 0.5
-        #    y_min = random.randint(0, 2 * (bound_y - 80)) * 0.5
 
+        # find random x_min and y_min
         x_min = random.randint(0, 2 * (0.8 * bound_x - 10)) * 0.5
         y_min = random.randint(0, 2 * (0.8 * bound_y - 10)) * 0.5
 

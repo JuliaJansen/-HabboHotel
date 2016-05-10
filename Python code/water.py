@@ -4,7 +4,7 @@
 
 import random
 import math
-
+import time
 # global variable
 surface_total = 0.2 * 160 * 150
 
@@ -46,33 +46,43 @@ class Water(object):
     def updateSurface(self, surface):
         self.surface = surface
 
-def placeWater(water, x_min, y_min, piece_of_water, pieces_of_water, surface_taken):
+def placeWater(water, x_min, y_min, piece, pieces_of_water, surface_taken):
 
-    pieces_to_go = pieces_of_water - piece_of_water
+    pieces_to_go = pieces_of_water - piece
+    tries = 0
 
     # fictional value
     height = 10000
 
     # minimum surface for 
-    if pieces_of_water < 2:
+    if pieces_of_water < 3:
         minsurf = 4800 / (pieces_of_water + 2)
     else:
         minsurf = 4800 / pieces_of_water 
 
-    while (height + y_min > 150) or width + x_min > 160 or new_surface_taken > surface_total + pieces_to_go * 4:    
+    while height + y_min > 150 or width + x_min > 160 or new_surface_taken > surface_total + pieces_to_go * 4:    
         
+        tries += 1
+        if tries % 100 == 0:
+            print tries
+            print piece
+
+            print height + y_min > 150
+            print width + x_min > 160 
+            print new_surface_taken > surface_total + pieces_to_go * 4
+
         # bedenk ratio
         ratio = random.uniform(0.25,4)
         
         # if more than one piece of water to place
-        if pieces_of_water != piece_of_water:
+        if pieces_of_water != piece:
             
             # make sure surface is bigger than remaining surface
             if minsurf >= 4800 - (surface_taken + pieces_to_go * 4):
                 surface = random.randint(0, 4800 - surface_taken-pieces_to_go*4)
+                #print "1"
             else:
                 surface = random.randint(minsurf, 4800 - surface_taken - pieces_to_go * 4) 
-                # print "surface first water = ", surface
 
             # use ratio and surface to calculate height and width
             width = (surface / ratio) ** 0.5
@@ -82,7 +92,8 @@ def placeWater(water, x_min, y_min, piece_of_water, pieces_of_water, surface_tak
             width = ((surface_total - surface_taken) / ratio)**0.5
             height = width * ratio
             surface = width * height 
-            new_surface_taken = surface_taken + surface    
+            new_surface_taken = surface_taken + surface   
+            #print "3" 
 
     water.updateXmax(x_min + width)
     water.updateYmax(y_min + height)
