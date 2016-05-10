@@ -6,6 +6,7 @@
 
 import random
 import math
+from test_main import *
 
 # different type of houses
 mais = "maison"
