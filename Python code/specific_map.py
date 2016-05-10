@@ -14,7 +14,6 @@ import math
 # import other files
 from water import * 
 from house import *
-from hillclimber_distance import *
 #from visuals import *
 from csv_reader import *
 from csv_writer import *
@@ -65,5 +64,5 @@ csv_writer(plannedmap, len(water), len(houses), total_value)
 
 # plot map
 name1 = "centered_housing" + str(total_value)
-plotmap(len(plannedmap), plannedmap, name1, houses_total)
+#plotmap(len(plannedmap), plannedmap, name1, houses_total)
 
