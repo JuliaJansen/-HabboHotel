@@ -21,15 +21,20 @@ class Water(object):
         self.y_min = y_min
         self.x_max = x_max
         self.y_max = y_max
-        self.width = self.x_max - self.x_min
-        self.height = self.y_max - self.y_min
-        self.surface = self.width * self.height
+        self.x_max = 0
+        self.y_max = 0
+        self.width = 0
+        self.height = 0
+        self.surface = self.placeWater(self.x_min, self.y_min, self.piece_of_water, self.pieces_of_water, surface_taken, water)
 
     def getX_min(self):
         return self.x_min
 
     def getY_min(self):
         return self.y_min
+        
+    def getPiece_of_water(self):
+        return self.piece_of_water
 
     def getX_max(self):
         return self.x_max
@@ -44,21 +49,9 @@ class Water(object):
         return self.height
 
     def updateXmax(self, xmax):
-        self.x_max = xmax
+        return self.x_max
 
-    def updateYmax(self, ymax):
-        self.y_max = ymax
-
-    def updateHeight(self, height):
-        self.height = height
-
-    def updateWidth(self, width):
-        self.width = width
-
-    def updateSurface(self, surface):
-        self.surface = surface
-
-def placeWater(water, x_min, y_min, piece_of_water, pieces_of_water, surface_taken):
+    def placeWater(self, x_min, y_min, piece_of_water, pieces_of_water, surface_taken, water):
 
     pieces_to_go = pieces_of_water - piece_of_water
     pogingen = 0
@@ -66,46 +59,39 @@ def placeWater(water, x_min, y_min, piece_of_water, pieces_of_water, surface_tak
     # fictional value
     height = 10000
     minsurf = 4800/pieces_of_water+2
-    while (height + y_min > 150) or new_surface_taken > surface_total + pieces_to_go * 4:    
+    while (height + y_min > 150) or width + x_min > 160 or new_surface_taken > surface_total + pieces_to_go * 4:    
         
         # bedenk ratio
-        ratio = random.randrange(10,40)/10
-        
-        pogingen +=1
-        print pogingen
-        
-        # try again if not placed
-        if pogingen > 25:
-            print "pogingen gedaan, nieuwe x_min"
-            continue
+        ratio = random.uniform(0.25,4)
+        tries +=1
+        if tries % 100 == 0:
+                print "tries:", tries, piece_of_water
+            # if unsuccesful, print amount of tries
 
         if pieces_of_water != piece_of_water:
             
-            # make sure surface is smaller when coordinates are in right upper corner
-            surface = random.randrange(minsurf, 4800-x_min*10-y_min*10) 
-            print"surf =", surface
-            
+            # make sure surface is bigger than remaining surface
+            if minsurf >= 4800-(surface_taken+pieces_to_go*4):
+                surface = random.randrange(0, 4800 - surface_taken-pieces_to_go*4)
+            else:
+                surface = random.randrange(minsurf, 4800-surface_taken-pieces_to_go*4) 
             # use ratio and surface to calculate height and width
             width = (surface / ratio) ** 0.5
             height = width * ratio 
             new_surface_taken = surface_taken + surface
         else:
-            #print y_min
-            #print "surface taken, total = ", surface_taken, surface_total
-            #print piece_of_water
-            print surface_total - surface_taken
             width = ((surface_total - surface_taken) / ratio)**0.5
             height = width * ratio
             surface = width * height 
-            print "surf2=", surface
             new_surface_taken = surface_taken + surface    
-
-    
-    water.updateXmax(x_min + width)
-    water.updateYmax(y_min + height)
-    water.updateHeight(height)
-    water.updateWidth(width)
-    water.updateSurface(surface)
+            
+    self.x_max = x_min + width
+    self.y_max = y_min + height 
+    self.width = width
+    self.heigth = height
+    self.surface = surface
+    #tries = 0
+    return self.surface 
         
 def distanceWater(obj, water):
     """
