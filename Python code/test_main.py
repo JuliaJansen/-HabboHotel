@@ -75,11 +75,12 @@ for k in range(nr_tests):
     # initiate first piece of water with random left bottom corner
     if pieces_of_water == 1:
         # if whole water surface goes in one piece, make sure to place it somehwere in the left bottom corner
-        x_min = random.randrange(0, 2 * (bound_x-100)) * 0.5
-        y_min = random.randrange(0, 2 * (bound_y-100)) * 0.5 
+        x_min = random.randint(0, 2 * (bound_x-100)) * 0.5
+        y_min = random.randint(0, 2 * (bound_y-100)) * 0.5 
     else:
-        x_min = random.randrange(60, 2 * (0.8 * bound_x - 20)) * 0.5
-        y_min = random.randrange(60, 2 * (0.8 * bound_y - 20)) * 0.5
+        # else, place first piece randomly
+        x_min = random.randint(0, 2 * (0.8 * bound_x-10)) * 0.5
+        y_min = random.randint(0, 2 * (0.8 * bound_y-10)) * 0.5
     new_water = Water(x_min, y_min, 0, 0)
     placeWater(new_water, new_water.x_min, new_water.y_min, piece_of_water + 1, pieces_of_water, surface_taken)
     
@@ -89,15 +90,12 @@ for k in range(nr_tests):
     piece_of_water += 1
 
     while piece_of_water < pieces_of_water:
-        if piece_of_water + 1 == pieces_of_water:
-            x_min = random.randrange(0, 2 * (bound_x-100)) * 0.5
-            y_min = random.randrange(0, 2 * (bound_y-100)) * 0.5 
-        else:
-            x_min = random.randrange(30, 2 * (0.8 * bound_x - 20)) * 0.5
+        # place each piece randomly, padding on right/upper side
+        x_min = random.randint(0, 2 * (0.8 * bound_x-10)) * 0.5
+        y_min = random.randint(0, 2 * (0.8 * bound_y-10)) * 0.5
 
         # new piece of water
-        new_water = Water(x_min, y_min, 0, 0)
-        placeWater(new_water, new_water.x_min, new_water.y_min, piece_of_water + 1, pieces_of_water, surface_taken)
+        new_water = Water(x_min, y_min, piece_of_water + 1, pieces_of_water, surface_taken, water)
     
         if distanceWater(new_water, water) == True:
             water.append(new_water)
