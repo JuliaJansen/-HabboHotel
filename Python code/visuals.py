@@ -29,7 +29,7 @@ def plothisto(len_all_values, all_values, name, lowest, highest):
     ax.get_yaxis().tick_left()  
 
     # size of ticks
-    plt.xticks(range(int(lowest - 1), int(highest + 1)), fontsize=14)  
+    # plt.xticks(range(math.floor(lowest), int(highest + 1)), fontsize=14)  
     plt.yticks(range(100, len_all_values, 1000), fontsize=14)  
 
     # ax labels
@@ -43,7 +43,7 @@ def plothisto(len_all_values, all_values, name, lowest, highest):
     plt.text(1300, -5000, "Test results histogram", fontsize=10)
 
     print "before print histo"
-    
+
     # show plot
     plt.show()
 

@@ -171,7 +171,7 @@ def distance(house, houses):
 
     dist_bound = min(xbound_dist, ybound_dist)
 
-    # minimum distance is the only one relevant to value
+    # minimum distance is the only relevant value
     min_dist_x = min(space_x)
     min_dist_y = min(space_y)
     min_diagonal = min(space_diagonal)

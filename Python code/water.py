@@ -49,46 +49,40 @@ class Water(object):
 def placeWater(water, x_min, y_min, piece_of_water, pieces_of_water, surface_taken):
 
     pieces_to_go = pieces_of_water - piece_of_water
-    tries = 0
 
     # fictional value
     height = 10000
-    minsurf = 4800 / pieces_of_water + 2
-    while (height + y_min > 150) or width + x_min > 160 or \
-        new_surface_taken > surface_total + pieces_to_go * 4:    
+
+    # minimum surface for 
+    if pieces_of_water < 2:
+        minsurf = 4800 / (pieces_of_water + 2)
+    else:
+        minsurf = 4800 / pieces_of_water 
+
+    while (height + y_min > 150) or width + x_min > 160 or new_surface_taken > surface_total + pieces_to_go * 4:    
         
         # bedenk ratio
         ratio = random.uniform(0.25,4)
-        tries +=1
-        # if tries % 100 == 0:
-                # print "tries:", tries, piece_of_water
-            # if unsuccesful, print amount of tries
-        
-        # for map with one piece of water
-        if pieces_of_water == 1:
-            width = (4800 / ratio) ** 0.5
-            height = 4800 / width
-            surface = 4800
-            new_surface_taken = surface
         
         # if more than one piece of water to place
-        else:
-            if pieces_of_water != piece_of_water:
-                
-                # make sure surface is bigger than remaining surface
-                if minsurf >= 4800 - (surface_taken + pieces_to_go * 4):
-                    surface = random.randrange(0, 4800 - surface_taken-pieces_to_go*4)
-                else:
-                    surface = random.randrange(minsurf, 4800-surface_taken-pieces_to_go*4) 
-                # use ratio and surface to calculate height and width
-                width = (surface / ratio) ** 0.5
-                height = width * ratio 
-                new_surface_taken = surface_taken + surface
+        if pieces_of_water != piece_of_water:
+            
+            # make sure surface is bigger than remaining surface
+            if minsurf >= 4800 - (surface_taken + pieces_to_go * 4):
+                surface = random.randint(0, 4800 - surface_taken-pieces_to_go*4)
             else:
-                width = ((surface_total - surface_taken) / ratio)**0.5
-                height = width * ratio
-                surface = width * height 
-                new_surface_taken = surface_taken + surface    
+                surface = random.randint(minsurf, 4800 - surface_taken - pieces_to_go * 4) 
+                # print "surface first water = ", surface
+
+            # use ratio and surface to calculate height and width
+            width = (surface / ratio) ** 0.5
+            height = width * ratio 
+            new_surface_taken = surface_taken + surface
+        else:
+            width = ((surface_total - surface_taken) / ratio)**0.5
+            height = width * ratio
+            surface = width * height 
+            new_surface_taken = surface_taken + surface    
 
     water.updateXmax(x_min + width)
     water.updateYmax(y_min + height)

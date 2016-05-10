@@ -40,7 +40,7 @@ egw = "eengezinswoning"
 # change how you like: houses to place, pieces of water
 # to place and amount of tests
 houses_total = 20
-pieces_of_water = 3
+pieces_of_water = 1
 nr_tests = 10000
 
 # create a variable to hold number of houses of each type
@@ -50,7 +50,7 @@ egw_total = houses_total * 0.60
 
 # loop x times for testing
 for k in range(nr_tests):
-    # if k % 10 == 0:
+    # if k % 100 == 0:
     #     print k
     
     # array of houses per test
@@ -87,10 +87,12 @@ for k in range(nr_tests):
         #y_min = random.randint(120, 2 * (0.8 * bound_y - 20)) * 0.5
         
         # else, place first piece randomly
-        x_min = random.randint(0, 2 * (0.8 * bound_x-10)) * 0.5
-        y_min = random.randint(0, 2 * (0.8 * bound_y-10)) * 0.5
+        x_min = random.randint(60, 2 * (0.8 * bound_x-10)) * 0.5
+        y_min = random.randint(60, 2 * (0.8 * bound_y-10)) * 0.5
+
+    # make new Water object and place it
     new_water = Water(x_min, y_min, 0, 0) 
-    placeWater(new_water, new_water.x_min, new_water.y_min, piece_of_water, pieces_of_water, surface_taken)
+    placeWater(new_water, new_water.x_min, new_water.y_min, piece_of_water + 1, pieces_of_water, surface_taken)
     
     # append first water to list
     water.append(new_water)
@@ -108,21 +110,20 @@ for k in range(nr_tests):
         #else:
         #    x_min = random.randint(130, 2 * (0.8 * bound_x)) * 0.5
         #    y_min = random.randint(0, 2 * (bound_y - 80)) * 0.5
-        
-        # place each piece randomly, padding on right/upper side
-        x_min = random.randint(0, 2 * (0.8 * bound_x-10)) * 0.5
-        y_min = random.randint(0, 2 * (0.8 * bound_y-10)) * 0.5
+
+        x_min = random.randint(0, 2 * (0.8 * bound_x - 10)) * 0.5
+        y_min = random.randint(0, 2 * (0.8 * bound_y - 10)) * 0.5
 
         # new piece of water
         new_water = Water(x_min, y_min, 0, 0) 
-        placeWater(new_water, new_water.x_min, new_water.y_min, piece_of_water, pieces_of_water, surface_taken)
+        placeWater(new_water, new_water.x_min, new_water.y_min, piece_of_water + 1, pieces_of_water, surface_taken)
     
         if distanceWater(new_water, water) == True:
             water.append(new_water)
             surface_taken += new_water.surface
             piece_of_water += 1
 
-    # one house has been already made
+    # start placing houses
     i = 0
 
     # type_total holds number of houses needed to be made of certain type. Instantiate with type maison.
@@ -169,6 +170,7 @@ for k in range(nr_tests):
 
                         # start loop of placing houses again
                         i = 0 
+
             # append first house
             else:
                 houses.append(new)
@@ -224,15 +226,17 @@ name1 = stime + str(houses_total) + "bestof" + str(nr_tests) + "_" + str(highest
 name2 = stime + str(houses_total) + "worstof" + str(nr_tests) + "_" + str(lowest)
 name3 = stime + str(houses_total) + "_" + str(nr_tests)
 
+# calculate runtime
+runtime = (time.time() - start_time) / nr_tests
+print "one test time = ", runtime
+print("--- %s seconds ---" % (time.time() - start_time))
+
 # write best map to csv file
 csv_writer(all_maps[index_high], len(water), len(houses), highest)
 
-# plothisto(len(best_value), best_value, name3, lowest, highest)
+plothisto(len(best_value), best_value, name3, lowest, highest)
 
 # plot best and worst map
 plotmap(len(fill), all_maps[index_high], name1, houses_total)
 plotmap(len(fill), all_maps[index_low], name2, houses_total)
-print("--- %s seconds ---" % (time.time() - start_time))
-
-
 
