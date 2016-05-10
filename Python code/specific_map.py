@@ -2,11 +2,6 @@
 # Amstelhaege
 # Team $HabboHotel
 
-# Dit programma berekent de waarde van een plattegrond met specifieke indeling:
-# Water in vier stukken
-# Water aan de randen
-# 20 Huizen aan water en gelijk verdeeld over de ruimte
-
 import datetime
 import csv
 import pylab
