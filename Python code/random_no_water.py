@@ -1,5 +1,6 @@
-# main python file            #
-# add classes and code below  #
+# Heuristieken
+# Team $HabboHotel
+# Semi random map, no water
 # # # # # # # # # # # # # # # #
 
 import datetime
@@ -13,13 +14,9 @@ from matplotlib.path import Path
 import matplotlib.patches as patches
 
 # import other files
-from csv_writer import *
 from water import * 
 from house import *
 from visuals import *
-
-
-# global variables
 start_time = time.time()
 the_best = []
 best_value = []
@@ -40,8 +37,8 @@ egw = "eengezinswoning"
 # change how you like: houses to place, pieces of water
 # to place and amount of tests
 houses_total = 20
-pieces_of_water = 3
-nr_tests = 10000
+pieces_of_water = 1
+nr_tests = 100000
 
 # create a variable to hold number of houses of each type
 mais_total = houses_total * 0.15
@@ -50,8 +47,8 @@ egw_total = houses_total * 0.60
 
 # loop x times for testing
 for k in range(nr_tests):
-    # if k % 10 == 0:
-    #     print k
+    if k % 100 == 0:
+        print k
     
     # array of houses per test
     houses = []
@@ -79,18 +76,13 @@ for k in range(nr_tests):
     # initiate first piece of water with random left bottom corner
     if pieces_of_water == 1:
         # if whole water surface goes in one piece, make sure to place it somehwere in the left bottom corner
-        x_min = random.randint(0, 2 * (bound_x-100)) * 0.5
-        y_min = random.randint(0, 2 * (bound_y-100)) * 0.5 
+        x_min = random.randrange(0, 2 * (bound_x-100)) * 0.5
+        y_min = random.randrange(0, 2 * (bound_y-100)) * 0.5 
     else:
-        # OPTION if not placing water copmletely randomly but in different corners
-        #x_min = random.randint(120, 2 * (0.8 * bound_x - 20)) * 0.5
-        #y_min = random.randint(120, 2 * (0.8 * bound_y - 20)) * 0.5
-        
-        # else, place first piece randomly
-        x_min = random.randint(0, 2 * (0.8 * bound_x-10)) * 0.5
-        y_min = random.randint(0, 2 * (0.8 * bound_y-10)) * 0.5
-    new_water = Water(x_min, y_min, 0, 0) 
-    placeWater(new_water, new_water.x_min, new_water.y_min, piece_of_water, pieces_of_water, surface_taken)
+        x_min = random.randrange(60, 2 * (0.8 * bound_x - 20)) * 0.5
+        y_min = random.randrange(60, 2 * (0.8 * bound_y - 20)) * 0.5
+    new_water = Water(x_min, y_min, 0, 0)
+    placeWater(new_water, new_water.x_min, new_water.y_min, piece_of_water + 1, pieces_of_water, surface_taken)
     
     # append first water to list
     water.append(new_water)
@@ -98,24 +90,15 @@ for k in range(nr_tests):
     piece_of_water += 1
 
     while piece_of_water < pieces_of_water:
-        # OPTION each piece has their own random area, otherwise there is too much overlap between pieces
-        #if piece_of_water + 1 == pieces_of_water:
-        #    x_min = random.randint(0, 2 * (bound_x-100)) * 0.5
-        #    y_min = random.randint(0, 2 * (bound_y-100)) * 0.5 
-        #elif piece_of_water + 2 == pieces_of_water:
-        #    x_min = random.randint(0, 2 * (bound_x-100)) * 0.5
-        #    y_min = random.randint(120, 2 * (0.8*bound_y)) * 0.5 
-        #else:
-        #    x_min = random.randint(130, 2 * (0.8 * bound_x)) * 0.5
-        #    y_min = random.randint(0, 2 * (bound_y - 80)) * 0.5
-        
-        # place each piece randomly, padding on right/upper side
-        x_min = random.randint(0, 2 * (0.8 * bound_x-10)) * 0.5
-        y_min = random.randint(0, 2 * (0.8 * bound_y-10)) * 0.5
+        if piece_of_water + 1 == pieces_of_water:
+            x_min = random.randrange(0, 2 * (bound_x-100)) * 0.5
+            y_min = random.randrange(0, 2 * (bound_y-100)) * 0.5 
+        else:
+            x_min = random.randrange(30, 2 * (0.8 * bound_x - 20)) * 0.5
 
         # new piece of water
-        new_water = Water(x_min, y_min, 0, 0) 
-        placeWater(new_water, new_water.x_min, new_water.y_min, piece_of_water, pieces_of_water, surface_taken)
+        new_water = Water(x_min, y_min, 0, 0)
+        placeWater(new_water, new_water.x_min, new_water.y_min, piece_of_water + 1, pieces_of_water, surface_taken)
     
         if distanceWater(new_water, water) == True:
             water.append(new_water)
@@ -169,7 +152,6 @@ for k in range(nr_tests):
 
                         # start loop of placing houses again
                         i = 0 
-            # append first house
             else:
                 houses.append(new)
                 i += 1
@@ -211,10 +193,6 @@ index_low = best_value.index(lowest)
 # calculate mean map value of tests
 mean_value = sum(best_value) / len(best_value)
 
-print "mean value = ", mean_value
-print "lowest value = ", lowest
-print "highest value = ", highest
-
 # save date/time to name plot
 stime = datetime.datetime.now().strftime("%I%M_%B_%d_")
 
@@ -222,16 +200,15 @@ stime = datetime.datetime.now().strftime("%I%M_%B_%d_")
 # hourminute_month_day_amountofhouses_best/worst_nr.oftests_value.of.map
 name1 = stime + str(houses_total) + "bestof" + str(nr_tests) + "_" + str(highest)
 name2 = stime + str(houses_total) + "worstof" + str(nr_tests) + "_" + str(lowest)
-name3 = stime + str(houses_total) + "_" + str(nr_tests)
 
 # write best map to csv file
 csv_writer(all_maps[index_high], len(water), len(houses), highest)
 
-# plothisto(len(best_value), best_value, name3, lowest, highest)
 
 # plot best and worst map
-plotmap(len(fill), all_maps[index_high], name1, houses_total)
-plotmap(len(fill), all_maps[index_low], name2, houses_total)
+#print "len fill = ", len(fill)
+#plotmap(len(fill), index_high, all_maps, name1, houses_total)
+#plotmap(len(fill), index_low, all_maps, name2, houses_total)
 print("--- %s seconds ---" % (time.time() - start_time))
 
 

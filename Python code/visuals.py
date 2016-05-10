@@ -42,11 +42,13 @@ def plothisto(len_all_values, all_values, name, lowest, highest):
     # explanation under graph
     plt.text(1300, -5000, "Test results histogram", fontsize=10)
 
+    print "before print histo"
+    
     # show plot
     plt.show()
 
     # save plot
-    plt.savefig('../plots/' + name + '.png', bbox_inches="tight")
+    plt.savefig('../plots/histo/' + name + '.png', bbox_inches="tight")
 
 def plotmap(len_fill, a_map, name, houses_total):
     """
@@ -108,6 +110,8 @@ def plotmap(len_fill, a_map, name, houses_total):
         # set x and y limit
         ax.set_xlim(0,160)
         ax.set_ylim(0,150)
+
+    print "before show plot map"
 
     # show plot
     plt.show()
