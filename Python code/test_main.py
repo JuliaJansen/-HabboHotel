@@ -85,8 +85,7 @@ for k in range(nr_tests):
         # else, place first piece randomly
         x_min = random.randint(0, 2 * (0.8 * bound_x-10)) * 0.5
         y_min = random.randint(0, 2 * (0.8 * bound_y-10)) * 0.5
-    new_water = Water(x_min, y_min, 0, 0)
-    placeWater(new_water, new_water.x_min, new_water.y_min, piece_of_water + 1, pieces_of_water, surface_taken)
+    new_water = Water(x_min, y_min, piece_of_water + 1, pieces_of_water, surface_taken, water)
     
     # append first water to list
     water.append(new_water)
