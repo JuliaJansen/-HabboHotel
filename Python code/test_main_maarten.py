@@ -8,6 +8,7 @@ import random
 import math
 import time
 
+
 import matplotlib.pyplot as plt
 from matplotlib.path import Path
 import matplotlib.patches as patches
@@ -23,6 +24,7 @@ best_value = []
 # sum all total values
 sum_of_total_values = 0
 
+
 """
 MAIN: Place houses on field
 """
@@ -35,10 +37,9 @@ egw = "eengezinswoning"
 
 # change how you like: houses to place, pieces of water
 # to place and amount of tests
-houses_total = 20
-pieces_of_water = 1
-nr_tests = 100000
-
+houses_total = 60
+pieces_of_water = 3
+nr_tests = 10000
 # create a variable to hold number of houses of each type
 mais_total = houses_total * 0.15
 bung_total = houses_total * 0.25
@@ -78,10 +79,6 @@ for k in range(nr_tests):
         x_min = random.randint(0, 2 * (bound_x-100)) * 0.5
         y_min = random.randint(0, 2 * (bound_y-100)) * 0.5 
     else:
-        # OPTION if not placing water copmletely randomly but in different corners
-        #x_min = random.randint(120, 2 * (0.8 * bound_x - 20)) * 0.5
-        #y_min = random.randint(120, 2 * (0.8 * bound_y - 20)) * 0.5
-        
         # else, place first piece randomly
         x_min = random.randint(0, 2 * (0.8 * bound_x-10)) * 0.5
         y_min = random.randint(0, 2 * (0.8 * bound_y-10)) * 0.5
@@ -91,26 +88,21 @@ for k in range(nr_tests):
     water.append(new_water)
     surface_taken = new_water.surface
     piece_of_water += 1
-
+    counter = 0
     while piece_of_water < pieces_of_water:
-        # OPTION each piece has their own random area, otherwise there is too much overlap between pieces
-        #if piece_of_water + 1 == pieces_of_water:
-        #    x_min = random.randint(0, 2 * (bound_x-100)) * 0.5
-        #    y_min = random.randint(0, 2 * (bound_y-100)) * 0.5 
-        #elif piece_of_water + 2 == pieces_of_water:
-        #    x_min = random.randint(0, 2 * (bound_x-100)) * 0.5
-        #    y_min = random.randint(120, 2 * (0.8*bound_y)) * 0.5 
-        #else:
-        #    x_min = random.randint(130, 2 * (0.8 * bound_x)) * 0.5
-        #    y_min = random.randint(0, 2 * (bound_y - 80)) * 0.5
-        
         # place each piece randomly, padding on right/upper side
         x_min = random.randint(0, 2 * (0.8 * bound_x-10)) * 0.5
         y_min = random.randint(0, 2 * (0.8 * bound_y-10)) * 0.5
-
+        
         # new piece of water
         new_water = Water(x_min, y_min, piece_of_water + 1, pieces_of_water, surface_taken, water)
-    
+        
+        # error checking
+        if distanceWater(new_water,water) == False:
+            counter =+ 1
+        if counter % 100 == 0 and counter > 0:
+            print "distwater", counter
+        
         if distanceWater(new_water, water) == True:
             water.append(new_water)
             surface_taken += new_water.surface
@@ -124,6 +116,7 @@ for k in range(nr_tests):
     type_house = mais
 
     # loop over maximal number of houses of this type
+    #print "start houses"
     while i < type_total:
 
         # generate a new random position
@@ -136,6 +129,10 @@ for k in range(nr_tests):
         new = House(x_min, y_min, type_house)
 
         # if water doesn't overlap water
+        #print "new coordinates are ", new.x_min, new.y_min
+        #print "true or not? ", distanceWater(new, water) == True
+        #for w in range(len(water)):
+        #    print "watercoordinates", water[w].x_min,  water[w].y_min, water[w].x_max, water[w].y_max
         if distanceWater(new, water) == True:
 
             # if there are any houses to check against
@@ -166,6 +163,11 @@ for k in range(nr_tests):
             else:
                 houses.append(new)
                 i += 1
+    
+    #print "all houses"
+
+    #for h in houses:
+    #    print "house x = ", h.x_min
 
     # Calculate total value of Amstelhaege
     for k in range(len(houses)):
@@ -203,6 +205,7 @@ index_low = best_value.index(lowest)
 
 # calculate mean map value of tests
 mean_value = sum(best_value) / len(best_value)
+print "highest, lowest, mean", highest, lowest, mean_value
 
 # save date/time to name plot
 stime = datetime.datetime.now().strftime("%I%M_%B_%d_")
@@ -212,15 +215,12 @@ stime = datetime.datetime.now().strftime("%I%M_%B_%d_")
 name1 = stime + str(houses_total) + "bestof" + str(nr_tests) + "_" + str(highest)
 name2 = stime + str(houses_total) + "worstof" + str(nr_tests) + "_" + str(lowest)
 
-# write best map to csv file
-csv_writer(all_maps[index_high], len(water), len(houses), highest)
-
-
 # plot best and worst map
 #print "len fill = ", len(fill)
 #plotmap(len(fill), index_high, all_maps, name1, houses_total)
 #plotmap(len(fill), index_low, all_maps, name2, houses_total)
 print("--- %s seconds ---" % (time.time() - start_time))
+
 
 
 

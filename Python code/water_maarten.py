@@ -4,6 +4,7 @@
 
 import random
 import math
+import time
 
 # global variable
 surface_total = 0.2 * 160 * 150
@@ -13,14 +14,14 @@ class Water(object):
     A Water represents a location on a two dimensional field filled with water.
     """
 
-    def __init__(self, x_min, y_min, x_max, y_max):
+    def __init__(self, x_min, y_min, piece_of_water, pieces_of_water, surface_taken, water):
         """
         Initializes a position with coordinates of left down corner
         """
         self.x_min = x_min
         self.y_min = y_min
-        self.x_max = x_max
-        self.y_max = y_max
+        self.piece_of_water = piece_of_water
+        self.pieces_of_water = pieces_of_water
         self.x_max = 0
         self.y_max = 0
         self.width = 0
@@ -52,46 +53,60 @@ class Water(object):
         return self.x_max
 
     def placeWater(self, x_min, y_min, piece_of_water, pieces_of_water, surface_taken, water):
+    
+        pieces_to_go = pieces_of_water - piece_of_water
+        tries = 0
+        # fictional value
+        height = 10000
+        # minimum surface, to make sure last piece is not too large
+        minsurf = 4800/pieces_of_water+2
+        while (height + y_min > 150) or new_surface_taken > surface_total + pieces_to_go * 4:    
+            
+            
+            # random ratio
+            ratio = random.uniform(0.25,4)
 
-    pieces_to_go = pieces_of_water - piece_of_water
-    pogingen = 0
-
-    # fictional value
-    height = 10000
-    minsurf = 4800/pieces_of_water+2
-    while (height + y_min > 150) or width + x_min > 160 or new_surface_taken > surface_total + pieces_to_go * 4:    
-        
-        # bedenk ratio
-        ratio = random.uniform(0.25,4)
-        tries +=1
-        if tries % 100 == 0:
+            tries +=1
+            
+            if tries % 100 == 0:
                 print "tries:", tries, piece_of_water
             # if unsuccesful, print amount of tries
 
-        if pieces_of_water != piece_of_water:
-            
-            # make sure surface is bigger than remaining surface
-            if minsurf >= 4800-(surface_taken+pieces_to_go*4):
-                surface = random.randrange(0, 4800 - surface_taken-pieces_to_go*4)
+            if pieces_of_water != piece_of_water:
+                
+                # make sure surface is bigger than remaining surface
+                if minsurf >= 4800-(surface_taken+pieces_to_go*4):
+                    surface = random.randrange(0, 4800 - surface_taken-pieces_to_go*4)
+                else:
+                    surface = random.randrange(minsurf, 4800-surface_taken-pieces_to_go*4) 
+                # use ratio and surface to calculate height and width
+                width = (surface / ratio) ** 0.5
+                height = width * ratio 
+                new_surface_taken = surface_taken + surface
             else:
-                surface = random.randrange(minsurf, 4800-surface_taken-pieces_to_go*4) 
-            # use ratio and surface to calculate height and width
-            width = (surface / ratio) ** 0.5
-            height = width * ratio 
-            new_surface_taken = surface_taken + surface
-        else:
-            width = ((surface_total - surface_taken) / ratio)**0.5
-            height = width * ratio
-            surface = width * height 
-            new_surface_taken = surface_taken + surface    
-            
-    self.x_max = x_min + width
-    self.y_max = y_min + height 
-    self.width = width
-    self.heigth = height
-    self.surface = surface
-    #tries = 0
-    return self.surface 
+                
+                #print y_min
+                #print "surface taken, total = ", surface_taken, surface_total
+                #print piece_of_water
+                #print surface_total - surface_taken
+                width = ((surface_total - surface_taken) / ratio)**0.5
+                height = width * ratio
+                surface = width * height 
+                #print "surf2=", surface
+                new_surface_taken = surface_taken + surface    
+            #print "tweede statement", new_surface_taken > surface_total + pieces_to_go * 4
+            #print "hoogte ymin", height + y_min
+            #print "taken", new_surface_taken
+            #print "left min", surface_total + pieces_to_go * 4
+            #time.sleep(5)
+        self.x_max = x_min + width
+        self.y_max = y_min + height 
+        self.width = width
+        self.heigth = height
+        self.surface = surface
+        #tries = 0
+        return self.surface 
+        
         
 def distanceWater(obj, water):
     """
@@ -99,7 +114,6 @@ def distanceWater(obj, water):
     """
     # loop over water already placed
     for w in range(len(water)):
-
         # check horizontal band
         # check if water is above or underneath new water
         if water[w].y_max > obj.y_min and water[w].y_min < obj.y_max:
@@ -113,9 +127,9 @@ def distanceWater(obj, water):
             distance_x = 1
 
         if distance_x < 0:
-            # print "in horizontal band"
             return False
-        
+            
+            
         # check vertical band  
         # check if water is place to the left or to the right of new water
         if water[w].x_max > obj.x_min and water[w].x_min < obj.x_max:
@@ -129,7 +143,6 @@ def distanceWater(obj, water):
             distance_y = 1
 
         if distance_y < 0:
-            # print "in vert band"
             return False   
 
         # if object is in both horizontal and vertical band of water object
