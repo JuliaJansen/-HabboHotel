@@ -49,10 +49,6 @@ for i in range(nr_of_tests):
 
 	tracker = 0
 
-	if i % 100 == 0:
-		print "best value nu = ", best_value
-		print "temp value was =", temporary_value
-
 	# set temporary value to 0
 	temporary_value = 0
 
@@ -66,8 +62,8 @@ for i in range(nr_of_tests):
 		freespace = house.freespace
 
 		# update x and y
-		x_new = house.x_min + random.randrange(-4, 4) * 0.5
-		y_new = house.y_min + random.randrange(-4, 4) * 0.5
+		x_new = house.x_min + (random.randrange(-4, 4) * 0.5)
+		y_new = house.y_min + (random.randrange(-4, 4) * 0.5)
 
 		# update temporary map with new house
 		temp_house = House(x_new, y_new, type_house)
@@ -111,16 +107,13 @@ for i in range(nr_of_tests):
 
 	# update our map with the new house if total value of map is higher
 	if temporary_value > best_value:
+		print "best_value nu = ",  best_value
+		print "temp value nu = ", temporary_value
 		best_houses = temporary_houses 
 		best_value = temporary_value
 
-	if i % 100 == 0:
-		mappp = best_houses + water
-		name = "tussenstop_" + str(i)
-		plotmap(len(first_map), mappp, name, houses_total)
-
 # FF CHECKEN
-print "best value = ", best_value
+# print "best value = ", best_value
 
 name2 = "after" + str(best_value)
 
