@@ -4,18 +4,18 @@
 
 import datetime
 import csv
-import pylab
+#import pylab
 import random
 import math
-import matplotlib.pyplot as plt
-from matplotlib.path import Path
-import matplotlib.patches as patches
+#import matplotlib.pyplot as plt
+#from matplotlib.path import Path
+#import matplotlib.patches as patches
 
 # import other files
 from water import * 
 from house import *
 from hillclimber_distance import *
-from visuals import *
+#from visuals import *
 from csv_reader import *
 from csv_writer import *
 
@@ -32,7 +32,7 @@ pieces_of_water = 4
 total_value = 0
 
 # get best best from file
-plannedmap, houses, water, start_value = csv_reader("equal_spacing_map.csv", houses_total, pieces_of_water)
+plannedmap, houses, water, start_value = csv_reader("centered_housing.csv", houses_total, pieces_of_water)
 
 # calculate min distances
 for i in range(len(houses)):
@@ -64,6 +64,6 @@ print "map value = ", total_value
 csv_writer(plannedmap, len(water), len(houses), total_value)
 
 # plot map
-name1 = "equal_spacing" + str(total_value)
+name1 = "centered_housing" + str(total_value)
 plotmap(len(plannedmap), plannedmap, name1, houses_total)
 
