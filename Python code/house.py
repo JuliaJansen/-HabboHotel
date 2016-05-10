@@ -129,28 +129,28 @@ def distance(house, houses):
         if houses[j].x_min >= house.x_min and houses[j].y_min >= house.y_min:
             a = houses[j].x_min - house.x_max 
             b = houses[j].y_min - house.y_max 
-            c = (a**2 + b**2)**0.5
+            c = (a ** 2 + b ** 2) ** 0.5
             space_diagonal.append(c)
 
         # if house[j] is in right top corner of house
         elif houses[j].x_min >= house.x_min and houses[j].y_min <= house.y_min:
             a = houses[j].x_min - house.x_max 
             b = house.y_min - houses[j].y_max 
-            c = (a**2 + b**2)**0.5
+            c = (a ** 2 + b ** 2) ** 0.5
             space_diagonal.append(c)
 
         # if house[j] is in left bottom corner of house
         elif houses[j].x_min <= house.x_min and houses[j].y_min >= house.y_min:
             a = house.x_min - houses[j].x_max 
             b = houses[j].y_min - house.y_max 
-            c = (a**2 + b**2)**0.5
+            c = (a ** 2 + b ** 2) ** 0.5
             space_diagonal.append(c)
 
         # if house[j] is in right bottom corner of house
         elif houses[j].x_min <= house.x_min and houses[j].y_min <= house.y_min:
             a = house.x_min - houses[j].x_max 
             b = house.y_min - houses[j].y_max 
-            c = (a**2 + b**2)**0.5
+            c = (a ** 2 + b ** 2) ** 0.5
             space_diagonal.append(c)
 
         # fill space_diagonal with fictional high value 
@@ -188,11 +188,15 @@ def distance(house, houses):
             closest = space_diagonal.index(min_diagonal)
         neighbour = houses[closest]
 
-    # get biggest freespace (of house or closest house)
-    if house.freespace > neighbour.freespace:
-        freespace = house.freespace
+        # get biggest freespace (of house or closest house)
+        if house.freespace > neighbour.freespace:
+            freespace = house.freespace
+        else:
+            freespace = neighbour.freespace
+
+    # freespace is own freespace in case of no close neighbour
     else:
-        freespace = neighbour.freespace
+        freespace = house.freespace
 
     # if freespace is bigger than distance, return negative distance
     if min_dist < freespace:
@@ -202,8 +206,9 @@ def distance(house, houses):
     house.updateDistance(min_dist)
 
     # if neighbours closest neighbour is further away, update closest neighbour
-    if neighbour.distance > min_dist:
-        neighbour.updateDistance(min_dist)
+    if min_dist != dist_bound:
+        if neighbour.distance > min_dist:
+            neighbour.updateDistance(min_dist)
 
     # return distance to closest neighbour's wall of house
     return min_dist
@@ -258,7 +263,7 @@ def distance_exclusive(house, houses, index):
         if houses[j].x_min >= house.x_min and houses[j].y_min >= house.y_min:
             a = houses[j].x_min - house.x_max 
             b = houses[j].y_min - house.y_max 
-            c = (a**2 + b**2)**0.5
+            c = (a ** 2 + b ** 2) ** 0.5
             space_diagonal.append(c)
 
         # if house[j] is in right top corner of house
@@ -317,11 +322,15 @@ def distance_exclusive(house, houses, index):
             closest = space_diagonal.index(min_diagonal)
         neighbour = houses[closest]
 
-    # get biggest freespace (of house or closest house)
-    if house.freespace > neighbour.freespace:
-        freespace = house.freespace
+        # get biggest freespace (of house or closest house)
+        if house.freespace > neighbour.freespace:
+            freespace = house.freespace
+        else:
+            freespace = neighbour.freespace
+
+    # freespace is own freespace in case of no close neighbour
     else:
-        freespace = neighbour.freespace
+        freespace = house.freespace
 
     # if freespace is bigger than distance, return negative distance
     if min_dist < freespace:
@@ -331,8 +340,9 @@ def distance_exclusive(house, houses, index):
     house.updateDistance(min_dist)
 
     # if neighbours closest neighbour is further away, update closest neighbour
-    if neighbour.distance > min_dist:
-        neighbour.updateDistance(min_dist)
+    if min_dist != dist_bound:
+        if neighbour.distance > min_dist:
+            neighbour.updateDistance(min_dist)
 
     # return distance to closest neighbour's wall of house
     return min_dist
