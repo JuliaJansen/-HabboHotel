@@ -79,9 +79,9 @@ for k in range(nr_tests):
         x_min = random.randint(0, 2 * (bound_x-100)) * 0.5
         y_min = random.randint(0, 2 * (bound_y-100)) * 0.5 
     else:
-        # else, place first piece in right upper corner
-        x_min = random.randint(120, 2 * (0.8 * bound_x - 20)) * 0.5
-        y_min = random.randint(120, 2 * (0.8 * bound_y - 20)) * 0.5
+        # else, place first piece randomly
+        x_min = random.randint(0, 2 * (0.8 * bound_x-10)) * 0.5
+        y_min = random.randint(0, 2 * (0.8 * bound_y-10)) * 0.5
     new_water = Water(x_min, y_min, piece_of_water + 1, pieces_of_water, surface_taken, water)
     
     # append first water to list
@@ -90,16 +90,9 @@ for k in range(nr_tests):
     piece_of_water += 1
     counter = 0
     while piece_of_water < pieces_of_water:
-        # each piece has their own random area, otherwise there is too much overlap between pieces
-        if piece_of_water + 1 == pieces_of_water:
-            x_min = random.randint(0, 2 * (bound_x-100)) * 0.5
-            y_min = random.randint(0, 2 * (bound_y-100)) * 0.5 
-        elif piece_of_water + 2 == pieces_of_water:
-            x_min = random.randint(0, 2 * (bound_x-100)) * 0.5
-            y_min = random.randint(120, 2 * (0.8*bound_y)) * 0.5 
-        else:
-            x_min = random.randint(130, 2 * (0.8 * bound_x)) * 0.5
-            y_min = random.randint(0, 2 * (bound_y - 80)) * 0.5
+        # place each piece randomly, padding on right/upper side
+        x_min = random.randint(0, 2 * (0.8 * bound_x-10)) * 0.5
+        y_min = random.randint(0, 2 * (0.8 * bound_y-10)) * 0.5
         
         # new piece of water
         new_water = Water(x_min, y_min, piece_of_water + 1, pieces_of_water, surface_taken, water)
