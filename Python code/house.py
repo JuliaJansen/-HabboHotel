@@ -178,14 +178,15 @@ def distance(house, houses):
 
     min_dist = min(min_dist_x, min_dist_y, min_diagonal, dist_bound)
 
-    # save closest neighbour of house
-    if min_dist == min_dist_x:
-        closest = space_x.index(min_dist_x)
-    elif min_dist == min_dist_y:
-        closest = space_y.index(min_dist_y)
-    elif min_dist == min_diagonal:
-        closest = space_diagonal.index(min_diagonal)
-    neighbour = houses[closest]
+    # save closest neighbour of house if neighbour is closer than bound
+    if min_dist != dist_bound:
+        if min_dist == min_dist_x:
+            closest = space_x.index(min_dist_x)
+        elif min_dist == min_dist_y:
+            closest = space_y.index(min_dist_y)
+        elif min_dist == min_diagonal:
+            closest = space_diagonal.index(min_diagonal)
+        neighbour = houses[closest]
 
     # get biggest freespace (of house or closest house)
     if house.freespace > neighbour.freespace:
@@ -306,14 +307,15 @@ def distance_exclusive(house, houses, index):
 
     min_dist = min(min_dist_x, min_dist_y, min_diagonal, dist_bound)
 
-    # save closest neighbour of house
-    if min_dist == min_dist_x:
-        closest = space_x.index(min_dist_x)
-    elif min_dist == min_dist_y:
-        closest = space_y.index(min_dist_y)
-    elif min_dist == min_diagonal:
-        closest = space_diagonal.index(min_diagonal)
-    neighbour = houses[closest]
+    # save closest neighbour of house if neighbour is closer than bound
+    if min_dist != dist_bound:
+        if min_dist == min_dist_x:
+            closest = space_x.index(min_dist_x)
+        elif min_dist == min_dist_y:
+            closest = space_y.index(min_dist_y)
+        elif min_dist == min_diagonal:
+            closest = space_diagonal.index(min_diagonal)
+        neighbour = houses[closest]
 
     # get biggest freespace (of house or closest house)
     if house.freespace > neighbour.freespace:
