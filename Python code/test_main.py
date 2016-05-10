@@ -50,9 +50,7 @@ egw_total = houses_total * 0.60
 
 # loop x times for testing
 for k in range(nr_tests):
-    if k % 100 == 0:
-        print k
-    
+
     # array of houses per test
     houses = []
 
@@ -80,17 +78,16 @@ for k in range(nr_tests):
     if pieces_of_water == 1:
         
         # if whole water surface goes in one piece, make sure to place it somehwere in the left bottom corner
-        x_min = random.randint(0, 2 * (bound_x-100)) * 0.5
-        y_min = random.randint(0, 2 * (bound_y-100)) * 0.5 
+        x_min = random.randint(0, 2 * (bound_x - 100)) * 0.5
+        y_min = random.randint(0, 2 * (bound_y - 100)) * 0.5 
+    
+    # else, place first piece randomly
     else:
-        # else, place first piece randomly
-        x_min = random.randint(60, 2 * (0.8 * bound_x-10)) * 0.5
-        y_min = random.randint(60, 2 * (0.8 * bound_y-10)) * 0.5
+        x_min = random.randint(0, 2 * (0.8 * bound_x - 10)) * 0.5
+        y_min = random.randint(0, 2 * (0.8 * bound_y - 10)) * 0.5
 
     # make new Water object and place it
-    new_water = Water(x_min, y_min, 0, 0) 
-    placeWater(new_water, new_water.x_min, new_water.y_min, piece_of_water + 1, pieces_of_water, surface_taken)
-    
+    new_water = NewWater(x_min, y_min, piece_of_water + 1, pieces_of_water, surface_taken, water)    
     # append first water to list
     water.append(new_water)
     surface_taken = new_water.surface
@@ -98,13 +95,16 @@ for k in range(nr_tests):
 
     while piece_of_water < pieces_of_water:
 
-        # find random x_min and y_min
-        x_min = random.randint(0, 2 * (0.8 * bound_x - 10)) * 0.5
-        y_min = random.randint(0, 2 * (0.8 * bound_y - 10)) * 0.5
+        # find semi random x_min and y_min
+        if pieces_of_water < 3:
+            x_min = random.randint(0, 2 * (bound_x - 100)) * 0.5
+            y_min = random.randint(0, 2 * (bound_y - 100)) * 0.5
+        else:
+            x_min = random.randint(0, 2 * (0.8 * bound_x - 10)) * 0.5
+            y_min = random.randint(0, 2 * (0.8 * bound_y - 10)) * 0.5
 
         # new piece of water
-        new_water = Water(x_min, y_min, 0, 0) 
-        placeWater(new_water, new_water.x_min, new_water.y_min, piece_of_water + 1, pieces_of_water, surface_taken)
+        new_water = NewWater(x_min, y_min, piece_of_water + 1, pieces_of_water, surface_taken, water)
     
         if distanceWater(new_water, water) == True:
             water.append(new_water)
