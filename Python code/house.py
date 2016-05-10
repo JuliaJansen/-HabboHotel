@@ -6,7 +6,10 @@
 
 import random
 import math
-from test_main import *
+
+# define bounds
+bound_x = 160
+bound_y = 150
 
 # different type of houses
 mais = "maison"
@@ -78,7 +81,6 @@ def getFreespace(type_house):
 
     if type_house == egw:
         return 2
-
 
 def distance(house, houses): 
     """
@@ -162,7 +164,7 @@ def distance(house, houses):
         xbound_dist = bound_x - house.x_max
 
     # distance to y bounds
-    if house.y_min < bound_y / 2 - 0.5 (house.height):
+    if house.y_min < bound_y / 2 - 0.5 * (house.height):
         ybound_dist = house.y_min
     else: 
         ybound_dist = bound_y - house.y_max
@@ -262,21 +264,21 @@ def distance_exclusive(house, houses, index):
         elif houses[j].x_min >= house.x_min and houses[j].y_min <= house.y_min:
             a = houses[j].x_min - house.x_max 
             b = house.y_min - houses[j].y_max 
-            c = (a**2 + b**2)**0.5
+            c = (a ** 2 + b ** 2) ** 0.5
             space_diagonal.append(c)
 
         # if house[j] is in left bottom corner of house
         elif houses[j].x_min <= house.x_min and houses[j].y_min >= house.y_min:
             a = house.x_min - houses[j].x_max 
             b = houses[j].y_min - house.y_max 
-            c = (a**2 + b**2)**0.5
+            c = (a ** 2 + b ** 2) ** 0.5
             space_diagonal.append(c)
 
         # if house[j] is in right bottom corner of house
         elif houses[j].x_min <= house.x_min and houses[j].y_min <= house.y_min:
             a = house.x_min - houses[j].x_max 
             b = house.y_min - houses[j].y_max 
-            c = (a**2 + b**2)**0.5
+            c = (a ** 2 + b ** 2) ** 0.5
             space_diagonal.append(c)
 
         # fill space_diagonal with fictional high value 
@@ -290,7 +292,7 @@ def distance_exclusive(house, houses, index):
         xbound_dist = bound_x - house.x_max
 
     # distance to y bounds
-    if house.y_min < bound_y / 2 - 0.5 (house.height):
+    if house.y_min < bound_y / 2 - 0.5 * (house.height):
         ybound_dist = house.y_min
     else: 
         ybound_dist = bound_y - house.y_max
@@ -384,28 +386,28 @@ def hill_distance(house, houses, index):
         if houses[j].x_min >= house.x_min and houses[j].y_min >= house.y_min:
             a = houses[j].x_min - house.x_max 
             b = houses[j].y_min - house.y_max 
-            c = (a**2 + b**2)**0.5
+            c = (a ** 2 + b ** 2) ** 0.5
             space_diagonal.append(c)
 
         # if house[j] is in right top corner of house
         elif houses[j].x_min >= house.x_min and houses[j].y_min <= house.y_min:
             a = houses[j].x_min - house.x_max 
             b = house.y_min - houses[j].y_max 
-            c = (a**2 + b**2)**0.5
+            c = (a ** 2 + b ** 2) ** 0.5
             space_diagonal.append(c)
 
         # if house[j] is in left bottom corner of house
         elif houses[j].x_min <= house.x_min and houses[j].y_min >= house.y_min:
             a = house.x_min - houses[j].x_max 
             b = houses[j].y_min - house.y_max 
-            c = (a**2 + b**2)**0.5
+            c = (a ** 2 + b ** 2) ** 0.5
             space_diagonal.append(c)
 
         # if house[j] is in right bottom corner of house
         elif houses[j].x_min <= house.x_min and houses[j].y_min <= house.y_min:
             a = house.x_min - houses[j].x_max 
             b = house.y_min - houses[j].y_max 
-            c = (a**2 + b**2)**0.5
+            c = (a ** 2 + b ** 2) ** 0.5
             space_diagonal.append(c)
 
         # fill space_diagonal with fictional high value 
