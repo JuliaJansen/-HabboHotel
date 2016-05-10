@@ -38,7 +38,7 @@ def plothisto(len_all_values, all_values, name, lowest, highest):
     plt.text(1300, -5000, "Test results histogram", fontsize=10)
 
     # save plot
-    plt.savefig('../plots/' + name + '.png', bbox_inches="tight")
+    plt.savefig('../plots/histo/' + name + '.png', bbox_inches="tight")
 
     # show plot
     plt.show()

@@ -14,6 +14,7 @@ import matplotlib.patches as patches
 
 # import other files
 from csv_writer import *
+from data_to_csv import *
 from water import * 
 from house import *
 from visuals import *
@@ -41,7 +42,7 @@ egw = "eengezinswoning"
 # to place and amount of tests
 houses_total = 20
 pieces_of_water = 2
-nr_tests = 1000
+nr_tests = 10000
 
 # create a variable to hold number of houses of each type
 mais_total = houses_total * 0.15
@@ -201,10 +202,6 @@ index_low = best_value.index(lowest)
 # calculate mean map value of tests
 mean_value = sum(best_value) / len(best_value)
 
-print "mean value = ", mean_value
-print "lowest value = ", lowest
-print "highest value = ", highest
-
 # save date/time to name plot
 stime = datetime.datetime.now().strftime("%I%M_%B_%d_")
 
@@ -213,18 +210,23 @@ stime = datetime.datetime.now().strftime("%I%M_%B_%d_")
 name1 = stime + str(houses_total) + "bestof" + str(nr_tests) + "_" + str(highest)
 name2 = stime + str(houses_total) + "worstof" + str(nr_tests) + "_" + str(lowest)
 name3 = stime + str(houses_total) + "_" + str(nr_tests)
+name4 = stime + "_data.csv"
 
 # calculate runtime
 runtime = (time.time() - start_time) / nr_tests
 print "one test time = ", runtime
 print("--- %s seconds ---" % (time.time() - start_time))
 
+# save data of map generation to csv
+data = houses_total, pieces_of_water, nr_tests, mean_value, highest, lowest, runtime
+data_to_csv(data, name4)
+
 # write best map to csv file
 csv_writer(all_maps[index_high], len(water), len(houses), highest)
 
-plothisto(len(best_value), best_value, name3, lowest, highest)
+# plothisto(len(best_value), best_value, name3, lowest, highest)
 
-# plot best and worst map
-plotmap(len(fill), all_maps[index_high], name1, houses_total)
-plotmap(len(fill), all_maps[index_low], name2, houses_total)
+# # plot best and worst map
+# plotmap(len(fill), all_maps[index_high], name1, houses_total)
+# plotmap(len(fill), all_maps[index_low], name2, houses_total)
 
