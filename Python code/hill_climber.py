@@ -17,7 +17,6 @@ import matplotlib.patches as patches
 # import other files
 from water import * 
 from house import *
-from hillclimber_distance import *
 from visuals import *
 from csv_reader import *
 
@@ -35,7 +34,7 @@ beginmap, houses, water, start_value = csv_reader("planned_map.csv", houses_tota
 
 print "value of first map", start_value
 
-first_map = beginmap
+# initialise variables
 best_houses = houses
 temporary_houses = best_houses
 temporary_map = beginmap
@@ -47,7 +46,7 @@ nr_of_tests = 1000
 
 for i in range(nr_of_tests):
 
-	tracker = 0
+	index = 0
 
 	# set temporary value to 0
 	temporary_value = 0
@@ -62,8 +61,10 @@ for i in range(nr_of_tests):
 		freespace = house.freespace
 
 		# update x and y
-		x_new = house.x_min + (random.randrange(-4, 4) * 0.5)
-		y_new = house.y_min + (random.randrange(-4, 4) * 0.5)
+		x_new = house.x_min + (random.randint(-4, 4) * 0.5)
+		y_new = house.y_min + (random.randint(-4, 4) * 0.5)
+
+		# print "nieuwe x en y = ", x_new - house.x_min, y_new - house.y_min
 
 		# update temporary map with new house
 		temp_house = House(x_new, y_new, type_house)
@@ -71,20 +72,22 @@ for i in range(nr_of_tests):
 		# make sure houses don't move of the fiels
 		if temp_house.x_min < temp_house.freespace or temp_house.x_max > (160 - temp_house.freespace) or \
 			temp_house.y_min < 0 or temp_house.freespace > (150 - temp_house.freespace):
+			index += 1
 			continue
 
 		# if house will be moved to water, continue to next house
 		if distanceWater(temp_house, water) == False:
+			index += 1
 			continue
 
 		# make sure houses don't overlap
-		temp_distance = hill_distance(temp_house, best_houses, tracker)
+		temp_distance = hill_distance(temp_house, best_houses, index)
 		if temp_distance > 0:
-			temporary_houses[tracker] = House(temp_house.x_min, temp_house.y_min, temp_house.type_house)
-			temporary_houses[tracker].updateDistance(temp_distance)
+			temporary_houses[index] = House(temp_house.x_min, temp_house.y_min, temp_house.type_house)
+			temporary_houses[index].updateDistance(temp_distance)
 
 		# update variable to track were in the map we are
-			tracker += 1
+		index = index + 1
 
 	# check how much value this new map generates  
 	for k in range(len(temporary_houses)):
@@ -107,8 +110,6 @@ for i in range(nr_of_tests):
 
 	# update our map with the new house if total value of map is higher
 	if temporary_value > best_value:
-		print "best_value nu = ",  best_value
-		print "temp value nu = ", temporary_value
 		best_houses = temporary_houses 
 		best_value = temporary_value
 
@@ -117,10 +118,10 @@ for i in range(nr_of_tests):
 
 name2 = "after" + str(best_value)
 
-temporary_map = best_houses + water
+best_map = best_houses + water
 
-plotmap(len(first_map), first_map, name1, houses_total)
-plotmap(len(first_map), temporary_map, name2, houses_total)
+# plotmap(len(beginmap), beginmap, name1, houses_total)
+plotmap(len(beginmap), best_map, name2, houses_total)
 
 
 
