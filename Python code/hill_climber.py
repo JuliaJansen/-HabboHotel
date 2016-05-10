@@ -10,6 +10,7 @@ import csv
 import pylab
 import random
 import math
+import copy
 import matplotlib.pyplot as plt
 from matplotlib.path import Path
 import matplotlib.patches as patches
@@ -32,17 +33,17 @@ pieces_of_water = 4
 # get best best from file
 beginmap, houses, water, start_value = csv_reader("planned_map.csv", houses_total, pieces_of_water)
 
-print "value of first map", start_value
+print ("value of first map", start_value)
 
 # initialise variables
-best_houses = houses
-temporary_houses = best_houses
+best_houses = list(houses)
+temporary_houses = list(best_houses)
 temporary_map = beginmap
 best_value = start_value
 temporary_value = 0
 
 name1 = "before" + str(start_value)
-nr_of_tests = 1000
+nr_of_tests = 20
 
 for i in range(nr_of_tests):
 
@@ -50,6 +51,8 @@ for i in range(nr_of_tests):
 
 	# set temporary value to 0
 	temporary_value = 0
+
+	print "run //////////////////////// :", i
 
 	# loop over each house, and move it once
 	for house in best_houses:
@@ -81,7 +84,7 @@ for i in range(nr_of_tests):
 			continue
 
 		# make sure houses don't overlap
-		temp_distance = hill_distance(temp_house, best_houses, index)
+		temp_distance = distance_exclusive(temp_house, best_houses, index)
 		if temp_distance > 0:
 			temporary_houses[index] = House(temp_house.x_min, temp_house.y_min, temp_house.type_house)
 			temporary_houses[index].updateDistance(temp_distance)
@@ -110,11 +113,17 @@ for i in range(nr_of_tests):
 
 	# update our map with the new house if total value of map is higher
 	if temporary_value > best_value:
-		best_houses = temporary_houses 
+		print "nr test:", i, "temporary_value:", temporary_value, "best value:", best_value
+		best_houses = list(temporary_houses) 
 		best_value = temporary_value
 
+	# print maps
+	for j in range(4):
+		print "TEMPORARY HOUSES :::: ", temporary_houses[j].x_min, temporary_houses[j].y_min
+		print "BEST HOUSES ::::::::: ", best_houses[j].x_min, best_houses[j].y_min
+	
 # FF CHECKEN
-# print "best value = ", best_value
+print ("best value = ", best_value)
 
 name2 = "after" + str(best_value)
 
