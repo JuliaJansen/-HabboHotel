@@ -111,8 +111,6 @@ def plotmap(len_fill, a_map, name, houses_total):
         ax.set_xlim(0,160)
         ax.set_ylim(0,150)
 
-    print "before show plot map"
-
     # show plot
     plt.show()
 
