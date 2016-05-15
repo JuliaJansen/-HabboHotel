@@ -31,7 +31,7 @@ houses_total = 20
 pieces_of_water = 4
 
 # get best best from file
-beginmap, houses, water, start_value = csv_reader("output.csv", houses_total, pieces_of_water)
+beginmap, houses, water, start_value = csv_reader("centered_housing.csv", houses_total, pieces_of_water)
 
 print ("value of first map", start_value)
 
@@ -42,16 +42,15 @@ temporary_map = beginmap
 best_value = start_value
 temporary_value = 0
 
-# values for simulated annealing, change as you feel fit
-temperature = 100
-prob_accept = 20
-stop_value = 5
-cooldown_rate = 0.99
-
 name1 = str(start_value) + "before" 
-nr_of_tests = 100000
+nr_of_tests = 10000
 
-while temperature > stop_value:
+# values for simulated annealing, change as you feel fit
+temperature = 10000
+cooldown_rate = 0.99
+winning = 0
+
+for i in range(nr_of_tests):
 
 	index = 0
 
@@ -59,7 +58,7 @@ while temperature > stop_value:
 	for house in best_houses:
 
 		# prob for this house for simulated annealing
-		prob_house = random.uniform(0, temperature)
+		# prob_house = random.uniform(0, temperature)
 
 		# set temporary value to 0
 		temporary_value = 0
@@ -122,17 +121,30 @@ while temperature > stop_value:
 			# total value is addition of values per loop
 			temporary_value += value
 
+		# probability to accept, update each time
+		prob_accept = random.uniform(0, temperature) / temperature
+		check_value = random.uniform(0.2, 1)
+
+		if prob_accept>= check_value:
+			winning += 1
+
 		# update our map with the new house if total value of map is higher or because of SA probability
-		if temporary_value < best_value or prob_house >= prob_accept:
-			# print "nr test:", i, "temporary_value:", temporary_value, "best value:", best_value
-			best_houses[index] = temp_house 
-		else:
+		if temporary_value > best_value or prob_accept >= check_value:
 			best_value = temporary_value
+			print("improved")
+		
+		else:
+			best_houses[index] = temp_house 
+
+
+		print(prob_accept, check_value)
+		print ""
+
 
 		# update variable to track were in the map we are
 		index = index + 1
+#		temperature = 1.0 / float(i + 1)
 		temperature = temperature * cooldown_rate
-
 
 	# # print maps
 	# for j in range(4):
@@ -141,6 +153,7 @@ while temperature > stop_value:
 	
 # FF CHECKEN
 print ("best value = ", best_value)
+print("winning = ", winning)
 
 name2 = str(best_value) + "after"
 
