@@ -23,7 +23,8 @@ from visuals import *
 # global variables
 start_time = time.time()
 the_best = []
-best_value = []
+moneyvalues = []
+distances = []
 
 # sum all total values
 sum_of_total_values = 0
@@ -41,8 +42,8 @@ egw = "eengezinswoning"
 # change how you like: houses to place, pieces of water
 # to place and amount of tests
 houses_total = 20
-pieces_of_water = 2
-nr_tests = 10000
+pieces_of_water = 3
+nr_tests = 1000
 
 # create a variable to hold number of houses of each type
 mais_total = houses_total * 0.15
@@ -65,7 +66,8 @@ for k in range(nr_tests):
 
     # set total value to 0
     total_value = 0
-    
+    total_distance = 0
+
     # maximal values of field
     bound_x = 160
     bound_y = 150
@@ -165,7 +167,7 @@ for k in range(nr_tests):
                 houses.append(new)
                 i += 1
 
-    # Calculate total value of Amstelhaege
+    # Calculate total money value of Amstelhaege
     for k in range(len(houses)):
         extraspace = math.floor(houses[k].getDistance() - houses[k].getFreespace())
         
@@ -185,31 +187,61 @@ for k in range(nr_tests):
         total_value += value
         
     # initiate the best list and update in later sessions
-    best_value.append(total_value)
+    moneyvalues.append(total_value)
+
+    # Calculate total freespace of Amstelhaege
+    for l in range(len(houses)):
+        house_distance = houses[l].distance
+        total_distance += house_distance
+
+    # append freespace of current map to list with freespace data of all maps
+    distances.append(total_distance)
 
     #save houses-array in list 
     fill = houses + water
     all_maps.append(fill)
 
-# find map with highest value from tests
-highest = max(best_value)
-index_high = best_value.index(highest)
+# find map with highest_value value from tests
+highest_value = max(moneyvalues)
+index_high_value = moneyvalues.index(highest_value)
+print index_high_value
 
-# find map with lowest value from tests
-lowest = min(best_value)
-index_low = best_value.index(lowest)
+# find map with lowest_value value from tests
+lowest_value = min(moneyvalues)
+index_low_value = moneyvalues.index(lowest_value)
 
 # calculate mean map value of tests
-mean_value = sum(best_value) / len(best_value)
+mean_value = sum(moneyvalues) / len(moneyvalues)
+
+# find map with most overall freespace
+most_freespace = max(distances)
+index_most_freespace = distances.index(most_freespace)
+print index_most_freespace
+
+# find map with least overall freespace
+least_freespace = min(distances)
+index_least_freespace = distances.index(least_freespace)
+
+# find mean freespace per map of all maps
+mean_freespace = sum(distances) / len(distances)
+
+# print for testing
+print "mean_value = ", mean_value
+print "mean_freespace = ", mean_freespace
+print "highest_value = ", highest_value
+print "most_freespace = ", most_freespace
+print "freespace highest map = ", distances[index_high_value]
+print "freespace lowest map = ", distances[index_low_value]
 
 # save date/time to name plot
 stime = datetime.datetime.now().strftime("%I%M_%B_%d_")
 
 # names of figures:
 # hourminute_month_day_amountofhouses_best/worst_nr.oftests_value.of.map
-name1 = stime + str(houses_total) + "bestof" + str(nr_tests) + "_" + str(highest)
-name2 = stime + str(houses_total) + "worstof" + str(nr_tests) + "_" + str(lowest)
+name1 = stime + str(houses_total) + "bestof" + str(nr_tests) + "_" + str(highest_value)
+name2 = stime + str(houses_total) + "worstof" + str(nr_tests) + "_" + str(lowest_value)
 name3 = stime + str(houses_total) + "_" + str(nr_tests)
+name5 = stime + str(houses_total) + "_" + str(nr_tests)
 name4 = stime + "_data.csv"
 
 # calculate runtime
@@ -218,15 +250,17 @@ print "one test time = ", runtime
 print("--- %s seconds ---" % (time.time() - start_time))
 
 # save data of map generation to csv
-data = houses_total, pieces_of_water, nr_tests, mean_value, highest, lowest, runtime
+data = houses_total, pieces_of_water, nr_tests, mean_value, highest_value, lowest_value, runtime
 data_to_csv(data, name4)
 
 # write best map to csv file
-csv_writer(all_maps[index_high], len(water), len(houses), highest)
+csv_writer(all_maps[index_high_value], len(water), len(houses), highest_value)
 
-# plothisto(len(best_value), best_value, name3, lowest, highest)
+# plot histogram
+# plothisto(len(moneyvalues), moneyvalues, name3, lowest_value, highest_value)
+# plothisto(len(distances), distances, name5, least_freespace, most_freespace)
 
-# # plot best and worst map
-# plotmap(len(fill), all_maps[index_high], name1, houses_total)
-# plotmap(len(fill), all_maps[index_low], name2, houses_total)
+# plot best and worst map
+plotmap(len(fill), all_maps[index_high_value], name1, houses_total)
+plotmap(len(fill), all_maps[index_low_value], name2, houses_total)
 
