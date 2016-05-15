@@ -109,7 +109,7 @@ def distanceWater(obj, water):
             
             # check of water is placed to the left or the right 
             if water[w].x_min > obj.x_min:
-                distance_x = water[w].x_min - obj.x_min - obj.width 
+                distance_x = water[w].x_min - obj.x_min - obj.width
             else:
                 distance_x = obj.x_min - water[w].x_min - water[w].width 
         else:

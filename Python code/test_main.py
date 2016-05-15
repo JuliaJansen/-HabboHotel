@@ -42,8 +42,8 @@ egw = "eengezinswoning"
 # change how you like: houses to place, pieces of water
 # to place and amount of tests
 houses_total = 20
-pieces_of_water = 1
-nr_tests = 10000
+pieces_of_water = 3
+nr_tests = 100000
 
 # create a variable to hold number of houses of each type
 mais_total = houses_total * 0.15
@@ -255,7 +255,8 @@ data = houses_total, pieces_of_water, nr_tests, mean_value, highest_value, lowes
 data_to_csv(data, 'datadata.csv')
 
 # write best map to csv file
-csv_writer(all_maps[index_low_value], pieces_of_water, houses_total, lowest_value)
+csv_writer(all_maps[index_low_value], pieces_of_water, houses_total, lowest_value, "low_output.csv")
+csv_writer(all_maps[index_high_value], pieces_of_water, houses_total, highest_value, "high_output.csv")
 
 # plot histograms
 plothisto(len(moneyvalues), moneyvalues, name3, lowest_value, highest_value)
