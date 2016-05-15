@@ -4,6 +4,7 @@
 #
 
 import csv
+import datetime
 
 def csv_writer(mappie, nr_water, nr_houses, map_value):
     """
@@ -32,7 +33,7 @@ def csv_writer(mappie, nr_water, nr_houses, map_value):
     MAIN.append([map_value])
 
     # write MAIN to csv file
-    with open('planned_map.csv', 'wb') as csvfile:
+    with open("low_output.csv", 'wb') as csvfile:
         writer = csv.writer(csvfile, delimiter=',', quotechar=',', quoting=csv.QUOTE_MINIMAL)   
         for thing in MAIN:
             writer.writerow(thing)

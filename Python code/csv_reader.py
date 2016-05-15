@@ -14,7 +14,7 @@ def csv_reader(filename, houses_total, pieces_of_water):
     """
     # open csv file, define fieldnames for houses, instantiate the reader
     csvfile = open(filename, 'r')
-    fieldnames = ("one","two","three", "four")
+    fieldnames = ('one','two','three', 'four')
     reader = csv.DictReader(csvfile, fieldnames)
 
     # lists to contain houses and water
@@ -28,7 +28,8 @@ def csv_reader(filename, houses_total, pieces_of_water):
     count_row = 0
     for row in reader:
         
-        if (count_row < houses_total):
+        # turn houses into house objects
+        if count_row < houses_total:
             x_min = float(row['one'])
             y_min = float(row['two'])
             type_house = row['three']
@@ -37,15 +38,18 @@ def csv_reader(filename, houses_total, pieces_of_water):
             new_house.updateDistance(distance)
             houses.append(new_house)
         
-        elif (count_row >= houses_total and count_row < total_items):
+        # turn water into water objects
+        elif count_row >= houses_total and count_row < total_items:
             x_min = float(row['one'])
+            print "type = ", type(row['two'])
             y_min = float(row['two'])
             x_max = float(row['three'])
             y_max = float(row['four'])
             new_water = Water(x_min, y_min, x_max, y_max)
             water.append(new_water)
         
-        elif (count_row == total_items):
+        # read value of map
+        elif count_row == total_items:
             map_value = float(row['one'])
         
         count_row += 1
