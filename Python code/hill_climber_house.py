@@ -70,10 +70,10 @@ for i in range(nr_of_tests):
 		# y_new = house.y_min + (random.randint(-4, 4) * 0.5)
 
 		# update x and y (random version)
-		x_new = random.randrange(getFreespace(type_house), 2 * \
-			(bound_x - house.width - 1)) * 0.5
-		y_new = random.randrange(getFreespace(type_house), 2 * \
-			(bound_y - house.height - 1)) * 0.5
+		x_new = random.randrange(2 * getFreespace(type_house), 2 * \
+			(bound_x - house.width - freespace)) * 0.5
+		y_new = random.randrange(2 * getFreespace(type_house), 2 * \
+			(bound_y - house.height - freespace)) * 0.5
 
 
 		# print "nieuwe x en y = ", x_new - house.x_min, y_new - house.y_min
