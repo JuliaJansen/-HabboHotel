@@ -3,7 +3,6 @@
 # Julia, Maarten en Maarten
 
 import datetime
-import random
 import math
 import pylab
 import matplotlib.pyplot as plt
@@ -101,9 +100,11 @@ def plotmap(len_fill, a_map, name, houses_total):
     ax = fig.add_subplot(111, aspect='equal')
 
     for m in range(len_fill):
-    # add paths maison in gold
+
+        # add paths maison in gold
         if m < mais_total:
             patch_list.append(patches.PathPatch(path[m], facecolor="#009999", lw=2))
+        
         # add paths bungalows in orange
         elif m < mais_total + bung_total:
             patch_list.append(patches.PathPatch(path[m], facecolor="#cc6600", lw=2))

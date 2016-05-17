@@ -254,7 +254,6 @@ def distance_exclusive(house, houses, index):
     Returns distance to closest house.
     Distance is negative if closest house overlaps with house
     """   
-
     space_diagonal = []
     space_x = []
     space_y = []
