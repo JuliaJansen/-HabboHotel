@@ -7,19 +7,20 @@
 
 import datetime
 import csv
-import pylab
+# import pylab
 import random
 import math
 import copy
-import matplotlib.pyplot as plt
-from matplotlib.path import Path
-import matplotlib.patches as patches
+# import matplotlib.pyplot as plt
+# from matplotlib.path import Path
+# import matplotlib.patches as patches
 
 # import other files
 from water import * 
 from house import *
-from visuals import *
+# from visuals import *
 from csv_reader import *
+from csv_writer import *
 
 # different type of houses
 mais = "maison"
@@ -27,11 +28,11 @@ bung = "bungalow"
 egw = "eengezinswoning"
 
 # fill in as you like :)
-houses_total = 20
-pieces_of_water = 4
+houses_total = 60
+pieces_of_water = 3
 
 # get best best from file
-beginmap, houses, water, start_value = csv_reader("output.csv", houses_total, pieces_of_water)
+beginmap, houses, water, start_value = csv_reader("0638_May_16_.csv", houses_total, pieces_of_water)
 
 print ("value of first map", start_value)
 
@@ -49,6 +50,9 @@ for i in range(nr_of_tests):
 
 	index = 0
 
+	if i % 1000 == 0:
+		print i
+
 	# loop over each house, and move it once
 	for house in best_houses:
 
@@ -61,9 +65,16 @@ for i in range(nr_of_tests):
 		type_house = house.type_house
 		freespace = house.freespace
 
-		# update x and y
-		x_new = house.x_min + (random.randint(-4, 4) * 0.5)
-		y_new = house.y_min + (random.randint(-4, 4) * 0.5)
+		# update x and y (small version)
+		# x_new = house.x_min + (random.randint(-4, 4) * 0.5)
+		# y_new = house.y_min + (random.randint(-4, 4) * 0.5)
+
+		# update x and y (random version)
+		x_new = random.randrange(getFreespace(type_house), 2 * \
+			(bound_x - house.width - 1)) * 0.5
+		y_new = random.randrange(getFreespace(type_house), 2 * \
+			(bound_y - house.height - 1)) * 0.5
+
 
 		# print "nieuwe x en y = ", x_new - house.x_min, y_new - house.y_min
 
@@ -136,8 +147,11 @@ name2 = str(best_value) + "after"
 
 best_map = best_houses + water
 
-plotmap(len(beginmap), beginmap, name1, houses_total)
-plotmap(len(beginmap), best_map, name2, houses_total)
+csv_writer(best_map, pieces_of_water, houses_total, best_value, "bestbest.csv")
+
+
+# plotmap(len(beginmap), beginmap, name1, houses_total)
+# plotmap(len(beginmap), best_map, name2, houses_total)
 
 
 
