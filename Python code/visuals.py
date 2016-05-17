@@ -12,10 +12,13 @@ from numpy.random import normal
 import matplotlib.patches as patches
 import numpy as np
 
-def plothisto(len_all_values, all_values, name, lowest, highest):
+def plothisto(len_all_values, all_values, name, lowest, highest, mean):
     """
     Plot histogram values maps
     """
+    # mean of distribution
+    mu = mean
+    sigma = np.std(all_values)
 
     # size of plot
     plt.figure(figsize=(12, 9)) 
@@ -29,19 +32,29 @@ def plothisto(len_all_values, all_values, name, lowest, highest):
     ax.get_xaxis().tick_bottom()  
     ax.get_yaxis().tick_left()  
 
+    plt.axis([lowest, highest, 0, len_all_values/18])
     # size of ticks
-    # # plt.xticks(range(lowest, highest, 10), fontsize=14)  
-    plt.yticks(range(100, len_all_values, 1000), fontsize=14)  
+    # plt.yticks((range(100, len_all_values, 1000) / len_all_values), fontsize=14)  
 
     # ax labels
     plt.xlabel("Value Map", fontsize=16)  
-    plt.ylabel("Count", fontsize=16)  
+    plt.ylabel("Count (bins = 150)", fontsize=16)  
 
     # plot data from list
     plt.hist(all_values, color="#3F5D7D", bins=150)  
 
+    # title
+    plt.title("Histogram of test results")
+
     # explanation under graph
-    plt.text(1300, -5000, "Test results histogram", fontsize=10)
+    plt.text(0.7, 0.93, "mean = " + str(mean) + "  " + r"$\sigma="+ str(sigma) + "$", 
+        fontsize=12,
+        horizontalalignment='center',
+        verticalalignment='center',
+        transform = ax.transAxes)
+
+    # show grid
+    plt.grid(True, which='both', color='0.65',linestyle='-')
 
     # show plot
     plt.show()

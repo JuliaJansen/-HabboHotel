@@ -42,8 +42,8 @@ egw = "eengezinswoning"
 # change how you like: houses to place, pieces of water
 # to place and amount of tests
 houses_total = 20
-pieces_of_water = 3
-nr_tests = 100000
+pieces_of_water = 1
+nr_tests = 10000
 
 # create a variable to hold number of houses of each type
 mais_total = houses_total * 0.15
@@ -226,43 +226,51 @@ index_least_freespace = distances.index(least_freespace)
 # find mean freespace per map of all maps
 mean_freespace = sum(distances) / len(distances)
 
-# # print for testing
-# print "mean_value = ", mean_value
-# print "mean_freespace = ", mean_freespace
-print "highest_value = ", highest_value
-print "lowest value = ", lowest_value
-# print "most_freespace = ", most_freespace
-print "index high = ", index_high_value
-print "index low = ", index_low_value
-
 # save date/time to name plot
 stime = datetime.datetime.now().strftime("%I%M_%B_%d_")
 
 # names of figures:
 # hourminute_month_day_amountofhouses_best/worst_nr.oftests_value.of.map
-name1 = stime + str(houses_total) + "bestof" + str(nr_tests) + "_" + str(highest_value)
-name2 = stime + str(houses_total) + "worstof" + str(nr_tests) + "_" + str(lowest_value)
-name3 = stime + str(houses_total) + "_" + str(nr_tests)
-name5 = stime + str(houses_total) + "_" + str(nr_tests)
+name1 = stime + str(houses_total) + "bestvalue" + str(nr_tests) + "_" + str(highest_value)
+name2 = stime + str(houses_total) + "worstvalue" + str(nr_tests) + "_" + str(lowest_value)
+name3 = stime + str(houses_total) + "mostfreespace" + str(nr_tests) + "_" + str(most_freespace)
+name4 = stime + str(houses_total) + "leastfreespace" + str(nr_tests) + "_" + str(least_freespace)
+
+name5 = name1 + ".csv"
+name6 = name2 + ".csv"
+name7 = name3 + ".csv"
+name8 = name4 + ".csv"
+
+name9 = stime + str(houses_total) + "_" + str(nr_tests)
+name10 = stime + str(houses_total) + "_" + str(nr_tests)
+
+name11 = "data_" + str(houses_total) + str(pieces_of_water) + stime + ".csv"
 
 # calculate runtime
 runtime = (time.time() - start_time) / nr_tests
 print "one test time = ", runtime
 print("--- %s seconds ---" % (time.time() - start_time))
 
+# # plot best and worst map
+# plotmap(len(fill), all_maps[index_high_value], name1, houses_total)
+# plotmap(len(fill), all_maps[index_low_value], name2, houses_total)
+
+# # plot maps with most and least value
+# plotmap(len(fill), all_maps[index_most_freespace], name3, houses_total)
+# plotmap(len(fill), all_maps[index_least_freespace], name4, houses_total)
+
+# # write best and worst map to csv file
+# csv_writer(all_maps[index_high_value], pieces_of_water, houses_total, highest_value, name5)
+# csv_writer(all_maps[index_low_value], pieces_of_water, houses_total, lowest_value, name6)
+# csv_writer(all_maps[index_most_freespace], pieces_of_water, houses_total, most_freespace, name7)
+# csv_writer(all_maps[index_least_freespace], pieces_of_water, houses_total, least_freespace, name8)
+
 # save data of map generation to csv
 data = houses_total, pieces_of_water, nr_tests, mean_value, highest_value, lowest_value, runtime
-data_to_csv(data, 'datadata.csv')
-
-# write best map to csv file
-csv_writer(all_maps[index_low_value], pieces_of_water, houses_total, lowest_value, "low_output.csv")
-csv_writer(all_maps[index_high_value], pieces_of_water, houses_total, highest_value, "high_output.csv")
+data_to_csv(data, name11)
 
 # plot histograms
-plothisto(len(moneyvalues), moneyvalues, name3, lowest_value, highest_value)
-plothisto(len(distances), distances, name5, least_freespace, most_freespace)
+plothisto(len(moneyvalues), moneyvalues, name9, lowest_value, highest_value, mean_value)
+plothisto(len(distances), distances, name10, least_freespace, most_freespace, mean_freespace)
 
-# plot best and worst map
-plotmap(len(fill), all_maps[index_high_value], name1, houses_total)
-plotmap(len(fill), all_maps[index_low_value], name2, houses_total)
 
