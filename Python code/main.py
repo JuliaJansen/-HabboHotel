@@ -44,7 +44,7 @@ egw = "eengezinswoning"
 # to place and amount of tests
 houses_total = 20
 pieces_of_water = 1
-nr_tests = 1000
+nr_tests = 10000
 
 # create a variable to hold number of houses of each type
 mais_total = houses_total * 0.15
@@ -137,19 +137,19 @@ runtime = (time.time() - start_time) / nr_tests
 print "one test time = ", runtime
 print("--- %s seconds ---" % (time.time() - start_time))
 
-# # plot best and worst map
-# plotmap(len(fill), all_maps[index_high_value], name1, houses_total)
-# plotmap(len(fill), all_maps[index_low_value], name2, houses_total)
+# plot best and worst map
+plotmap(len(fill), all_maps[index_high_value], name1, houses_total)
+plotmap(len(fill), all_maps[index_low_value], name2, houses_total)
 
-# # plot maps with most and least value
-# plotmap(len(fill), all_maps[index_most_freespace], name3, houses_total)
-# plotmap(len(fill), all_maps[index_least_freespace], name4, houses_total)
+# plot maps with most and least value
+plotmap(len(fill), all_maps[index_most_freespace], name3, houses_total)
+plotmap(len(fill), all_maps[index_least_freespace], name4, houses_total)
 
-# # write best and worst map to csv file
-# csv_writer(all_maps[index_high_value], pieces_of_water, houses_total, highest_value, name5)
-# csv_writer(all_maps[index_low_value], pieces_of_water, houses_total, lowest_value, name6)
-# csv_writer(all_maps[index_most_freespace], pieces_of_water, houses_total, most_freespace, name7)
-# csv_writer(all_maps[index_least_freespace], pieces_of_water, houses_total, least_freespace, name8)
+# write best and worst map to csv file
+csv_writer(all_maps[index_high_value], pieces_of_water, houses_total, highest_value, name5)
+csv_writer(all_maps[index_low_value], pieces_of_water, houses_total, lowest_value, name6)
+csv_writer(all_maps[index_most_freespace], pieces_of_water, houses_total, most_freespace, name7)
+csv_writer(all_maps[index_least_freespace], pieces_of_water, houses_total, least_freespace, name8)
 
 # save data of map generation to csv
 data = houses_total, pieces_of_water, nr_tests, mean_value, highest_value, lowest_value, runtime

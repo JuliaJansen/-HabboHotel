@@ -9,7 +9,6 @@ import random
 import math
 import time
 
-from house import *
 from visuals import *
 
 # global variable
