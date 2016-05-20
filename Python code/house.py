@@ -459,6 +459,8 @@ def placeHouses(water, houses_total):
 
     # update distance of first house
     update = distance_exclusive(houses[0], houses, 0)
+    if distance_exclusive(houses[0], houses, 0) < 0:
+        csv_writer((houses + water),  len(water), len(houses), 100, "fout.csv")
 
     # return filled houses array
     return houses
