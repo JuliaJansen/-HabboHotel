@@ -31,16 +31,16 @@ def plothisto(len_all_values, all_values, name, lowest, highest, mean):
     ax.get_xaxis().tick_bottom()  
     ax.get_yaxis().tick_left()  
 
-    plt.axis([lowest, highest, 0, len_all_values/18])
+    plt.axis([lowest, highest, 0, len_all_values/15])
     # size of ticks
     # plt.yticks((range(100, len_all_values, 1000) / len_all_values), fontsize=14)  
 
     # ax labels
     plt.xlabel("Value Map", fontsize=16)  
-    plt.ylabel("Count (bins = 150)", fontsize=16)  
+    plt.ylabel("Count (bins = 100)", fontsize=16)  
 
     # plot data from list
-    plt.hist(all_values, color="#3F5D7D", bins=150)  
+    plt.hist(all_values, color="#3F5D7D", bins=100)  
 
     # title
     plt.title("Histogram of test results")
