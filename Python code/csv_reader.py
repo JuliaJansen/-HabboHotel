@@ -5,10 +5,10 @@
 ###########################################
 
 import csv
-from house import *
-from water import *
+# from house import *
+# from water import *
 
-def csv_reader(filename, houses_total, pieces_of_water):
+def csv_reader(filename):
     """
     Writes the values of a map to csv file named datetime_output.csv
     """
@@ -21,13 +21,27 @@ def csv_reader(filename, houses_total, pieces_of_water):
     houses = []
     water = []
     map_value = 0
+    houses_total = 0
+    pieces_of_water = 0
 
-    total_items = houses_total + pieces_of_water 
+    number_of_rows = len(list(csv.reader(open(filename))))
+    print("rows: ", number_of_rows)
 
-    # read in houses -> water -> value
+    # get number of houses and pieces of water
+    if number_of_rows < 30:
+        houses_total = 20
+        pieces_of_water = number_of_rows - houses_total - 1
+    elif number_of_rows < 50:
+        houses_total = 40
+        pieces_of_water = number_of_rows - houses_total - 1
+    else:
+        houses_total = 60
+        pieces_of_water = number_of_rows - houses_total - 1
+
+    # finally, read in houses -> water -> value
     count_row = 0
     for row in reader:
-        
+
         # turn houses into house objects
         if count_row < houses_total:
             x_min = float(row['one'])
@@ -51,12 +65,12 @@ def csv_reader(filename, houses_total, pieces_of_water):
         # read value of map
         elif count_row == total_items:
             map_value = float(row['one'])
-        
+
         count_row += 1
 
-    # return map and map value
+    # # return map and map value
     full_map = houses + water
-    return (full_map, houses, water, map_value)
+    return (full_map, houses, water, map_value, houses_total, pieces_of_water)
 
 
 

@@ -31,7 +31,7 @@ def csv_writer(mappie, nr_water, nr_houses, map_value, name):
 
     # append the value of this map to the end of the list
     MAIN.append([map_value])
-
+    
     # write MAIN to csv file
     with open(name, 'wb') as csvfile:
         writer = csv.writer(csvfile, delimiter=',', quotechar=',', quoting=csv.QUOTE_MINIMAL)   
