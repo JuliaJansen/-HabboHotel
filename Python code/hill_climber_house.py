@@ -7,13 +7,13 @@
 
 import datetime
 import csv
-# import pylab
+import pylab
 import random
 import math
 import copy
-# import matplotlib.pyplot as plt
-# from matplotlib.path import Path
-# import matplotlib.patches as patches
+import matplotlib.pyplot as plt
+from matplotlib.path import Path
+import matplotlib.patches as patches
 
 # import other files
 from water import * 
@@ -27,113 +27,92 @@ mais = "maison"
 bung = "bungalow"
 egw = "eengezinswoning"
 
-# fill in as you like :)
-houses_total = 40
-pieces_of_water = 2
+# # fill in as you like :)
+# houses_total = 40
+# pieces_of_water = 2
 
 # get best best from file
-beginmap, houses, water, start_value = csv_reader("40h_2w_24527310_(random).csv", houses_total, pieces_of_water)
+beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("40h_2w_24527310_(random).csv", houses_total, pieces_of_water)
 
 print ("value of first map", start_value)
 
 # initialise variables
 best_houses = list(houses)
-temporary_houses = list(best_houses)
 temporary_map = beginmap
 best_value = start_value
 temporary_value = 0
 
 name1 = str(start_value) + "before" 
-nr_of_tests = 100000
+nr_of_tests = 1000
 
-for i in range(nr_of_tests):
+for k in range(nr_of_tests):
 
-	index = 0
-
-	if i % 1000 == 0:
-		print i
+	if k % 1000 == 0:
+		print k
 
 	# loop over each house, and move it once
-	for house in best_houses:
+	for index, house in enumerate(best_houses):
 
 		# set temporary value to 0
 		temporary_value = 0
 
-		# get specifics of that house
-		x_min = house.x_min
-		y_min = house.y_min
-		type_house = house.type_house
-		freespace = house.freespace
+		# copy best_houses
+		temporary_houses = list(best_houses)
 
-		# update x and y (small version)
-		# x_new = house.x_min + (random.randint(-4, 4) * 0.5)
-		# y_new = house.y_min + (random.randint(-4, 4) * 0.5)
+		# replace house in temporary array
+		temporary_houses = list(changeHouse(temporary_houses, house, index, water)) 
 
-		# update x and y (random version)
-		x_new = random.randrange(2 * getFreespace(type_house), 2 * \
-			(bound_x - house.width - freespace)) * 0.5
-		y_new = random.randrange(2 * getFreespace(type_house), 2 * \
-			(bound_y - house.height - freespace)) * 0.5
+		# # save old house
+		# temp_house = house
 
-
-		# print "nieuwe x en y = ", x_new - house.x_min, y_new - house.y_min
-
-		# save old house
-		temp_house = house
-
-		# update temporary map with new house
-		house = House(x_new, y_new, type_house)
-		best_houses[index] = house
+		# # update temporary map with new house
+		# house = House(x_new, y_new, type_house)
+		# best_houses[index] = house
 		
-		# make sure houses don't move out of the field
-		if house.x_min < house.freespace or house.x_max > (160 - house.freespace) or \
-			house.y_min < 0 or house.freespace > (150 - house.freespace):
-			best_houses[index] = temp_house
-			index += 1
-			continue
+		# # make sure houses don't move out of the field
+		# if house.x_min < house.freespace or house.x_max > (160 - house.freespace) or \
+		# 	house.y_min < 0 or house.freespace > (150 - house.freespace):
+		# 	best_houses[index] = temp_house
+		# 	index += 1
+		# 	continue
 
-		# if house will be moved to water, continue to next house
-		if distanceWater(house, water) == False:
-			best_houses[index] = temp_house
-			index += 1
-			continue
+		# # if house will be moved to water, continue to next house
+		# if distanceWater(house, water) == False:
+		# 	best_houses[index] = temp_house
+		# 	index += 1
+		# 	continue
 
-		# make sure houses don't overlap
-		temp_distance = distance_exclusive(house, best_houses, index)
-		if temp_distance < 0:
-			best_houses[index] = temp_house
-			index += 1
-			continue
+		# # make sure houses don't overlap
+		# temp_distance = distance_exclusive(house, best_houses, index)
+		# if temp_distance < 0:
+		# 	best_houses[index] = temp_house
+		# 	index += 1
+		# 	continue
 
-		# check how much value this new map generates  
-		for k in range(len(best_houses)):
-			extraspace = math.floor(best_houses[k].distance - best_houses[k].freespace)
+		# # check how much value this new map generates  
+		# for k in range(len(best_houses)):
+		# 	extraspace = math.floor(best_houses[k].distance - best_houses[k].freespace)
 			
-			# value of eengezinswoningen
-			if best_houses[k].type_house == egw:
-				value = 285000 * (1 + (0.03 * extraspace))
+		# 	# value of eengezinswoningen
+		# 	if best_houses[k].type_house == egw:
+		# 		value = 285000 * (1 + (0.03 * extraspace))
 
-			# value of bungalows
-			elif best_houses[k].type_house == bung:
-				value = 399000 * (1 + (0.04 * extraspace))
+		# 	# value of bungalows
+		# 	elif best_houses[k].type_house == bung:
+		# 		value = 399000 * (1 + (0.04 * extraspace))
 
-			# value of maisons
-			elif best_houses[k].type_house == mais:
-				value = 610000 * (1 + (0.06 * extraspace))
+		# 	# value of maisons
+		# 	elif best_houses[k].type_house == mais:
+		# 		value = 610000 * (1 + (0.06 * extraspace))
 			
-			# total value is addition of values per loop
-			temporary_value += value
+		# 	# total value is addition of values per loop
+		# 	temporary_value += value
+
+		temporary_value = euroValuation(temporary_houses, temporary_value)
 
 		# update our map with the new house if total value of map is higher
-		if temporary_value < best_value:
-			# print "nr test:", i, "temporary_value:", temporary_value, "best value:", best_value
-			best_houses[index] = temp_house 
-		else:
-			best_value = temporary_value
-
-		# update variable to track were in the map we are
-		index = index + 1
-
+		if best_value < temporary_value:
+			best_houses = list(temporary_houses)
 
 	# # print maps
 	# for j in range(4):

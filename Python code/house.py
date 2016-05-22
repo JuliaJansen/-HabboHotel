@@ -118,6 +118,28 @@ def getHeight(type_house):
     if type_house == egw:
         return 8
 
+def changeHouse(houses, house, index, water):
+    """
+    Replaces a houses on the map randomly
+    """
+    # get random new position
+    x_new = random.randrange(2 * house.freespace, 2 * \
+            (bound_x - house.width - house.freespace)) * 0.5
+    y_new = random.randrange(2 * house.freespace, 2 * \
+            (bound_y - house.height - house.freespace)) * 0.5
+
+    while distanceWater(house) == False or distance(house, houses, index, True) < 0:
+        # get random new position
+        x_new = random.randrange(2 * houses[index].freespace, 2 * \
+                (bound_x - house.width - house.freespace)) * 0.5
+        y_new = random.randrange(2 * house.freespace, 2 * \
+                (bound_y - house.height - house.freespace)) * 0.5
+
+    # insert new house as object in list
+    houses[index] = House(x_new, y_new, house.typehouse)
+
+    return houses
+
 def distance(house, houses, index, skip): 
     """
     Returns distance to closest house.
