@@ -128,16 +128,23 @@ def changeHouse(houses, house, index, water):
     y_new = random.randrange(2 * house.freespace, 2 * \
             (bound_y - house.height - house.freespace)) * 0.5
 
-    while distanceWater(house, water) == False or distance(house, houses, index, True) < 0:
+    new_house = House(x_new, y_new, house.get_type_house())
+
+    # try max 50 times 
+    i = 0
+    while distanceWater(new_house, water) == False or distance(new_house, houses, index, True) < 0:
         # get random new position
-        x_new = random.randrange(2 * houses[index].freespace, 2 * \
+        x_new = random.randrange(2 * house.freespace, 2 * \
                 (bound_x - house.width - house.freespace)) * 0.5
         y_new = random.randrange(2 * house.freespace, 2 * \
                 (bound_y - house.height - house.freespace)) * 0.5
+        new_house = House(x_new, y_new, house.get_type_house())
+        i += 1
+        if i == 50:
+            return houses
 
     # insert new house as object in list
-    houses[index] = House(x_new, y_new, house.get_type_house)
-
+    houses[index] = House(x_new, y_new, house.get_type_house())
     return houses
 
 def distance(house, houses, index, skip): 

@@ -25,7 +25,6 @@ def csv_reader(filename):
     pieces_of_water = 0
 
     number_of_rows = len(list(csv.reader(open(filename))))
-    print("rows: ", number_of_rows)
 
     # get number of houses and pieces of water
     if number_of_rows < 30:
@@ -58,7 +57,6 @@ def csv_reader(filename):
         # turn water into water objects
         elif count_row >= houses_total and count_row < total_items:
             x_min = float(row['one'])
-            print "type = ", type(row['two'])
             y_min = float(row['two'])
             x_max = float(row['three'])
             y_max = float(row['four'])

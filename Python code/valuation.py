@@ -13,7 +13,6 @@ def euroValuation(houses, total_value):
     """
     Returns the value of a map in euros.
     """
-
     # Calculate total money value of Amstelhaege
     for k in range(len(houses)):
         extraspace = math.floor(houses[k].getDistance() - houses[k].getFreespace())

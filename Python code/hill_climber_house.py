@@ -16,6 +16,7 @@ from matplotlib.path import Path
 import matplotlib.patches as patches
 
 # import other files
+from valuation import *
 from water import * 
 from house import *
 from visuals import *
@@ -47,7 +48,7 @@ nr_of_tests = 1000
 
 for k in range(nr_of_tests):
 
-	if k % 1000 == 0:
+	if k % 100 == 0:
 		print k
 
 	# loop over each house, and move it once
@@ -58,6 +59,9 @@ for k in range(nr_of_tests):
 
 		# copy best_houses
 		temporary_houses = list(best_houses)
+		temp_map = temporary_houses + water
+		if k % 100 == 0:
+			plotmap(len(beginmap), temp_map, "test", houses_total)
 
 		# replace house in temporary array
 		temporary_houses = list(changeHouse(temporary_houses, house, index, water)) 
@@ -113,6 +117,11 @@ for k in range(nr_of_tests):
 		# update our map with the new house if total value of map is higher
 		if best_value < temporary_value:
 			best_houses = list(temporary_houses)
+			print "temp value ", temporary_value
+			print "best value before  ", best_value
+			best_value = temporary_value
+			print "best value after = ", best_value 
+			print "more worth"
 
 	# # print maps
 	# for j in range(4):
@@ -128,9 +137,9 @@ best_map = best_houses + water
 
 csv_writer(best_map, pieces_of_water, houses_total, best_value, "bestbest.csv")
 
-
-# plotmap(len(beginmap), beginmap, name1, houses_total)
-# plotmap(len(beginmap), best_map, name2, houses_total)
+# plot maps
+plotmap(len(beginmap), beginmap, name1, houses_total)
+plotmap(len(beginmap), best_map, name2, houses_total)
 
 
 

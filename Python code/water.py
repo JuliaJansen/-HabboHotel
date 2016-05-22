@@ -52,105 +52,6 @@ class Water(object):
     def updateSurface(self, surface):
         self.surface = surface
 
-class NewWater(object):
-    """
-    A Water represents a location on a two dimensional field filled with water.
-    """
-
-    def __init__(self, x_min, y_min, piece_of_water, pieces_of_water, surface_taken, water):
-        """
-        Initializes a position with coordinates of left down corner
-        """
-        self.x_min = x_min
-        self.y_min = y_min
-        self.piece_of_water = piece_of_water
-        self.pieces_of_water = pieces_of_water
-        self.x_max = 0
-        self.y_max = 0
-        self.width = 0
-        self.height = 0
-        self.surface = self.placeWater(self.x_min, self.y_min, self.piece_of_water, self.pieces_of_water, surface_taken, water)
-
-    def getX_min(self):
-        return self.x_min
-
-    def getY_min(self):
-        return self.y_min
-        
-    def getPiece_of_water(self):
-        return self.piece_of_water
-
-    def getX_max(self):
-        return self.x_max
-
-    def getY_max(self):
-        return self.y_max
-
-    def getWidth(self):
-        return self.width
-
-    def getHeight(self):
-        return self.height
-
-    def updateXmax(self, xmax):
-        return self.x_max
-
-    def placeWater(self, x_min, y_min, piece_of_water, pieces_of_water, surface_taken, water):
-    
-        pieces_to_go = pieces_of_water - piece_of_water
-        tries = 0
-        # fictional value
-        height = 10000
-        # minimum surface, to make sure last piece is not too large
-        minsurf = 4800/pieces_of_water+2
-        while (height + y_min > 150) or new_surface_taken > surface_total + pieces_to_go * 4:    
-            
-            
-            # random ratio
-            ratio = random.uniform(0.25,4)
-
-            tries +=1
-            
-            if tries % 100 == 0:
-                print "tries:", tries, piece_of_water
-            # if unsuccesful, print amount of tries
-
-            if pieces_of_water != piece_of_water:
-                
-                # make sure surface is bigger than remaining surface
-                if minsurf >= 4800-(surface_taken+pieces_to_go*4):
-                    surface = random.randrange(0, 4800 - surface_taken-pieces_to_go*4)
-                else:
-                    surface = random.randrange(minsurf, 4800-surface_taken-pieces_to_go*4) 
-                # use ratio and surface to calculate height and width
-                width = (surface / ratio) ** 0.5
-                height = width * ratio 
-                new_surface_taken = surface_taken + surface
-            else:
-                
-                #print y_min
-                #print "surface taken, total = ", surface_taken, surface_total
-                #print piece_of_water
-                #print surface_total - surface_taken
-                width = ((surface_total - surface_taken) / ratio)**0.5
-                height = width * ratio
-                surface = width * height 
-                #print "surf2=", surface
-                new_surface_taken = surface_taken + surface    
-            #print "tweede statement", new_surface_taken > surface_total + pieces_to_go * 4
-            #print "hoogte ymin", height + y_min
-            #print "taken", new_surface_taken
-            #print "left min", surface_total + pieces_to_go * 4
-            #time.sleep(5)
-        self.x_max = x_min + width
-        self.y_max = y_min + height 
-        self.width = width
-        self.heigth = height
-        self.surface = surface
-        #tries = 0
-        return self.surface 
-
-
 def placeWater(water, x_min, y_min, piece, pieces_of_water, surface_taken):
     """
     Places water: update attributes
@@ -272,9 +173,13 @@ def placeAllWater(pieces_of_water):
         x_min = random.randint(0, 2 * (0.8 * bound_x - 10)) * 0.5
         y_min = random.randint(0, 2 * (0.8 * bound_y - 10)) * 0.5
 
-    # make new Water object
-    new_water = NewWater(x_min, y_min, piece_of_water + 1, pieces_of_water, surface_taken, water)    
+    # # make new Water object
+    # new_water = NewWater(x_min, y_min, piece_of_water + 1, pieces_of_water, surface_taken, water)    
     
+    # make new Water object
+    new_water = Water(x_min, y_min, 0, 0)    
+    placeWater(new_water, x_min, y_min, piece_of_water, pieces_of_water, surface_taken)
+
     # append first water to list
     water.append(new_water)
     surface_taken = new_water.surface
@@ -290,9 +195,13 @@ def placeAllWater(pieces_of_water):
             x_min = random.randint(0, 2 * (0.8 * bound_x - 10)) * 0.5
             y_min = random.randint(0, 2 * (0.8 * bound_y - 10)) * 0.5
 
-        # new piece of water
-        new_water = NewWater(x_min, y_min, piece_of_water + 1, pieces_of_water, surface_taken, water)
+        # # new piece of water
+        # new_water = NewWater(x_min, y_min, piece_of_water + 1, pieces_of_water, surface_taken, water)
     
+        # new piece of water
+        new_water = Water(x_min, y_min, 0, 0)    
+        placeWater(new_water, x_min, y_min, piece_of_water, pieces_of_water, surface_taken)
+
         if distanceWater(new_water, water) == True:
             water.append(new_water)
             surface_taken += new_water.surface

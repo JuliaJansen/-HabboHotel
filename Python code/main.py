@@ -43,8 +43,8 @@ egw = "eengezinswoning"
 # change how you like: houses to place, pieces of water
 # to place and amount of tests
 houses_total = 40
-pieces_of_water = 1
-nr_tests = 10000
+pieces_of_water = 2
+nr_tests = 1000
 
 # create a variable to hold number of houses of each type
 mais_total = houses_total * 0.15
