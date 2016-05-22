@@ -31,7 +31,7 @@ def plothisto(len_all_values, all_values, name, lowest, highest, mean):
     ax.get_xaxis().tick_bottom()  
     ax.get_yaxis().tick_left()  
 
-    plt.axis([lowest, highest, 0, len_all_values/15])
+    plt.axis([lowest, highest, 0, len_all_values/20])
     # size of ticks
     # plt.yticks((range(100, len_all_values, 1000) / len_all_values), fontsize=14)  
 
