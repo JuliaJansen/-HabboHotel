@@ -1,5 +1,5 @@
 ###################################
-## Simulated Annealing	
+## Hill Climber Small steps		
 ## Heuristieken
 ## Amstelhaege
 ## Julia, Maarten en Maarten
@@ -29,7 +29,7 @@ bung = "bungalow"
 egw = "eengezinswoning"
 
 # get best best from file
-beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("0325_May_22_20bestvalue100000_11222940.0.csv")
+beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("0126_May_22_20bestvalue10000_11471460.0.csv")
 
 # initialise variables
 best_houses = list(houses)
@@ -37,24 +37,16 @@ temporary_map = beginmap
 best_value = start_value
 temporary_value = 0
 
-print "best value before", best_value
-
 name1 = str(start_value) + "before" 
-nr_of_tests = 50000
-
-# values for simulated annealing, change as you feel fit
-temperature = 100000000000
-cooldown_rate = 1.0 - float(1.0 / (10000 / 2))
-winning = 0
+nr_of_tests = 1000
 
 for k in range(nr_of_tests):
 
-	if k % 1000 == 0:
-		print 'best value ', best_value
+	if k % 100 == 0:
+		print k
 
 	# loop over each house, and move it once
 	for index, house in enumerate(best_houses):
-
 
 		# set temporary value to 0
 		temporary_value = 0
@@ -68,39 +60,16 @@ for k in range(nr_of_tests):
 		# valuate new map
 		temporary_value = euroValuation(temporary_houses, temporary_value)
 
-		# update our map with the new house if total value of map is higher or because of SA probability
-		if temporary_value >= best_value:
-			best_value = temporary_value
+		# update our map with the new house if total value of map is higher
+		if best_value < temporary_value:
 			best_houses = list(temporary_houses)
-		
-		# lower value, but still chance to accept change
-		else:
-			# temperature = 1.0 / float(i + 1)
-			temperature = temperature * cooldown_rate
-			power = float((temporary_value - best_value) * 0.00001) / (temperature)
-
-			# probability to accept deterioration
-			prob_accept = math.exp(power)
-			check_value = random.uniform(0, 1) 
-
-			if prob_accept >= check_value:
-				winning += 1
-				best_value = temporary_value
-				best_houses = list(temporary_houses)
-
-	if winning % 1000 == 0:
-		print "k ", k
-		print "tussenstand", winning
-
-print "winnning =", winning
-print "best value after = ", best_value
-
+			best_value = temporary_value
 
 name2 = str(best_value) + "after"
 
 best_map = best_houses + water
 
-csv_writer(best_map, pieces_of_water, houses_total, best_value, "simulbest.csv")
+csv_writer(best_map, pieces_of_water, houses_total, best_value, "bestbest.csv")
 
 # plot maps
 plotmap(len(beginmap), beginmap, name1, houses_total)

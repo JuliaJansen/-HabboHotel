@@ -123,14 +123,14 @@ def changeHouse(houses, house, index, water):
     Replaces a houses on the map randomly
     """
     # get random new position
-    # x_new = random.randrange(2 * house.freespace, 2 * \
-    #         (bound_x - house.width - house.freespace)) * 0.5
-    # y_new = random.randrange(2 * house.freespace, 2 * \
-    #         (bound_y - house.height - house.freespace)) * 0.5
+    x_new = random.randrange(2 * house.freespace, 2 * \
+            (bound_x - house.width - house.freespace)) * 0.5
+    y_new = random.randrange(2 * house.freespace, 2 * \
+            (bound_y - house.height - house.freespace)) * 0.5
 
-    # get random new position
-    x_new = house.x_min + random.randrange(-2, 2) * 0.25
-    y_new = house.y_min + random.randrange(-2, 2) * 0.25
+    # # get random new position
+    # x_new = house.x_min + random.randint(-2, 2) * 0.25
+    # y_new = house.y_min + random.randint(-2, 2) * 0.25
 
     new_house = House(x_new, y_new, house.get_type_house())
 
@@ -138,13 +138,13 @@ def changeHouse(houses, house, index, water):
     i = 0
     while distanceWater(new_house, water) == False or distance(new_house, houses, index, True) < 0:
         # get random new position
-        # x_new = random.randrange(2 * house.freespace, 2 * \
-        #         (bound_x - house.width - house.freespace)) * 0.5
-        # y_new = random.randrange(2 * house.freespace, 2 * \
-        #         (bound_y - house.height - house.freespace)) * 0.5
+        x_new = random.randrange(2 * house.freespace, 2 * \
+                (bound_x - house.width - house.freespace)) * 0.5
+        y_new = random.randrange(2 * house.freespace, 2 * \
+                (bound_y - house.height - house.freespace)) * 0.5
 
-        x_new = house.x_min + random.randrange(-2, 2) * 0.25
-        y_new = house.y_min + random.randrange(-2, 2) * 0.25
+        # x_new = house.x_min + random.randint(-2, 2) * 0.25
+        # y_new = house.y_min + random.randint(-2, 2) * 0.25
 
         new_house = House(x_new, y_new, house.get_type_house())
 

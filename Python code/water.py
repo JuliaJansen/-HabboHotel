@@ -202,8 +202,6 @@ def placeAllWater(pieces_of_water):
             surface_taken += new_water.surface
             piece_of_water += 1
 
-    print "surface taken = ", surface_taken
-
     # return list of water objects
     return water
 
