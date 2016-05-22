@@ -5,7 +5,7 @@
 ###########################################
 
 import csv
-# from house import *
+from house import *
 # from water import *
 
 def csv_reader(filename):
@@ -37,6 +37,9 @@ def csv_reader(filename):
     else:
         houses_total = 60
         pieces_of_water = number_of_rows - houses_total - 1
+
+    # total amount of objects on the map
+    total_items = pieces_of_water + houses_total
 
     # finally, read in houses -> water -> value
     count_row = 0

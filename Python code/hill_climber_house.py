@@ -18,7 +18,7 @@ import matplotlib.patches as patches
 # import other files
 from water import * 
 from house import *
-# from visuals import *
+from visuals import *
 from csv_reader import *
 from csv_writer import *
 
@@ -32,7 +32,7 @@ egw = "eengezinswoning"
 # pieces_of_water = 2
 
 # get best best from file
-beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("40h_2w_24527310_(random).csv", houses_total, pieces_of_water)
+beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("centered_housing.csv")
 
 print ("value of first map", start_value)
 
