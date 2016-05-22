@@ -42,9 +42,9 @@ egw = "eengezinswoning"
 
 # change how you like: houses to place, pieces of water
 # to place and amount of tests
-houses_total = 40
-pieces_of_water = 2
-nr_tests = 1000
+houses_total = 20
+pieces_of_water = 1
+nr_tests = 100
 
 # create a variable to hold number of houses of each type
 mais_total = houses_total * 0.15
@@ -53,6 +53,8 @@ egw_total = houses_total * 0.60
 
 # loop x times for testing
 for k in range(nr_tests):
+
+    # pieces_of_water = random.randint(1, 4)
 
     # set total value and total distances between houses to 0
     total_value = 0
