@@ -4,6 +4,7 @@
 
 import datetime
 import pylab
+import gc
 import random
 import math
 import time
@@ -42,7 +43,7 @@ egw = "eengezinswoning"
 
 # change how you like: houses to place, pieces of water
 # to place and amount of tests
-houses_total = 20
+houses_total = 40
 pieces_of_water = 1
 nr_tests = 100000
 
@@ -55,6 +56,10 @@ egw_total = houses_total * 0.60
 for k in range(nr_tests):
 
     # pieces_of_water = random.randint(1, 4)
+
+    # collect garbage
+    if k % 1000:
+        gc.collect()
 
     # set total value and total distances between houses to 0
     total_value = 0
@@ -132,7 +137,7 @@ name8 = name4 + ".csv"
 name9 = stime + str(houses_total) + "_" + str(nr_tests)
 name10 = stime + str(houses_total) + "_" + str(nr_tests)
 
-name11 = "data_" + str(houses_total) + str(pieces_of_water) + stime + ".csv"
+name11 = "data_" + str(houses_total) + "_" + str(pieces_of_water) + "_" + stime + ".csv"
 
 # calculate runtime
 runtime = (time.time() - start_time) / nr_tests
@@ -161,4 +166,10 @@ data_to_csv(data, name11)
 plothisto(len(moneyvalues), moneyvalues, name9, lowest_value, highest_value, mean_value)
 plothisto(len(distances), distances, name10, least_freespace, most_freespace, mean_freespace)
 
+print highest_value
+print lowest_value
+print mean_value
+print most_freespace
+print least_freespace
+print mean_freespace
 
