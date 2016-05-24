@@ -36,6 +36,7 @@ best_houses = list(houses)
 temporary_map = beginmap
 best_value = start_value
 temporary_value = 0
+values = []
 
 print "best value before", best_value
 
@@ -92,15 +93,22 @@ for k in range(nr_of_tests):
 		print "k ", k
 		print "tussenstand", winning
 
+	values.append(best_value)
+
 print "winnning =", winning
 print "best value after = ", best_value
 
 
 name2 = str(best_value) + "after"
 
+# make map
 best_map = best_houses + water
 
+# write last map to csv file
 csv_writer(best_map, pieces_of_water, houses_total, best_value, "simulbest.csv")
+
+# plot line
+plotline(values, "Simulated Annealing")
 
 # plot maps
 plotmap(len(beginmap), beginmap, name1, houses_total)
