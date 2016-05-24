@@ -122,30 +122,39 @@ def changeHouse(houses, house, index, water):
     """
     Replaces a houses on the map randomly
     """
-    # get random new position
-    x_new = random.randrange(2 * house.freespace, 2 * \
-            (bound_x - house.width - house.freespace)) * 0.5
-    y_new = random.randrange(2 * house.freespace, 2 * \
-            (bound_y - house.height - house.freespace)) * 0.5
+    move = random.randint(0, 1)
 
-    # # get random new position
-    # x_new = house.x_min + random.randint(-2, 2) * 0.25
-    # y_new = house.y_min + random.randint(-2, 2) * 0.25
+    if len(houses) == 60:
+        move = 1
 
-    new_house = House(x_new, y_new, house.get_type_house())
-
-    # try max 50 times 
-    i = 0
-    while distanceWater(new_house, water) == False or distance(new_house, houses, index, True) < 0:
+    if move == 0:
         # get random new position
         x_new = random.randrange(2 * house.freespace, 2 * \
                 (bound_x - house.width - house.freespace)) * 0.5
         y_new = random.randrange(2 * house.freespace, 2 * \
                 (bound_y - house.height - house.freespace)) * 0.5
 
-        # x_new = house.x_min + random.randint(-2, 2) * 0.25
-        # y_new = house.y_min + random.randint(-2, 2) * 0.25
+    if move == 1:
+        # change current position with a meter
+        x_new = house.x_min + random.randint(-1, 1)
+        y_new = house.y_min + random.randint(-1, 1) 
 
+    new_house = House(x_new, y_new, house.get_type_house())
+
+    # try max 50 times to get legal position
+    i = 0
+    while distanceWater(new_house, water) == False or distance(new_house, houses, index, True) < 0:
+        if move == 0:
+            # get random new position
+            x_new = random.randrange(2 * house.freespace, 2 * \
+                    (bound_x - house.width - house.freespace)) * 0.5
+            y_new = random.randrange(2 * house.freespace, 2 * \
+                    (bound_y - house.height - house.freespace)) * 0.5
+
+        if move == 1:
+            # change current position with a meter
+            x_new = house.x_min + random.randint(-1, 1) 
+            y_new = house.y_min + random.randint(-1, 1) 
         new_house = House(x_new, y_new, house.get_type_house())
 
         i += 1
