@@ -78,11 +78,11 @@ for k in range(nr_of_tests):
 		else:
 			# temperature = 1.0 / float(i + 1)
 			temperature = temperature * cooldown_rate
-			power = float(((temporary_value - best_value) * 2) * 0.000001) / (temperature)
+			power = float((temporary_value - best_value) * 0.00001) / (temperature)
 
 			# probability to accept deterioration
 			prob_accept = math.exp(power)
-			check_value = random.randint(0, 1) 
+			check_value = random.uniform(0, 1) 
 
 			if prob_accept >= check_value:
 				winning += 1
