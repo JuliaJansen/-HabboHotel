@@ -160,7 +160,7 @@ def placeAllWater(pieces_of_water):
     bound_y = 150
 
     # calculate total surface of water
-    surface_total = 0.2 * bound_x * bound_x
+    surface_total = 0.2 * bound_x * bound_y
 
     # initiate first piece of water with random left bottom corner
     if pieces_of_water == 1:
