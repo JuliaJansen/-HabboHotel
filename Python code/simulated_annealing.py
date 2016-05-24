@@ -29,7 +29,7 @@ bung = "bungalow"
 egw = "eengezinswoning"
 
 # get best best from file
-beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("0325_May_22_20bestvalue100000_11222940.0.csv")
+beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("1104_May_23_20bestvalue100000_11341710.0.csv")
 
 # initialise variables
 best_houses = list(houses)
@@ -77,11 +77,11 @@ for k in range(nr_of_tests):
 		else:
 			# temperature = 1.0 / float(i + 1)
 			temperature = temperature * cooldown_rate
-			power = float((temporary_value - best_value) * 0.00001) / (temperature)
+			power = float(((temporary_value - best_value) * 2) * 0.000001) / (temperature)
 
 			# probability to accept deterioration
 			prob_accept = math.exp(power)
-			check_value = random.uniform(0, 1) 
+			check_value = random.randint(0, 1) 
 
 			if prob_accept >= check_value:
 				winning += 1
