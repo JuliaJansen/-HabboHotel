@@ -30,7 +30,7 @@ bung = "bungalow"
 egw = "eengezinswoning"
 
 # get best best from file
-beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("1255_May_24_60worstvalue20000_22377870.0.csv")
+beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("1116_May_23_20worstvalue100000_7652220.0.csv")
 
 # initialise variables
 best_houses = list(houses)
@@ -41,9 +41,9 @@ temporary_value = 0
 values = []
 
 name1 = str(start_value) + "before" 
-nr_of_tests = 300
+iteraties = 10
 
-for k in range(nr_of_tests):
+for k in range(iteraties):
 
 	# loop over each house, and move it once
 	for index, house in enumerate(best_houses):
@@ -65,7 +65,7 @@ for k in range(nr_of_tests):
 			best_houses = list(temporary_houses)
 			best_value = temporary_value
 
-	values.append(best_value)
+		values.append(best_value)
 
 name2 = str(best_value) + "after"
 
@@ -79,6 +79,7 @@ print "value after = ", best_value
 # write value data to csv
 data = values
 name3 = "hill_" + str(stime) + str(houses_total) + "_" + str(best_value) + ".csv"
+plotline(values, "Hillclimber")
 data_to_csv(data, name3)
 
 csv_writer(best_map, pieces_of_water, houses_total, best_value, stime + "hillclimber.csv")
