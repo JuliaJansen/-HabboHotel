@@ -122,16 +122,16 @@ def changeHouse(houses, house, index, water):
     """
     Replaces a houses on the map randomly
     """
-    move = random.randint(0, 1)
+    # move = random.randint(0, 1)
 
-    if len(houses) == 60:
-        move = 1
+    # if len(houses) == 60:
+    move = 1
 
     if move == 0:
         # get random new position
-        x_new = random.randrange(2 * house.freespace, 2 * \
+        x_new = random.uniform(2 * house.freespace, 2 * \
                 (bound_x - house.width - house.freespace)) * 0.5
-        y_new = random.randrange(2 * house.freespace, 2 * \
+        y_new = random.uniform(2 * house.freespace, 2 * \
                 (bound_y - house.height - house.freespace)) * 0.5
 
     if move == 1:
@@ -146,9 +146,9 @@ def changeHouse(houses, house, index, water):
     while distanceWater(new_house, water) == False or distance(new_house, houses, index, True) < 0:
         if move == 0:
             # get random new position
-            x_new = random.randrange(2 * house.freespace, 2 * \
+            x_new = random.uniform(2 * house.freespace, 2 * \
                     (bound_x - house.width - house.freespace)) * 0.5
-            y_new = random.randrange(2 * house.freespace, 2 * \
+            y_new = random.uniform(2 * house.freespace, 2 * \
                     (bound_y - house.height - house.freespace)) * 0.5
 
         if move == 1:
