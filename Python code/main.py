@@ -2,18 +2,18 @@
 # add classes and code below  #
 # # # # # # # # # # # # # # # #
 
+import ConfigParser 
 import datetime
 import pylab
 import gc
 import random
 import math
 import time
-
 import matplotlib.pyplot as plt
 from matplotlib.path import Path
 import matplotlib.patches as patches
 
-# import other files
+# import other Amstelhaege files
 from csv_writer import *
 from data_to_csv import *
 from getStatistics import *
@@ -27,15 +27,12 @@ start_time = time.time()
 the_best = []
 moneyvalues = []
 distances = []
-
 valuelist = []
 meanvaluelist = []
 all_maps_val = []
 all_maps_space = []
 spacelist = []
 meanspacelist = []
-# sum all total values
-sum_of_total_values = 0
 
 """
 MAIN: Place houses on field
@@ -49,9 +46,34 @@ egw = "eengezinswoning"
 
 # change how you like: houses to place, pieces of water
 # to place and amount of tests
-houses_total = 60
-pieces_of_water = 3
-nr_tests = 20000
+# houses_total = 60
+# pieces_of_water = 3
+# nr_tests = 20000
+
+# get values from configuration file to define behaviour
+config = ConfigParser.ConfigParser()
+
+with open('amstelhaege.cfg') as cfg_file:
+    config.readfp(cfg_file) 
+
+for section in config.sections():
+    for option, value in config.items(section):
+        if option == 'houses':
+            houses_total = int(value)
+        if option == 'water':
+            pieces_of_water = int(value)
+        if option == 'nr_of_tests':
+            nr_tests = int(value)
+        if option == 'hillclimber':
+            hilly = value
+        if option == 'sim_annealing':
+            simmy = value
+        if option == 'data':
+            csvdata = value
+        if option == 'maps':
+            plot_maps = value
+        if option == 'histo':
+            plot_histos = value
 
 # create a variable to hold number of houses of each type
 mais_total = houses_total * 0.15
@@ -98,8 +120,7 @@ for k in range(nr_tests):
     fill = houses + water
     all_maps.append(fill)
 
-    # # get statistics for plotting maps and writing data to csv
-    # # find map with highest_value value from tests
+    # save only highest and lowest and mean values every 1000 iterations
     # if k % 1000 == 0:
 
     #     # find highest map of 1000 maps
@@ -139,21 +160,20 @@ for k in range(nr_tests):
     #     all_maps = []
     #     distances = [] 
 
-# use created lists to calculate values
+# use lists with moneyvalues to calculate highest, lowest and mean values
+# and find the map with those values
 highest_value = max(moneyvalues)
 index_high_value = moneyvalues.index(highest_value)
-
 lowest_value = min(moneyvalues)
 index_low_value = moneyvalues.index(lowest_value)
-
 mean_value = sum(moneyvalues) / len(moneyvalues)
 
+# use distances list to define most, least and average freespace
+# and find the map with those values
 most_freespace = max(distances)
 index_most_freespace = distances.index(most_freespace)
-
 least_freespace = min(distances)
 index_least_freespace = distances.index(least_freespace)
-
 mean_freespace = sum(distances) / len(distances)
 
 # save date/time to name plot
@@ -176,37 +196,40 @@ name10 = stime + str(houses_total) + "_" + str(nr_tests)
 
 name11 = "data_" + str(houses_total) + "_" + str(pieces_of_water) + "_" + stime + ".csv"
 
-# calculate runtime
+# calculate runtime 
 runtime = (time.time() - start_time) / nr_tests
 print "one test time = ", runtime
 print("--- %s seconds ---" % (time.time() - start_time))
 
-# plot best and worst map
-plotmap(len(fill), all_maps[index_high_value], name1, houses_total)
-plotmap(len(fill), all_maps[index_low_value], name2, houses_total)
+if plot_maps == 'Yes':
+    # plot best and worst map
+    plotmap(len(fill), all_maps[index_high_value], name1, houses_total)
+    plotmap(len(fill), all_maps[index_low_value], name2, houses_total)
 
-# plot maps with most and least value
-plotmap(len(fill), all_maps[index_most_freespace], name3, houses_total)
-plotmap(len(fill), all_maps[index_least_freespace], name4, houses_total)
+    # plot maps with most and least value
+    plotmap(len(fill), all_maps[index_most_freespace], name3, houses_total)
+    plotmap(len(fill), all_maps[index_least_freespace], name4, houses_total)
 
-# write best and worst map to csv file
-csv_writer(all_maps[index_high_value], pieces_of_water, houses_total, highest_value, name5)
-csv_writer(all_maps[index_low_value], pieces_of_water, houses_total, lowest_value, name6)
-csv_writer(all_maps[index_most_freespace], pieces_of_water, houses_total, most_freespace, name7)
-csv_writer(all_maps[index_least_freespace], pieces_of_water, houses_total, least_freespace, name8)
+if csvdata == 'Yes':
+    # write best and worst map to csv file
+    csv_writer(all_maps[index_high_value], pieces_of_water, houses_total, highest_value, name5)
+    csv_writer(all_maps[index_low_value], pieces_of_water, houses_total, lowest_value, name6)
+    csv_writer(all_maps[index_most_freespace], pieces_of_water, houses_total, most_freespace, name7)
+    csv_writer(all_maps[index_least_freespace], pieces_of_water, houses_total, least_freespace, name8)
 
-# save data of map generation to csv
-data = houses_total, pieces_of_water, nr_tests, mean_value, highest_value, lowest_value, runtime
-data_to_csv(data, name11)
+    # save data of map generation to csv
+    data = houses_total, pieces_of_water, nr_tests, mean_value, highest_value, lowest_value, runtime
+    data_to_csv(data, name11)
 
-# plot histograms
-plothisto(len(moneyvalues), moneyvalues, name9, lowest_value, highest_value, mean_value)
-plothisto(len(distances), distances, name10, least_freespace, most_freespace, mean_freespace)
+if plot_histos == 'Yes':
+    # plot histograms
+    plothisto(len(moneyvalues), moneyvalues, name9, lowest_value, highest_value, mean_value)
+    plothisto(len(distances), distances, name10, least_freespace, most_freespace, mean_freespace)
 
-print highest_value
-print lowest_value
-print mean_value
-print most_freespace
-print least_freespace
-print mean_freespace
+if hilly == 'Yes':
+    print "jaaaa hilly"
 
+if simmy == 'Yes':
+    print "simmmmmmyyy"
+
+print 'Done'

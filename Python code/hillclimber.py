@@ -29,64 +29,77 @@ mais = "maison"
 bung = "bungalow"
 egw = "eengezinswoning"
 
-# get best best from file
-beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("equal_spacing.csv")
+def hillclimber(beginmap, houses, water, start_value, houses_total, pieces_of_water):
+	'''
+	This function applies a hillclimber algorithm on a provided map.
+	'''
+	# get map and data from file
+	# beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("centered_housing.csv")
 
-# initialise variables
-best_houses = list(houses)
-temporary_map = beginmap
-best_value = start_value
-temporary_value = 0
+	# initialise variables
+	best_houses = list(houses)
+	temporary_map = beginmap
+	best_value = start_value
+	temporary_value = 0
 
-values = []
+	values = []
 
-name1 = str(start_value) + "before" 
-iteraties = 20
+	name1 = str(start_value) + "before" 
+	iteraties = 20
 
-for k in range(iteraties):
+	for k in range(iteraties):
 
-	# loop over each house, and move it once
-	for index, house in enumerate(best_houses):
+		# loop over each house, and move it once
+		for index, house in enumerate(best_houses):
 
-		# set temporary value to 0
-		temporary_value = 0
+			# set temporary value to 0
+			temporary_value = 0
 
-		# copy best_houses
-		temporary_houses = list(best_houses)
+			# copy best_houses
+			temporary_houses = list(best_houses)
 
-		# replace house in temporary array
-		temporary_houses = list(changeHouse(temporary_houses, house, index, water)) 
+			# replace house in temporary array
+			temporary_houses = list(changeHouse(temporary_houses, house, index, water)) 
 
-		# valuate new map
-		temporary_value = euroValuation(temporary_houses, temporary_value)
+			# valuate new map
+			temporary_value = euroValuation(temporary_houses, temporary_value)
 
-		# update our map with the new house if total value of map is higher
-		if best_value < temporary_value:
-			best_houses = list(temporary_houses)
-			best_value = temporary_value
+			# update our map with the new house if total value of map is higher
+			if best_value < temporary_value:
+				best_houses = list(temporary_houses)
+				best_value = temporary_value
 
-		values.append(best_value)
+			values.append(best_value)
 
-name2 = str(best_value) + "after"
+	name2 = str(best_value) + "after"
 
-best_map = best_houses + water
+	best_map = best_houses + water
 
-# save date/time to name plot
-stime = datetime.datetime.now().strftime("%I%M_%B_%d_")
+	# save date/time to name plot
+	stime = datetime.datetime.now().strftime("%I%M_%B_%d_")
 
-print "value after = ", best_value
+	print "value after = ", best_value
 
-# write value data to csv
-data = values
-name3 = "hill_" + str(stime) + str(houses_total) + "_" + str(best_value) + ".csv"
-plotline(values, "Hillclimber")
-data_to_csv(data, name3)
+	# write value data to csv
+	data = values
+	name3 = "hill_" + str(stime) + str(houses_total) + "_" + str(best_value) + ".csv"
+	plotline(values, "Hillclimber")
+	data_to_csv(data, name3)
 
-csv_writer(best_map, pieces_of_water, houses_total, best_value, stime + "hillclimber.csv")
+	csv_writer(best_map, pieces_of_water, houses_total, best_value, stime + "hillclimber.csv")
 
-# plot maps
-plotmap(len(beginmap), beginmap, name1, houses_total)
-plotmap(len(beginmap), best_map, name2, houses_total)
+	# plot maps
+	plotmap(len(beginmap), beginmap, name1, houses_total)
+	plotmap(len(beginmap), best_map, name2, houses_total)
+
+"""
+Give option to get map from file by running hillclimber.py
+"""
+# read map-variables from csv
+beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("centered_housing.csv")
+
+# run hillclimber
+hillclimber(beginmap, houses, water, start_value, houses_total, pieces_of_water)
 
 
 

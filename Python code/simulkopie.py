@@ -10,6 +10,7 @@ import csv
 import pylab
 import random
 import math
+import numpy
 import copy
 import matplotlib.pyplot as plt
 from matplotlib.path import Path
@@ -37,6 +38,8 @@ temporary_map = beginmap
 best_value = start_value
 temporary_value = 0
 values = []
+prob_accept = 0
+power = 0
 
 print "best value before", best_value
 
@@ -51,10 +54,15 @@ winning = 0
 for k in range(iteraties):
 
 	# max difference to accept 
-	maxdif = 5000 * (0.999 ** k) 
+	maxdif = 3000 * (0.99999 ** k) 
 
 	if k % 1000 == 0:
 		print 'best value ', best_value
+		print "k ======== ", k
+		print "temp ===== ", temperature
+		print "maxdif === ", maxdif
+		print "power ==== ", power
+		print "probaccept = ", prob_accept
 
 	# loop over each house, and move it once
 	for index, house in enumerate(best_houses):

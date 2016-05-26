@@ -120,12 +120,12 @@ def getHeight(type_house):
 
 def changeHouse(houses, house, index, water):
     """
-    Replaces a houses on the map randomly
+    Replaces a houses on the map 
     """
-    # move = random.randint(0, 1)
+    move = random.randint(0, 1)
 
-    # if len(houses) == 60:
-    move = 1
+    if len(houses) == 60:
+        move = 1
 
     if move == 0:
         # get random new position
