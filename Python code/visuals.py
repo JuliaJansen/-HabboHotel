@@ -128,16 +128,17 @@ def plotmap(len_fill, a_map, name, houses_total):
     # show plot
     plt.show()
 
-    fig.savefig('../plots/' + str(houses_total) + '/' + name + '.png', dpi=90, bbox_inches='tight')
+    # fig.savefig('../plots/' + str(houses_total) + '/' + name + '.png', dpi=90, bbox_inches='tight')
 
 def plotline(values, title):
     """
     Plot line through data points
     """
     radius = range(len(values))
+    print "values = ", len(values)
     area = values
     plt.plot(radius, area)
-    plt.xlabel('Mutaties')
+    plt.xlabel('Iteraties')
     plt.ylabel('Value of Map')
     plt.title(title)
     plt.show()

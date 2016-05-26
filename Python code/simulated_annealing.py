@@ -29,7 +29,7 @@ bung = "bungalow"
 egw = "eengezinswoning"
 
 # get best best from file
-beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("1104_May_23_20bestvalue100000_11341710.0.csv")
+beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("1116_May_23_20worstvalue100000_7652220.0.csv")
 
 # initialise variables
 best_houses = list(houses)
@@ -41,10 +41,10 @@ values = []
 print "best value before", best_value
 
 name1 = str(start_value) + "before" 
-nr_of_tests = 50000
+nr_of_tests = 100000
 
 # values for simulated annealing, change as you feel fit
-temperature = 100000000000
+temperature = 10000000000
 cooldown_rate = 1.0 - float(1.0 / (10000 / 2))
 winning = 0
 
@@ -89,15 +89,7 @@ for k in range(nr_of_tests):
 				best_value = temporary_value
 				best_houses = list(temporary_houses)
 
-	if winning % 1000 == 0:
-		print "k ", k
-		print "tussenstand", winning
-
-	values.append(best_value)
-
-print "winnning =", winning
-print "best value after = ", best_value
-
+values.append(best_value)
 
 name2 = str(best_value) + "after"
 
