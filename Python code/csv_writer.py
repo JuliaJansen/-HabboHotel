@@ -1,7 +1,8 @@
+# csv_writer(map, nr_water, nr_houses, map_value, name)
+#
 # Heuristieken
 # Julia, Maarten en Maarten
 # Amstelhaege
-#
 
 import csv
 import datetime

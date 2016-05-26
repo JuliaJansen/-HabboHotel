@@ -1,5 +1,5 @@
 ###################################
-## Hill Climber Small steps		
+## hillclimber(beginmap, start_value, houses_total, pieces_of_water)
 ## Heuristieken
 ## Amstelhaege
 ## Julia, Maarten en Maarten
@@ -29,12 +29,12 @@ mais = "maison"
 bung = "bungalow"
 egw = "eengezinswoning"
 
-def hillclimber(beginmap, houses, water, start_value, houses_total, pieces_of_water):
+def hillclimber(beginmap, start_value, houses_total, pieces_of_water):
 	'''
 	This function applies a hillclimber algorithm on a provided map.
 	'''
-	# get map and data from file
-	# beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("centered_housing.csv")
+	# split beginmap up in houses and water
+	houses, water = splitmap(beginmap) 
 
 	# initialise variables
 	best_houses = list(houses)
@@ -42,14 +42,16 @@ def hillclimber(beginmap, houses, water, start_value, houses_total, pieces_of_wa
 	best_value = start_value
 	temporary_value = 0
 
+	# array to hold values of map during optimization
 	values = []
 
+	# name to save visualization
 	name1 = str(start_value) + "before" 
+	
 	iteraties = 20
-
 	for k in range(iteraties):
 
-		# loop over each house, and move it once
+		# loop over houses, and move each house once
 		for index, house in enumerate(best_houses):
 
 			# set temporary value to 0
@@ -80,26 +82,27 @@ def hillclimber(beginmap, houses, water, start_value, houses_total, pieces_of_wa
 
 	print "value after = ", best_value
 
-	# write value data to csv
+	# plot line of values hillclimber over mutations
 	data = values
-	name3 = "hill_" + str(stime) + str(houses_total) + "_" + str(best_value) + ".csv"
-	plotline(values, "Hillclimber")
-	data_to_csv(data, name3)
+	plotline(values, "Hillclimber", "Mutaties")
 
+	# write data to csv
 	csv_writer(best_map, pieces_of_water, houses_total, best_value, stime + "hillclimber.csv")
 
-	# plot maps
+	# plot beginmap and end map
 	plotmap(len(beginmap), beginmap, name1, houses_total)
 	plotmap(len(beginmap), best_map, name2, houses_total)
 
 """
-Give option to get map from file by running hillclimber.py
+Option to get map from file by running hillclimber.py:
+Uncomment underneath lines of code and fill in filename of map you'd 
+like to improve in code underneath and run via command line
 """
-# read map-variables from csv
-beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("centered_housing.csv")
+# # read map-variables from csv
+# beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("centered_housing.csv")
 
-# run hillclimber
-hillclimber(beginmap, houses, water, start_value, houses_total, pieces_of_water)
+# # run hillclimber
+# hillclimber(beginmap, start_value, houses_total, pieces_of_water)
 
 
 

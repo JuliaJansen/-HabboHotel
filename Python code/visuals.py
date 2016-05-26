@@ -1,6 +1,10 @@
-# plotmap()
+#######################################################################
+# plotmap(len_all_values, all_values, name, lowest, highest, mean), 
+# plothisto(len_fill, a_map, name, houses_total), 
+# plotline(values, title, xax_title)
 # Heuristieken
 # Julia, Maarten en Maarten
+#######################################################################
 
 import datetime
 import math
@@ -31,9 +35,8 @@ def plothisto(len_all_values, all_values, name, lowest, highest, mean):
     ax.get_xaxis().tick_bottom()  
     ax.get_yaxis().tick_left()  
 
-    plt.axis([lowest, highest, 0, len_all_values/20])
-    # size of ticks
-    # plt.yticks((range(100, len_all_values, 1000) / len_all_values), fontsize=14)  
+    # define x-axis and y-axis scales
+    plt.axis([lowest, highest, 0, len_all_values/20]) 
 
     # ax labels
     plt.xlabel("Value Map", fontsize=16)  
@@ -57,10 +60,6 @@ def plothisto(len_all_values, all_values, name, lowest, highest, mean):
 
     # show plot
     plt.show()
-
-    # save plot
-    # plot_url = py.plot_mpl(fig, filename='..plots/histo/' + name + '.png')
-    # plt.saveplt('../plots/histo/' + name + '.png', bbox_inches="tight")
 
 def plotmap(len_fill, a_map, name, houses_total):
     """
@@ -128,18 +127,24 @@ def plotmap(len_fill, a_map, name, houses_total):
     # show plot
     plt.show()
 
-    # fig.savefig('../plots/' + str(houses_total) + '/' + name + '.png', dpi=90, bbox_inches='tight')
+    fig.savefig('../plots/' + str(houses_total) + '/' + name + '.png', dpi=90, bbox_inches='tight')
 
-def plotline(values, title):
+def plotline(values, title, xax_title):
     """
     Plot line through data points
     """
-    radius = range(len(values))
-    print "values = ", len(values)
-    area = values
-    plt.plot(radius, area)
-    plt.xlabel('Iteraties')
+    # Define ax scales
+    yax = range(len(values))
+    value = values
+
+    # plot line
+    plt.plot(yax, value)
+
+    # ax titles
+    plt.xlabel(xax_title)
     plt.ylabel('Value of Map')
+
+    # plot title
     plt.title(title)
     plt.show()
      

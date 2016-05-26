@@ -16,6 +16,8 @@ import matplotlib.patches as patches
 # import other Amstelhaege files
 from csv_writer import *
 from data_to_csv import *
+from hillclimber import *
+from simulannealing import *
 from getStatistics import *
 from water import * 
 from house import *
@@ -56,6 +58,7 @@ config = ConfigParser.ConfigParser()
 with open('amstelhaege.cfg') as cfg_file:
     config.readfp(cfg_file) 
 
+# turn config input into variables
 for section in config.sections():
     for option, value in config.items(section):
         if option == 'houses':
@@ -64,10 +67,14 @@ for section in config.sections():
             pieces_of_water = int(value)
         if option == 'nr_of_tests':
             nr_tests = int(value)
-        if option == 'hillclimber':
-            hilly = value
-        if option == 'sim_annealing':
-            simmy = value
+        if option == 'hillclimber_value':
+            hillyvalue = value
+        if option == 'hillclimber_freespace':
+            hillyfreespace = value
+        if option == 'sim_annealing_value':
+            simmyvalue = value
+        if option == 'sim_annealing_freespace':
+            simmyfreespace = value
         if option == 'data':
             csvdata = value
         if option == 'maps':
@@ -82,8 +89,6 @@ egw_total = houses_total * 0.60
 
 # loop x times for testing
 for k in range(nr_tests):
-
-    # pieces_of_water = random.randint(1, 4)
 
     # set total value and total distances between houses to 0
     total_value = 0
@@ -201,6 +206,7 @@ runtime = (time.time() - start_time) / nr_tests
 print "one test time = ", runtime
 print("--- %s seconds ---" % (time.time() - start_time))
 
+# defined by amstelhaege.cfg: visualize maps 
 if plot_maps == 'Yes':
     # plot best and worst map
     plotmap(len(fill), all_maps[index_high_value], name1, houses_total)
@@ -210,28 +216,56 @@ if plot_maps == 'Yes':
     plotmap(len(fill), all_maps[index_most_freespace], name3, houses_total)
     plotmap(len(fill), all_maps[index_least_freespace], name4, houses_total)
 
+# defined by amstelhaege.cfg: write data to csv 
 if csvdata == 'Yes':
     # write best and worst map to csv file
-    csv_writer(all_maps[index_high_value], pieces_of_water, houses_total, highest_value, name5)
-    csv_writer(all_maps[index_low_value], pieces_of_water, houses_total, lowest_value, name6)
-    csv_writer(all_maps[index_most_freespace], pieces_of_water, houses_total, most_freespace, name7)
-    csv_writer(all_maps[index_least_freespace], pieces_of_water, houses_total, least_freespace, name8)
+    csv_writer(all_maps[index_high_value], pieces_of_water, houses_total, \
+        highest_value, name5)
+    csv_writer(all_maps[index_low_value], pieces_of_water, houses_total, \
+        lowest_value, name6)
+    csv_writer(all_maps[index_most_freespace], pieces_of_water, houses_total, \
+        most_freespace, name7)
+    csv_writer(all_maps[index_least_freespace], pieces_of_water, houses_total, \
+        least_freespace, name8)
 
     # save data of map generation to csv
-    data = houses_total, pieces_of_water, nr_tests, mean_value, highest_value, lowest_value, runtime
+    data = houses_total, pieces_of_water, nr_tests, mean_value, highest_value, \
+    lowest_value, runtime
     data_to_csv(data, name11)
 
 if plot_histos == 'Yes':
-    # plot histograms
-    plothisto(len(moneyvalues), moneyvalues, name9, lowest_value, highest_value, mean_value)
-    plothisto(len(distances), distances, name10, least_freespace, most_freespace, mean_freespace)
+    # plot histogram money value
+    plothisto(len(moneyvalues), moneyvalues, name9, lowest_value, \
+        highest_value, mean_value)
+    # plot histogram freespace
+    plothisto(len(distances), distances, name10, least_freespace, \
+        most_freespace, mean_freespace)
 
 # defined by config file: run hillclimber on best and worst map
-if hilly == 'Yes':
-    print "jaaaa hilly"
+if hillyvalue == 'Yes':
+    hillclimber(all_maps[index_high_value], highest_value, houses_total, \
+        pieces_of_water)
+    hillclimber(all_maps[index_low_value], lowest_value, houses_total, \
+        pieces_of_water)
+   
+# defined by config file: run hillclimber on map with most and least freespace
+if hillyfreespace == 'Yes':
+    hillclimber(all_maps[index_most_freespace], most_freespace, houses_total, \
+        pieces_of_water)
+    hillclimber(all_maps[index_least_freespace], least_freespace, houses_total, \
+        pieces_of_water)
 
 # defined by config file: run simulated annealing on best and worst map
-if simmy == 'Yes':
-    print "simmmmmmyyy"
+if simmyvalue == 'Yes':
+    simulannealing(all_maps[index_high_value], highest_value, houses_total, \
+        pieces_of_water)
+    simulannealing(all_maps[index_low_value], lowest_value, houses_total, \
+        pieces_of_water)
+
+if simmyfreespace == 'Yes':
+    simulannealing(all_maps[index_most_freespace], highest_value, houses_total, \
+        pieces_of_water)
+    simulannealing(all_maps[index_least_freespace], lowest_value, houses_total, \
+        pieces_of_water)
 
 print 'Done'

@@ -5,6 +5,8 @@
 # distance(house, houses)
 # distance_exclusive(house, houses, index)
 # placeHouses(water, houses_total)
+# splitmap(wholemap)
+#
 # Heuristieken
 # Julia, Maarten en Maarten
 
@@ -120,7 +122,7 @@ def getHeight(type_house):
 
 def changeHouse(houses, house, index, water):
     """
-    Replaces a houses on the map 
+    Replaces a houses on the map, returns updated array houses
     """
     move = random.randint(0, 1)
 
@@ -409,3 +411,19 @@ def placeHouses(water, houses_total):
 
     # return filled houses array
     return houses
+
+def splitmap(wholemap):
+    """
+    Splits a map into houses and water array. Returns arrays in tuple
+    """
+    if len(wholemap) < 30:
+        houses = list(wholemap[:20])
+        water = list(wholemap[20:])
+    elif len(wholemap) < 50:
+        houses = list(wholemap[:40])
+        water = list(wholemap[40:])
+    elif len(wholemap) < 70:
+        houses = list(wholemap[:60])
+        water = list(wholemap[60:])
+
+    return houses, water
