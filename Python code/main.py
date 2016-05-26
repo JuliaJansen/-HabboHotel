@@ -226,9 +226,11 @@ if plot_histos == 'Yes':
     plothisto(len(moneyvalues), moneyvalues, name9, lowest_value, highest_value, mean_value)
     plothisto(len(distances), distances, name10, least_freespace, most_freespace, mean_freespace)
 
+# defined by config file: run hillclimber on best and worst map
 if hilly == 'Yes':
     print "jaaaa hilly"
 
+# defined by config file: run simulated annealing on best and worst map
 if simmy == 'Yes':
     print "simmmmmmyyy"
 
