@@ -1,12 +1,14 @@
 # Valuation of map in euros and freespace
+# euroValuatio(houses, total_value)
+# spaceValuation(houses, total_distance)
 # Heuristieken
 # Amstelhaege
-# Julia, Maarten en Maarten
+# Julia Jansen, Maarten Brijker en Maarten Hogeweij
 
 import math
 import copy
 
-# import other files
+# import other amstelhaege files
 from house import *
 
 def euroValuation(houses, total_value):
@@ -38,7 +40,7 @@ def spaceValuation(houses, total_distance):
     """
     Returns the freespace of a map in meters.
     """
-    # Calculate total freespace of Amstelhaege
+    # summ freespace of all houses
     for l in range(len(houses)):
         house_distance = houses[l].distance
         total_distance += house_distance

@@ -1,12 +1,12 @@
-###########################################
-# reads the list of houses and water from #
-# a csv file named output.csv, and stores #
-# this in the same object-type of list    #
-###########################################
+# Reads the list of houses and water from a csv file named output.csv
+# and stores this in the same object-type of list.
+#
+# csv_reader(filename)
+# Amstelhaege - Heuristieken
+# Julia Jansen, Maarten Brijker, Maarten Hogeweij   
 
 import csv
 from house import *
-# from water import *
 
 def csv_reader(filename):
     """
@@ -24,6 +24,7 @@ def csv_reader(filename):
     houses_total = 0
     pieces_of_water = 0
 
+    # number of rows in csv
     number_of_rows = len(list(csv.reader(open(filename))))
 
     # get number of houses and pieces of water

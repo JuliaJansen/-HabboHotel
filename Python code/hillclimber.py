@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 from matplotlib.path import Path
 import matplotlib.patches as patches
 
-# import other files
+# import other amstelhaege files
 from valuation import *
 from data_to_csv import * 
 from water import * 
@@ -24,12 +24,7 @@ from visuals import *
 from csv_reader import *
 from csv_writer import *
 
-# different type of houses
-mais = "maison"
-bung = "bungalow"
-egw = "eengezinswoning"
-
-def hillclimber(beginmap, start_value, houses_total, pieces_of_water):
+def hillclimber(beginmap, start_value, houses_total, pieces_of_water, type_val):
 	'''
 	This function applies a hillclimber algorithm on a provided map.
 	'''
@@ -47,8 +42,9 @@ def hillclimber(beginmap, start_value, houses_total, pieces_of_water):
 
 	# name to save visualization
 	name1 = str(start_value) + "before" 
+	print "value before = ", start_value
 	
-	iteraties = 20
+	iteraties = 200
 	for k in range(iteraties):
 
 		# loop over houses, and move each house once
@@ -64,7 +60,10 @@ def hillclimber(beginmap, start_value, houses_total, pieces_of_water):
 			temporary_houses = list(changeHouse(temporary_houses, house, index, water)) 
 
 			# valuate new map
-			temporary_value = euroValuation(temporary_houses, temporary_value)
+			if type_val == "euro":
+				temporary_value = euroValuation(temporary_houses, temporary_value)
+			elif type_val == "space":
+				temporary_value = spaceValuation(temporary_houses, temporary_value)
 
 			# update our map with the new house if total value of map is higher
 			if best_value < temporary_value:
@@ -80,7 +79,7 @@ def hillclimber(beginmap, start_value, houses_total, pieces_of_water):
 	# save date/time to name plot
 	stime = datetime.datetime.now().strftime("%I%M_%B_%d_")
 
-	print "value after = ", best_value
+	print "value after =  ", best_value
 
 	# plot line of values hillclimber over mutations
 	data = values
@@ -90,7 +89,7 @@ def hillclimber(beginmap, start_value, houses_total, pieces_of_water):
 	csv_writer(best_map, pieces_of_water, houses_total, best_value, stime + "hillclimber.csv")
 
 	# plot beginmap and end map
-	plotmap(len(beginmap), beginmap, name1, houses_total)
+	# plotmap(len(beginmap), beginmap, name1, houses_total)
 	plotmap(len(beginmap), best_map, name2, houses_total)
 
 """

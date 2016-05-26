@@ -1,15 +1,14 @@
-# csv_writer(map, nr_water, nr_houses, map_value, name)
+# csv_writer(map, nr_water, nr_houses, map_value, filename)
 #
 # Heuristieken
 # Julia, Maarten en Maarten
 # Amstelhaege
 
 import csv
-import datetime
 
-def csv_writer(mappie, nr_water, nr_houses, map_value, name):
+def csv_writer(mappie, nr_water, nr_houses, map_value, filename):
     """
-    Writes the values of a map to csv file named datetime_output.csv
+    Writes the values of a map to csv file named 'filename'
     """
     # main nested list 
     MAIN = []
@@ -34,7 +33,7 @@ def csv_writer(mappie, nr_water, nr_houses, map_value, name):
     MAIN.append([map_value])
     
     # write MAIN to csv file
-    with open(name, 'wb') as csvfile:
+    with open(filename, 'wb') as csvfile:
         writer = csv.writer(csvfile, delimiter=',', quotechar=',', quoting=csv.QUOTE_MINIMAL)   
         for thing in MAIN:
             writer.writerow(thing)

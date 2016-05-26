@@ -1,21 +1,21 @@
+# writes data array to csv
+# data_to_csv(data, filename)
 # Heuristieken
-# Julia, Maarten en Maarten
+# Julia Jansen, Maarten Brijker en Maarten Hogeweij
 # Amstelhaege
-#
+
 
 import csv
 
-def data_to_csv(data, name):
+def data_to_csv(data, filename):
     """
-    Writes the data values of creating random maps to csv file
-    Data: nr of houses, nr of waters, runs, mean value, highest value, 
-    lowest value, runtime/map
+    Writes the data values to a csv file
     """
     # main nested list 
     MAIN = []
 
   # write MAIN to csv file
-    with open(name, 'wb') as csvfile:
+    with open(filename, 'wb') as csvfile:
         writer = csv.writer(csvfile, delimiter=',', quotechar=',', quoting=csv.QUOTE_MINIMAL)   
         writer.writerow(['Houses', 'Waters', 'Runs', 'Mean', 'Highest Value', 'Lowest Value', 'Runtime/map'])
         writer.writerow(data)

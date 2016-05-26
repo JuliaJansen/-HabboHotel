@@ -25,16 +25,10 @@ from visuals import *
 from csv_reader import *
 from csv_writer import *
 
-# different type of houses
-mais = "maison"
-bung = "bungalow"
-egw = "eengezinswoning"
-
-def simulannealing(beginmap, start_value, houses_total, pieces_of_water):
+def simulannealing(beginmap, start_value, houses_total, pieces_of_water, type_val):
 	'''
 	This function applies a hillclimber algorithm on a provided map.
 	'''
-
 	# split map up in houses and water
 	houses, water = splitmap(beginmap) 
 
@@ -52,7 +46,7 @@ def simulannealing(beginmap, start_value, houses_total, pieces_of_water):
 	# name to save image of first map
 	name1 = str(start_value) + "before" 
 
-	iteraties = 1000
+	iteraties = 10000
 
 	# values for simulated annealing, change as you feel fit
 	temperature = 100000
@@ -85,7 +79,10 @@ def simulannealing(beginmap, start_value, houses_total, pieces_of_water):
 			temporary_houses = list(changeHouse(temporary_houses, house, index, water)) 
 
 			# valuate new map
-			temporary_value = euroValuation(temporary_houses, temporary_value)
+			if type_val == "euro":
+				temporary_value = euroValuation(temporary_houses, temporary_value)
+			elif type_val == "space":
+				temporary_value = spaceValuation(temporary_houses, temporary_value)
 
 			# temperatuur update
 			temperature = temperature * cooldown_rate

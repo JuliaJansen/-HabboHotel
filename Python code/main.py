@@ -41,16 +41,10 @@ MAIN: Place houses on field
 """
 all_maps = []
 
-# different type of houses
-mais = "maison"
-bung = "bungalow"
-egw = "eengezinswoning"
-
-# change how you like: houses to place, pieces of water
-# to place and amount of tests
-# houses_total = 60
-# pieces_of_water = 3
-# nr_tests = 20000
+# # different type of houses
+# mais = "maison"
+# bung = "bungalow"
+# egw = "eengezinswoning"
 
 # get values from configuration file to define behaviour
 config = ConfigParser.ConfigParser()
@@ -82,10 +76,10 @@ for section in config.sections():
         if option == 'histo':
             plot_histos = value
 
-# create a variable to hold number of houses of each type
-mais_total = houses_total * 0.15
-bung_total = houses_total * 0.25
-egw_total = houses_total * 0.60
+# # create a variable to hold number of houses of each type
+# mais_total = houses_total * 0.15
+# bung_total = houses_total * 0.25
+# egw_total = houses_total * 0.60
 
 # loop x times for testing
 for k in range(nr_tests):
@@ -235,37 +229,47 @@ if csvdata == 'Yes':
 
 if plot_histos == 'Yes':
     # plot histogram money value
+    print "histogram euro value of all maps"
     plothisto(len(moneyvalues), moneyvalues, name9, lowest_value, \
         highest_value, mean_value)
     # plot histogram freespace
+    print "histogram freespace on all maps"
     plothisto(len(distances), distances, name10, least_freespace, \
         most_freespace, mean_freespace)
 
 # defined by config file: run hillclimber on best and worst map
 if hillyvalue == 'Yes':
+    print "hillclimber on map with highest value:"
     hillclimber(all_maps[index_high_value], highest_value, houses_total, \
-        pieces_of_water)
+        pieces_of_water, "euro")
+    print "hillclimber on map with lowest value:"
     hillclimber(all_maps[index_low_value], lowest_value, houses_total, \
-        pieces_of_water)
+        pieces_of_water, "euro")
    
 # defined by config file: run hillclimber on map with most and least freespace
 if hillyfreespace == 'Yes':
+    print "hillclimber on map with most freespace:"
     hillclimber(all_maps[index_most_freespace], most_freespace, houses_total, \
-        pieces_of_water)
+        pieces_of_water, "space")
+    print "hillclimber on map with least freespace:"
     hillclimber(all_maps[index_least_freespace], least_freespace, houses_total, \
-        pieces_of_water)
+        pieces_of_water, "space")
 
 # defined by config file: run simulated annealing on best and worst map
 if simmyvalue == 'Yes':
-    simulannealing(all_maps[index_high_value], highest_value, houses_total, \
-        pieces_of_water)
+    # print "simulated annealing on map with highest value:"
+    # simulannealing(all_maps[index_high_value], highest_value, houses_total, \
+    #     pieces_of_water, "euro")
+    print "simulated annealing on map with lowest value:"
     simulannealing(all_maps[index_low_value], lowest_value, houses_total, \
-        pieces_of_water)
+        pieces_of_water, "euro")
 
 if simmyfreespace == 'Yes':
+    print "simulated annealing on map with most freespace:"
     simulannealing(all_maps[index_most_freespace], highest_value, houses_total, \
-        pieces_of_water)
+        pieces_of_water, "space")
+    print "simulated annealing on map with least value:"
     simulannealing(all_maps[index_least_freespace], lowest_value, houses_total, \
-        pieces_of_water)
+        pieces_of_water, "space")
 
 print 'Done'

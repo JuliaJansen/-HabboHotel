@@ -11,7 +11,7 @@ import time
 
 from visuals import *
 
-# global variable
+# define surface of water
 surface_total = 0.2 * 160 * 150
 
 class Water(object):
@@ -54,22 +54,22 @@ class Water(object):
 
 def placeWater(water, x_min, y_min, piece, pieces_of_water, surface_taken):
     """
-    Places water: update attributes
+    Places water: update attributes of Water objects
     """
-
     pieces_to_go = pieces_of_water - piece
     tries = 0
 
     # fictional value
     height = 10000
 
-    # minimum surface for 
+    # minimum surface for water depending on which piece
     if pieces_of_water < 3:
         minsurf = 4800 / (pieces_of_water + 2)
     else:
         minsurf = 4800 / pieces_of_water 
 
-    while height + y_min > 150 or width + x_min > 160 or new_surface_taken > surface_total + pieces_to_go * 4:    
+    while height + y_min > 150 or width + x_min > 160 or \
+    new_surface_taken > surface_total + pieces_to_go * 4:    
         
         # calculate ratio
         ratio = random.uniform(0.25,4)
@@ -81,14 +81,15 @@ def placeWater(water, x_min, y_min, piece, pieces_of_water, surface_taken):
             if minsurf >= 4800 - (surface_taken + pieces_to_go * 4):
                 surface = random.randint(0, 4800 - surface_taken-pieces_to_go*4)
             else:
-                surface = random.randint(minsurf, 4800 - surface_taken - pieces_to_go * 4) 
+                surface = random.randint(minsurf, 4800 - surface_taken - \
+                    pieces_to_go * 4) 
 
-            # use ratio and surface to calculate height and width
+            # use ratio and surface to calculate height and width of water
             width = (surface / ratio) ** 0.5
             height = width * ratio 
             new_surface_taken = surface_taken + surface
         else:
-            width = ((surface_total - surface_taken) / ratio)**0.5
+            width = ((surface_total - surface_taken) / ratio) ** 0.5
             height = width * ratio
             surface = width * height 
             new_surface_taken = surface_taken + surface   
@@ -96,6 +97,7 @@ def placeWater(water, x_min, y_min, piece, pieces_of_water, surface_taken):
         water.updateXmax(x_min + width)
         water.updateYmax(y_min + height)
 
+    # update attributes
     water.updateXmax(x_min + width)
     water.updateYmax(y_min + height)
     water.updateHeight(height)
@@ -106,8 +108,7 @@ def distanceWater(obj, water):
     """
     Returns True if object isn't placed on water, else False
     """
-
-    # loop over water already placed
+    # loop over list of already placed water
     for w in range(len(water)):
 
         # check horizontal band
@@ -118,7 +119,8 @@ def distanceWater(obj, water):
             if water[w].x_min > obj.x_min:
                 distance_x = water[w].x_min - obj.x_min - obj.width
             else:
-                distance_x = obj.x_min - water[w].x_min - (water[w].x_max - water[w].x_min) 
+                distance_x = obj.x_min - water[w].x_min - \
+                (water[w].x_max - water[w].x_min) 
         else:
             distance_x = 1
 
@@ -134,7 +136,8 @@ def distanceWater(obj, water):
             if water[w].y_min > obj.y_min:
                 distance_y = water[w].y_min - obj.y_min - obj.height  
             else:
-                distance_y = obj.y_min - water[w].y_min - (water[w].y_max - water[w].y_min)  
+                distance_y = obj.y_min - water[w].y_min - \
+                (water[w].y_max - water[w].y_min)  
         else:
             distance_y = 1
 
@@ -176,7 +179,8 @@ def placeAllWater(pieces_of_water):
 
     # make new Water object
     new_water = Water(x_min, y_min, 0, 0)    
-    placeWater(new_water, x_min, y_min, piece_of_water + 1, pieces_of_water, surface_taken)
+    placeWater(new_water, x_min, y_min, piece_of_water + 1, \
+        pieces_of_water, surface_taken)
 
     # append first water to list
     water.append(new_water)
@@ -195,7 +199,8 @@ def placeAllWater(pieces_of_water):
 
         # new piece of water
         new_water = Water(x_min, y_min, 0, 0)    
-        placeWater(new_water, x_min, y_min, piece_of_water + 1, pieces_of_water, surface_taken)
+        placeWater(new_water, x_min, y_min, piece_of_water + 1, \
+            pieces_of_water, surface_taken)
 
         if distanceWater(new_water, water) == True:
             water.append(new_water)
