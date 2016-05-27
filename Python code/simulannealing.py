@@ -1,6 +1,6 @@
 ###################################
 # Simulated Annealing	
-# simulannealing(beginmap, start_value, houses_total, pieces_of_water)
+# simulannealing(beginmap, start_value, houses_total, pieces_of_water, type_val)
 # Heuristieken
 # Amstelhaege
 # Julia, Maarten en Maarten
@@ -11,8 +11,6 @@ import csv
 import pylab
 import random
 import math
-import numpy
-import copy
 import matplotlib.pyplot as plt
 from matplotlib.path import Path
 import matplotlib.patches as patches
@@ -121,11 +119,11 @@ Give option to get map from file by running simulated annealing on it.
 Uncomment underneath lines of code and fill in filename of map you'd 
 like to improve in code underneath and run via command line
 """
-# # read map-variables from csv
-# beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("../csv_data/1155_May_24_nr1155_May_24_20bestvalue100000_11611890.0.csv.csv")
+# read map-variables from csv
+beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("../csv_data/1155_May_24_nr1155_May_24_20bestvalue100000_11611890.0.csv.csv")
 
-# # run hillclimber
-# simulannealing(beginmap, start_value, houses_total, pieces_of_water, "euro")
+# run hillclimber
+simulannealing(beginmap, start_value, houses_total, pieces_of_water, "euro")
 
 
 

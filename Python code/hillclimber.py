@@ -10,7 +10,6 @@ import csv
 import pylab
 import random
 import math
-import copy
 import matplotlib.pyplot as plt
 from matplotlib.path import Path
 import matplotlib.patches as patches
@@ -97,11 +96,11 @@ Option to get map from file by running hillclimber.py:
 Uncomment underneath lines of code and fill in filename of map you'd 
 like to improve in code underneath and run via command line
 """
-# # read map-variables from csv
-# beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("centered_housing.csv")
+# read map-variables from csv
+beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("../csv_data/0347_May_23_40mostfreespace100000_346.597741746.csv")
 
-# # run hillclimber
-# hillclimber(beginmap, start_value, houses_total, pieces_of_water)
+# run hillclimber
+hillclimber(beginmap, start_value, houses_total, pieces_of_water, "space")
 
 
 
