@@ -62,8 +62,6 @@ for section in config.sections():
             hillyfreespace = value
         if option == 'sim_annealing_value':
             simmyvalue = value
-        if option == 'sim_annealing_freespace':
-            simmyfreespace = value
         if option == 'data':
             csvdata = value
         if option == 'maps':
