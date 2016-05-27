@@ -41,11 +41,6 @@ MAIN: Place houses on field
 """
 all_maps = []
 
-# # different type of houses
-# mais = "maison"
-# bung = "bungalow"
-# egw = "eengezinswoning"
-
 # get values from configuration file to define behaviour
 config = ConfigParser.ConfigParser()
 
@@ -75,11 +70,6 @@ for section in config.sections():
             plot_maps = value
         if option == 'histo':
             plot_histos = value
-
-# # create a variable to hold number of houses of each type
-# mais_total = houses_total * 0.15
-# bung_total = houses_total * 0.25
-# egw_total = houses_total * 0.60
 
 # loop x times for testing
 for k in range(nr_tests):
@@ -118,46 +108,6 @@ for k in range(nr_tests):
     # save houses and water lists in one map list  
     fill = houses + water
     all_maps.append(fill)
-
-    # save only highest and lowest and mean values every 1000 iterations
-    # if k % 1000 == 0:
-
-    #     # find highest map of 1000 maps
-    #     highest_value = max(moneyvalues)
-    #     valuelist.append(highest_value)
-    #     index_high_value = moneyvalues.index(highest_value)
-    #     all_maps_val.append(all_maps[index_high_value])
-
-    #     # find map with lowest_value value from 1000 maps
-    #     lowest_value = min(moneyvalues)
-    #     valuelist.append(lowest_value)
-    #     index_low_value = moneyvalues.index(lowest_value)
-    #     all_maps_val.append(all_maps[index_low_value])
-
-    #     # calculate mean map value of 1000 
-    #     mean_value = sum(moneyvalues) / len(moneyvalues)
-    #     meanvaluelist.append(mean_value)
-
-    #     # find map with most overall freespace of 1000 maps
-    #     most_freespace = max(distances)
-    #     spacelist.append(most_freespace)
-    #     index_most_freespace = distances.index(most_freespace)
-    #     all_maps_space.append(all_maps[index_most_freespace])
-
-    #     # find map with least overall freespace of 1000 maps
-    #     least_freespace = min(distances)
-    #     spacelist.append(least_freespace)
-    #     index_least_freespace = distances.index(least_freespace)
-    #     all_maps_space.append(all_maps[index_least_freespace])
-
-    #     # find mean freespace per map of last 1000 maps
-    #     mean_freespace = sum(distances) / len(distances)
-    #     meanspacelist.append(mean_freespace)
-
-    #     # empty all lists
-    #     moneyvalues = []
-    #     all_maps = []
-    #     distances = [] 
 
 # use lists with moneyvalues to calculate highest, lowest and mean values
 # and find the map with those values
@@ -257,19 +207,13 @@ if hillyfreespace == 'Yes':
 
 # defined by config file: run simulated annealing on best and worst map
 if simmyvalue == 'Yes':
-    # print "simulated annealing on map with highest value:"
-    # simulannealing(all_maps[index_high_value], highest_value, houses_total, \
-    #     pieces_of_water, "euro")
-    print "simulated annealing on map with lowest value:"
-    simulannealing(all_maps[index_low_value], lowest_value, houses_total, \
+    print "simulated annealing on map with highest value:"
+    simulannealing(all_maps[index_high_value], highest_value, houses_total, \
         pieces_of_water, "euro")
 
 if simmyfreespace == 'Yes':
     print "simulated annealing on map with most freespace:"
     simulannealing(all_maps[index_most_freespace], highest_value, houses_total, \
         pieces_of_water, "space")
-    print "simulated annealing on map with least value:"
-    simulannealing(all_maps[index_least_freespace], lowest_value, houses_total, \
-        pieces_of_water, "space")
-
+    
 print 'Done'

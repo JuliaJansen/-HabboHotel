@@ -46,7 +46,7 @@ def simulannealing(beginmap, start_value, houses_total, pieces_of_water, type_va
 	# name to save image of first map
 	name1 = str(start_value) + "before" 
 
-	iteraties = 10000
+	iteraties = 10
 
 	# values for simulated annealing, change as you feel fit
 	temperature = 100000
@@ -56,16 +56,8 @@ def simulannealing(beginmap, start_value, houses_total, pieces_of_water, type_va
 	for k in range(iteraties):
 
 		# max difference to accept 
-		maxdif = 3000 * (0.99999 ** k) 
-
-		if k % 1000 == 0:
-			print 'best value ', best_value
-			print "k ======== ", k
-			print "temp ===== ", temperature
-			print "maxdif === ", maxdif
-			print "power ==== ", power
-			print "probaccept = ", prob_accept
-
+		maxdif = 5000 * (0.99999 ** k) 
+		
 		# loop over each house, and move it once
 		for index, house in enumerate(best_houses):
 
@@ -96,7 +88,7 @@ def simulannealing(beginmap, start_value, houses_total, pieces_of_water, type_va
 			elif (best_value - temporary_value) > maxdif:
 				
 				# probability to accept deterioration
-				power = float(((temporary_value - best_value) * 0.0001) / temperature) 
+				power = float(((temporary_value - best_value) * 0.00001) / temperature) 
 				prob_accept = math.exp(power)
 				check_value = random.uniform(0, 1)
 				
@@ -130,10 +122,10 @@ Uncomment underneath lines of code and fill in filename of map you'd
 like to improve in code underneath and run via command line
 """
 # # read map-variables from csv
-# beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("centered_housing.csv")
+# beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("../csv_data/1155_May_24_nr1155_May_24_20bestvalue100000_11611890.0.csv.csv")
 
 # # run hillclimber
-# simulannealing(beginmap, start_value, houses_total, pieces_of_water)
+# simulannealing(beginmap, start_value, houses_total, pieces_of_water, "euro")
 
 
 
