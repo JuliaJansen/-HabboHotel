@@ -87,8 +87,7 @@ def hillclimber(beginmap, start_value, houses_total, pieces_of_water, type_val):
 	# write data to csv
 	csv_writer(best_map, pieces_of_water, houses_total, best_value, stime + "hillclimber.csv")
 
-	# plot beginmap and end map
-	# plotmap(len(beginmap), beginmap, name1, houses_total)
+	# visualize end map
 	plotmap(len(beginmap), best_map, name2, houses_total)
 
 """
@@ -97,7 +96,7 @@ Uncomment underneath lines of code and fill in filename of map you'd
 like to improve in code underneath and run via command line
 """
 # read map-variables from csv
-beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("../csv_data/0347_May_23_40mostfreespace100000_346.597741746.csv")
+beginmap, houses, water, start_value, houses_total, pieces_of_water = csv_reader("../csv_data/0416_May_24_nr0416_May_24_60mostfreespace20000_392.893925116.csv.csv")
 
 # run hillclimber
 hillclimber(beginmap, start_value, houses_total, pieces_of_water, "space")
